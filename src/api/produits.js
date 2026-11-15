@@ -126,6 +126,17 @@ export function refuserReservation(id, token) {
   });
 }
 
+/**
+ * Enregistre le retrait du panier par le client (statut RECUPEREE).
+ * C'est cette action qui valide l'encaissement en espèces et alimente les revenus.
+ */
+export function recupererReservation(id, token) {
+  return apiRequest(`/reservations/${id}/recuperer`, {
+    method: 'PUT',
+    token,
+  });
+}
+
 export function fetchCommercantAvis(id, token) {
   return apiRequest(`/commercants/${id}/avis`, { token });
 }

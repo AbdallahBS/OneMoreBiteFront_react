@@ -1032,12 +1032,16 @@ export default function AdminDashboard() {
                         <td className="py-3">
                           <span
                             className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                              r.statut === 'CONFIRMEE'
-                                ? 'bg-green-100 text-green-800'
-                                : 'bg-amber-100 text-amber-800'
+                              r.statut === 'RECUPEREE'
+                                ? 'bg-primary/10 text-primary'
+                                : r.statut === 'CONFIRMEE'
+                                  ? 'bg-green-100 text-green-800'
+                                  : r.statut === 'REFUSEE' || r.statut === 'ANNULEE'
+                                    ? 'bg-red-100 text-red-800'
+                                    : 'bg-amber-100 text-amber-800'
                             }`}
                           >
-                            {r.statut}
+                            {r.statut === 'RECUPEREE' ? 'RETIRÉE' : r.statut}
                           </span>
                         </td>
                       </tr>

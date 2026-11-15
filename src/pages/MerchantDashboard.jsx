@@ -12,6 +12,7 @@ import {
   fetchReservationsRecues,
   confirmerReservation,
   refuserReservation,
+  recupererReservation,
   fetchCommercantAvis,
   updateProfile,
   deleteAccount,
@@ -308,6 +309,27 @@ export default function MerchantDashboard() {
     }
   };
 
+  // Le client est venu retirer son panier : on encaisse et on compte le revenu.
+  const handleRecupererReservation = async (res) => {
+    const montant = formatDT(res.prixTotal);
+    if (
+      !window.confirm(
+        `Confirmer le retrait du panier « ${res.produitNom || 'Panier'} » par ${res.clientNom || 'le client'} ?\n\nMontant encaissé en espèces : ${montant}\nCette réservation sera ajoutée à vos revenus.`,
+      )
+    ) {
+      return;
+    }
+    try {
+      if (token) await recupererReservation(res.id, token);
+      setReservations((prev) =>
+        prev.map((r) => (r.id === res.id ? { ...r, statut: 'RECUPEREE' } : r))
+      );
+      showFeedback('success', `Retrait enregistré : ${montant} ajoutés à vos revenus.`);
+    } catch (err) {
+      showFeedback('error', err?.message || "Erreur lors de l'enregistrement du retrait.");
+    }
+  };
+
   // Profile update
   const handleSaveProfile = async (e) => {
     e.preventDefault();
@@ -370,11 +392,15 @@ export default function MerchantDashboard() {
   };
 
   // Stats calculation
-  const totalRevenue = reservations
-    .filter((r) => r.statut === 'CONFIRMEE' || r.statut === 'RECUPEREE')
-    .reduce((sum, r) => sum + (Number(r.prixTotal) || 0), 0);
+  // Le revenu ne compte que les paniers réellement retirés (encaissés en espèces),
+  // pas les réservations simplement confirmées.
+  const recuperees = reservations.filter((r) => r.statut === 'RECUPEREE');
+  const totalRevenue = recuperees.reduce((sum, r) => sum + (Number(r.prixTotal) || 0), 0);
 
   const pendingReservations = reservations.filter((r) => r.statut === 'EN_ATTENTE');
+  // Confirmées mais pas encore retirées : montant à encaisser au comptoir.
+  const aEncaisser = reservations.filter((r) => r.statut === 'CONFIRMEE');
+  const montantAEncaisser = aEncaisser.reduce((sum, r) => sum + (Number(r.prixTotal) || 0), 0);
   const activeCount = produits.filter((p) => p.disponible).length;
   const averageRating =
     avisList.length > 0
@@ -580,7 +606,10 @@ export default function MerchantDashboard() {
                       {formatDT(totalRevenue)}
                     </span>
                     <span className="block text-[11px] text-secondary font-semibold mt-0.5">
-                      100% encaissé en espèces
+                      {recuperees.length} retrait{recuperees.length > 1 ? 's' : ''} encaissé{recuperees.length > 1 ? 's' : ''}
+                      {aEncaisser.length > 0
+                        ? ` • ${formatDT(montantAEncaisser)} à encaisser`
+                        : ''}
                     </span>
                   </div>
                 </div>
@@ -705,14 +734,16 @@ export default function MerchantDashboard() {
                             </td>
                             <td className="py-3">
                               <span
-                                className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full ${res.statut === 'CONFIRMEE'
-                                    ? 'bg-green-100 text-green-800'
-                                    : res.statut === 'REFUSEE'
-                                      ? 'bg-red-100 text-red-800'
-                                      : 'bg-amber-100 text-amber-800'
+                                className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full ${res.statut === 'RECUPEREE'
+                                    ? 'bg-primary/10 text-primary'
+                                    : res.statut === 'CONFIRMEE'
+                                      ? 'bg-green-100 text-green-800'
+                                      : res.statut === 'REFUSEE' || res.statut === 'ANNULEE'
+                                        ? 'bg-red-100 text-red-800'
+                                        : 'bg-amber-100 text-amber-800'
                                   }`}
                               >
-                                {res.statut}
+                                {res.statut === 'RECUPEREE' ? 'RETIRÉE' : res.statut}
                               </span>
                             </td>
                             <td className="py-3 text-right space-x-1.5">
@@ -735,8 +766,17 @@ export default function MerchantDashboard() {
                                 </>
                               )}
                               {res.statut === 'CONFIRMEE' && (
-                                <span className="text-[11px] text-secondary font-bold">
-                                  ✓ Prêt au retrait
+                                <button
+                                  onClick={() => handleRecupererReservation(res)}
+                                  type="button"
+                                  className="px-2.5 py-1 rounded-full bg-primary text-white text-[11px] font-bold hover:bg-primary-dark"
+                                >
+                                  Retrait effectué
+                                </button>
+                              )}
+                              {res.statut === 'RECUPEREE' && (
+                                <span className="text-[11px] text-primary font-bold">
+                                  ✓ Encaissé
                                 </span>
                               )}
                             </td>
@@ -946,14 +986,16 @@ export default function MerchantDashboard() {
                         </td>
                         <td className="py-3">
                           <span
-                            className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full ${res.statut === 'CONFIRMEE'
-                                ? 'bg-green-100 text-green-800'
-                                : res.statut === 'REFUSEE'
-                                  ? 'bg-red-100 text-red-800'
-                                  : 'bg-amber-100 text-amber-800'
+                            className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full ${res.statut === 'RECUPEREE'
+                                ? 'bg-primary/10 text-primary'
+                                : res.statut === 'CONFIRMEE'
+                                  ? 'bg-green-100 text-green-800'
+                                  : res.statut === 'REFUSEE' || res.statut === 'ANNULEE'
+                                    ? 'bg-red-100 text-red-800'
+                                    : 'bg-amber-100 text-amber-800'
                               }`}
                           >
-                            {res.statut}
+                            {res.statut === 'RECUPEREE' ? 'RETIRÉE' : res.statut}
                           </span>
                         </td>
                         <td className="py-3 text-right space-x-1">
@@ -974,6 +1016,14 @@ export default function MerchantDashboard() {
                                 Refuser
                               </button>
                             </>
+                          ) : res.statut === 'CONFIRMEE' ? (
+                            <button
+                              onClick={() => handleRecupererReservation(res)}
+                              type="button"
+                              className="px-3 py-1 rounded-full bg-primary text-white font-bold text-xs hover:bg-primary-dark"
+                            >
+                              Retrait effectué
+                            </button>
                           ) : (
                             <span className="text-[11px] text-outline font-semibold">Traité</span>
                           )}

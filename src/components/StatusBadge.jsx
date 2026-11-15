@@ -9,6 +9,11 @@ const STATUS = {
     className: 'bg-primary-fixed text-on-primary-fixed',
     icon: 'check_circle',
   },
+  RECUPEREE: {
+    label: 'Retirée',
+    className: 'bg-secondary-container text-on-secondary-container',
+    icon: 'task_alt',
+  },
   REFUSEE: {
     label: 'Refusée',
     className: 'bg-error-container text-on-error-container',

@@ -447,12 +447,18 @@ export default function ClientDashboard() {
                               {res.commercantNom || `Commerçant #${res.commercantId}`}
                             </span>
                             <span
-                              className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full ${res.statut === 'CONFIRMEE'
-                                  ? 'bg-green-100 text-green-800'
-                                  : 'bg-amber-100 text-amber-800'
+                              className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full ${res.statut === 'RECUPEREE'
+                                  ? 'bg-primary/10 text-primary'
+                                  : res.statut === 'CONFIRMEE'
+                                    ? 'bg-green-100 text-green-800'
+                                    : 'bg-amber-100 text-amber-800'
                                 }`}
                             >
-                              {res.statut === 'CONFIRMEE' ? 'Confirmée • Prêt au retrait' : 'En attente de confirmation'}
+                              {res.statut === 'RECUPEREE'
+                                ? 'Récupérée • Merci !'
+                                : res.statut === 'CONFIRMEE'
+                                  ? 'Confirmée • Prêt au retrait'
+                                  : 'En attente de confirmation'}
                             </span>
                           </div>
 
