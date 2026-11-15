@@ -1,0 +1,13 @@
+# Configuration Netlify du frontend React (SPA).
+# Le fallback vers index.html est indispensable pour les routes côté client
+# comme /admin/auth, /auth, /panier ou /admin : sans lui, un accès direct
+# (ou un rafraîchissement de page) renvoie la 404 de Netlify.
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

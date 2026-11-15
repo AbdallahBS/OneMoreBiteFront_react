@@ -1,0 +1,3 @@
+# SPA fallback : toutes les routes React (/admin/auth, /auth, /panier, …)
+# doivent renvoyer index.html, sinon l'hébergeur affiche sa propre 404.
+/*    /index.html   200
