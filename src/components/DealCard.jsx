@@ -57,7 +57,7 @@ export default function DealCard({ deal, onReserve, pending = false }) {
         {/* Pickup Time Window */}
         <div className="absolute bottom-3 right-3 bg-black/60 backdrop-blur-sm text-white text-[11px] font-medium px-2.5 py-1 rounded-full flex items-center gap-1">
           <span className="material-symbols-outlined text-[14px] text-green-400">schedule</span>
-          <span>Retrait: {deal.pickup || '18h30 - 20h00'}</span>
+          <span>Retrait: {deal.pickup || 'en boutique'}</span>
         </div>
       </Link>
 

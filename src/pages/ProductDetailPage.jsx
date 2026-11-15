@@ -4,7 +4,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
-import { FALLBACK_DEALS, normalizeBackendDeal } from '../data/fallbackDeals';
+import { normalizeBackendDeal } from '../data/fallbackDeals';
 import { fetchProduitById, fetchProduits, fetchPublicAvis, createAvis } from '../api/produits';
 import DealCard from '../components/DealCard';
 
@@ -21,14 +21,10 @@ export default function ProductDetailPage() {
   const { addItem } = useCart();
 
   const [productData, setProductData] = useState(null);
+  const [productLoading, setProductLoading] = useState(true);
+  const [productError, setProductError] = useState('');
 
-  const fallbackProduct = useMemo(() => {
-    if (!id) return FALLBACK_DEALS[0];
-    const found = FALLBACK_DEALS.find((d) => d.id === id || String(d.id) === String(id));
-    return found || FALLBACK_DEALS[0];
-  }, [id]);
-
-  const product = productData || fallbackProduct;
+  const product = productData;
 
   const [quantity, setQuantity] = useState(1);
   const [selectedThumb, setSelectedThumb] = useState(0);
@@ -53,6 +49,8 @@ export default function ProductDetailPage() {
   useEffect(() => {
     let active = true;
     const load = async () => {
+      setProductLoading(true);
+      setProductError('');
       try {
         if (id && !isNaN(Number(id))) {
           const res = await fetchProduitById(id);
@@ -61,15 +59,31 @@ export default function ProductDetailPage() {
             return;
           }
         }
+
         const all = await fetchProduits({ disponible: true });
         if (active && Array.isArray(all) && all.length > 0) {
           const found = id ? all.find((p) => String(p.id) === String(id)) : all[0];
           if (found) {
             setProductData(normalizeBackendDeal(found));
+            return;
           }
         }
+
+        if (active) {
+          setProductData(null);
+          setProductError('Ce panier n’existe plus ou n’est plus disponible.');
+        }
       } catch (err) {
-        // Fallback to static deals gracefully if server is starting
+        if (active) {
+          setProductData(null);
+          setProductError(
+            err?.message || 'Impossible de charger ce panier depuis la base de données.',
+          );
+        }
+      } finally {
+        if (active) {
+          setProductLoading(false);
+        }
       }
     };
     load();
@@ -86,7 +100,7 @@ export default function ProductDetailPage() {
         if (!active) return;
         if (Array.isArray(data)) {
           const others = data
-            .filter((p) => String(p.id) !== String(product.id) && String(p.id) !== String(product.backendId))
+            .filter((p) => String(p.id) !== String(product?.id) && String(p.id) !== String(product?.backendId))
             .slice(0, 3)
             .map(normalizeBackendDeal);
           setRelatedDeals(others);
@@ -96,7 +110,7 @@ export default function ProductDetailPage() {
     return () => {
       active = false;
     };
-  }, [product.id, product.backendId]);
+  }, [product?.id, product?.backendId]);
 
   // Load reviews dynamically from backend
   useEffect(() => {
@@ -148,11 +162,11 @@ export default function ProductDetailPage() {
   // Dynamic image list strictly from product data (no fake static URLs)
   const images = useMemo(() => {
     // Prefer the multi-image array coming from the backend
-    if (Array.isArray(product.images) && product.images.length > 0) {
+    if (Array.isArray(product?.images) && product.images.length > 0) {
       return product.images.filter(Boolean);
     }
     // Fall back to single image fields
-    const single = product.photoUrl || product.imageUrl;
+    const single = product?.photoUrl || product?.imageUrl;
     return single ? [single] : [];
   }, [product]);
 
@@ -186,6 +200,11 @@ export default function ProductDetailPage() {
       return;
     }
 
+    if (!product?.commercantId) {
+      setReviewError("Impossible d'identifier le commerçant associé à ce panier.");
+      return;
+    }
+
     const authorName = formName.trim() || user?.nom || 'Client';
 
     const newRev = {
@@ -199,7 +218,7 @@ export default function ProductDetailPage() {
           .slice(0, 2) || 'CL',
       bg: 'bg-primary text-white',
       name: authorName,
-      location: product.merchantName ? `Chez ${product.merchantName}` : 'Tunisie',
+      location: product?.merchantName ? `Chez ${product.merchantName}` : 'Tunisie',
       rating: formRating,
       verified: true,
       text: `« ${formComment.trim()} »`,
@@ -214,7 +233,7 @@ export default function ProductDetailPage() {
     try {
       await createAvis(
         {
-          commercantId: product?.commercantId || 1,
+          commercantId: product.commercantId,
           note: formRating,
           commentaire: formComment.trim(),
         },
@@ -257,6 +276,50 @@ export default function ProductDetailPage() {
     });
     return counts;
   }, [reviewsList]);
+
+  if (productLoading) {
+    return (
+      <div className="min-h-screen flex flex-col bg-[#FCF9F8]">
+        <Header />
+        <main className="flex flex-1 items-center justify-center py-24">
+          <div className="flex flex-col items-center gap-4">
+            <div className="h-12 w-12 animate-spin rounded-full border-4 border-primary-fixed border-t-primary" />
+            <p className="text-sm font-semibold text-on-surface-variant">
+              Chargement du panier…
+            </p>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (!product) {
+    return (
+      <div className="min-h-screen flex flex-col bg-[#FCF9F8]">
+        <Header />
+        <main className="flex flex-1 items-center justify-center px-4 py-24">
+          <div className="max-w-md w-full text-center bg-white rounded-2xl border border-[#F0E6DE] p-8 shadow-xs">
+            <span className="material-symbols-outlined text-5xl text-outline mb-3">
+              production_quantity_limits
+            </span>
+            <h1 className="text-xl font-extrabold text-primary mb-2">Panier introuvable</h1>
+            <p className="text-sm text-on-surface-variant">
+              {productError || 'Ce panier n’est plus disponible dans le catalogue.'}
+            </p>
+            <Link
+              to="/#produits"
+              className="inline-flex items-center gap-2 mt-6 px-5 py-2.5 rounded-full bg-primary text-white text-sm font-bold hover:bg-primary-dark transition-colors"
+            >
+              <span className="material-symbols-outlined text-[18px]">arrow_back</span>
+              Voir les paniers disponibles
+            </Link>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-[#FCF9F8] font-sans text-on-surface antialiased selection:bg-primary-soft selection:text-primary">
@@ -314,10 +377,17 @@ export default function ProductDetailPage() {
 
                   {/* Badges Overlay */}
                   <div className="absolute top-4 left-4 flex flex-col items-start gap-2 z-10">
-                    <span className="px-3.5 py-1.5 rounded-full bg-primary text-white font-bold text-xs tracking-wide shadow-sm flex items-center gap-1.5">
-                      <span className="material-symbols-outlined text-[16px]">savings</span>
-                      -{product.discount || 50}% Anti-Gaspi
-                    </span>
+                    {product.discount ? (
+                      <span className="px-3.5 py-1.5 rounded-full bg-primary text-white font-bold text-xs tracking-wide shadow-sm flex items-center gap-1.5">
+                        <span className="material-symbols-outlined text-[16px]">savings</span>
+                        -{product.discount}% Anti-Gaspi
+                      </span>
+                    ) : (
+                      <span className="px-3.5 py-1.5 rounded-full bg-primary text-white font-bold text-xs tracking-wide shadow-sm flex items-center gap-1.5">
+                        <span className="material-symbols-outlined text-[16px]">savings</span>
+                        Anti-Gaspi
+                      </span>
+                    )}
                     <span className="px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container text-xs font-bold shadow-xs flex items-center gap-1">
                       <span className="material-symbols-outlined text-[15px]">eco</span>
                       Sauvé aujourd'hui
@@ -328,7 +398,9 @@ export default function ProductDetailPage() {
                   <div className="absolute top-4 right-4 z-10">
                     <span className="px-3.5 py-1.5 rounded-full bg-white/95 backdrop-blur-md text-primary text-xs font-bold shadow-xs flex items-center gap-1.5">
                       <span className="material-symbols-outlined text-[18px] text-error">alarm</span>
-                      {product.quantite ? `${product.quantite} disponibles` : 'Disponible'}
+                      {Number(product.quantite) > 0
+                        ? `${product.quantite} disponibles`
+                        : 'Épuisé'}
                     </span>
                   </div>
                 </div>
@@ -359,7 +431,7 @@ export default function ProductDetailPage() {
                     </div>
                     <div className="flex flex-col">
                       <span className="text-sm sm:text-base font-bold text-on-surface">
-                        {product.co2 || '1,8 kg de CO₂e évités'}
+                        {product.co2 || 'Chaque panier sauvé réduit le gaspillage alimentaire'}
                       </span>
                       <span className="text-xs text-on-surface-variant leading-snug">
                         En sauvant ce panier, vous préservez les ressources alimentaires et l'énergie du commerce.
@@ -394,14 +466,14 @@ export default function ProductDetailPage() {
                         </span>
                       </div>
                       <span className="text-xs text-on-surface-variant">
-                        {product.commercantLocalisation || product.distance || 'Tunis, Tunisie'}
+                        {product.commercantLocalisation || product.distance || 'Adresse non renseignée'}
                       </span>
                     </div>
                   </div>
                   <div className="flex flex-col items-end">
                     <div className="flex items-center gap-1 text-primary">
                       <span className="text-amber-500">★</span>
-                      <span className="font-bold text-sm">{avgRating || product.rating || '5.0'}</span>
+                      <span className="font-bold text-sm">{avgRating || 'Nouveau'}</span>
                     </div>
                     <a href="#avis-section" className="text-[11px] text-on-surface-variant underline hover:text-primary">
                       {totalReviews} avis
@@ -528,7 +600,7 @@ export default function ProductDetailPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-on-surface text-xs">
                   <div className="flex items-center gap-2">
                     <span className="material-symbols-outlined text-primary text-[18px]">location_on</span>
-                    <span>{product.commercantLocalisation || product.distance || 'Tunis, Tunisie'}</span>
+                    <span>{product.commercantLocalisation || product.distance || 'Adresse non renseignée'}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="material-symbols-outlined text-secondary text-[18px]">payments</span>
@@ -556,12 +628,12 @@ export default function ProductDetailPage() {
                     {product.merchantName || product.commercantNom || 'Commerçant Partenaire'}
                   </h3>
                   <p className="text-xs text-on-surface-variant">
-                    {product.commercantLocalisation || 'Tunis, Tunisie'}
+                    {product.commercantLocalisation || 'Adresse non renseignée'}
                   </p>
                   <a
                     className="mt-2 px-5 py-2 rounded-full bg-primary text-white text-xs font-bold hover:bg-primary-dark transition-colors shadow-2xs flex items-center gap-1.5"
                     href={`https://maps.google.com/?q=${encodeURIComponent(
-                      (product.merchantName || '') + ' ' + (product.commercantLocalisation || 'Tunis')
+                      [product.merchantName, product.commercantLocalisation].filter(Boolean).join(' ')
                     )}`}
                     rel="noopener noreferrer"
                     target="_blank"

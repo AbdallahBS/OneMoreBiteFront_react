@@ -70,3 +70,32 @@ export function fetchSessionProfile(token) {
 export function logoutRequest(token) {
   return apiRequest('/auth/logout', { method: 'POST', token });
 }
+
+export function verifierOtp(email, code) {
+  return apiRequest('/auth/verifier-otp', {
+    method: 'POST',
+    body: { email, code },
+  });
+}
+
+export function renvoyerOtp(email) {
+  return apiRequest('/auth/renvoyer-otp', {
+    method: 'POST',
+    body: { email },
+  });
+}
+
+export function googleAuthRequest(payload) {
+  return apiRequest('/auth/google', {
+    method: 'POST',
+    body: payload,
+  });
+}
+
+export function updateProfileRequest(token, payload) {
+  return apiRequest('/auth/me', {
+    method: 'PUT',
+    token,
+    body: payload,
+  });
+}

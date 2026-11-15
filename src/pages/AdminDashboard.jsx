@@ -26,6 +26,13 @@ function formatDT(value) {
   return `${num.toFixed(3).replace(/\.?0+$/, '')} DT`;
 }
 
+// The backend exposes `disponibilite`, while parts of the UI still rely on
+// `disponible`. Keep both in sync so availability is never lost.
+function normalizeProduct(product) {
+  const disponible = product?.disponibilite ?? product?.disponible ?? true;
+  return { ...product, disponible, disponibilite: disponible };
+}
+
 export default function AdminDashboard() {
   const { user, token, logout, reloadSession } = useAuth();
   const navigate = useNavigate();
@@ -111,99 +118,15 @@ export default function AdminDashboard() {
       if (statsRes.status === 'fulfilled') setStats(statsRes.value);
       if (comRes.status === 'fulfilled' && Array.isArray(comRes.value)) {
         setCommercants(comRes.value);
-      } else {
-        // Demo fallbacks for commercants in waiting list
-        setCommercants([
-          {
-            id: 12,
-            nom: 'Boulangerie Le Moulin de Carthage',
-            email: 'moulin.carthage@gmail.com',
-            telephone: '+216 71 890 123',
-            localisation: 'Carthage Byrsa',
-            statut: 'EN_ATTENTE',
-            dateInscription: '2026-11-13',
-          },
-          {
-            id: 15,
-            nom: 'Pâtisserie Fleur d’Oranger',
-            email: 'contact@fleurdoranger.tn',
-            telephone: '+216 71 456 789',
-            localisation: 'Ennasr 2',
-            statut: 'EN_ATTENTE',
-            dateInscription: '2026-11-14',
-          },
-        ]);
       }
-
       if (usersRes.status === 'fulfilled' && Array.isArray(usersRes.value)) {
         setUtilisateurs(usersRes.value);
-      } else {
-        // Demo fallbacks
-        setUtilisateurs([
-          {
-            id: 1,
-            nom: 'Amira Trabelsi',
-            email: 'amira.trabelsi@gmail.com',
-            role: 'CLIENT',
-            statut: 'ACTIF',
-            telephone: '+216 98 123 456',
-          },
-          {
-            id: 2,
-            nom: 'Fournil Lafayette',
-            email: 'fournil.lafayette@gmail.com',
-            role: 'COMMERCANT',
-            statut: 'ACTIF',
-            telephone: '+216 71 345 890',
-          },
-          {
-            id: 3,
-            nom: 'Yassine Ben Salah',
-            email: 'yassine.bensalah@outlook.com',
-            role: 'CLIENT',
-            statut: 'ACTIF',
-            telephone: '+216 22 456 789',
-          },
-          {
-            id: 4,
-            nom: 'Admin Principal',
-            email: 'admin@onemorebite.tn',
-            role: 'ADMIN',
-            statut: 'ACTIF',
-            telephone: '+216 71 000 000',
-          },
-        ]);
       }
-
       if (resRes.status === 'fulfilled' && Array.isArray(resRes.value)) {
         setReservations(resRes.value);
-      } else {
-        setReservations([
-          {
-            id: 501,
-            clientId: 1,
-            clientNom: 'Amira Trabelsi',
-            commercantNom: 'Fournil Lafayette',
-            produitNom: 'Panier Viennoiseries du Matin',
-            prixTotal: 4.8,
-            quantite: 1,
-            statut: 'CONFIRMEE',
-          },
-          {
-            id: 502,
-            clientId: 3,
-            clientNom: 'Yassine Ben Salah',
-            commercantNom: 'Pâtisserie La Médina',
-            produitNom: 'Panier Douceurs Tunisiennes',
-            prixTotal: 13.2,
-            quantite: 2,
-            statut: 'EN_ATTENTE',
-          },
-        ]);
       }
-
       if (prodRes.status === 'fulfilled' && Array.isArray(prodRes.value)) {
-        setProduits(prodRes.value);
+        setProduits(prodRes.value.map(normalizeProduct));
       }
     } finally {
       setLoading(false);
@@ -267,11 +190,14 @@ export default function AdminDashboard() {
 
   // Product actions for Admin
   const handleToggleProductDisponibilite = async (p) => {
-    const nouvelleDispo = !p.disponible;
+    const current = p.disponibilite ?? p.disponible ?? true;
+    const nouvelleDispo = !current;
     try {
       if (token) await changeAdminProduitDisponibilite(p.id, nouvelleDispo, token);
       setProduits((prev) =>
-        prev.map((item) => (item.id === p.id ? { ...item, disponible: nouvelleDispo } : item))
+        prev.map((item) =>
+          item.id === p.id ? { ...item, disponible: nouvelleDispo, disponibilite: nouvelleDispo } : item
+        )
       );
       showFeedback('success', `Disponibilité du produit « ${p.nom} » modifiée (${nouvelleDispo ? 'En ligne' : 'Épuisé'}).`);
     } catch (err) {
@@ -309,7 +235,7 @@ export default function AdminDashboard() {
       description: p.description || '',
       prix: p.prix || '',
       quantite: p.quantite ?? 5,
-      disponible: Boolean(p.disponible),
+      disponible: p.disponibilite ?? p.disponible ?? true,
       imageUrl: (Array.isArray(p.images) && p.images[0]) || p.imageUrl || p.photoUrl || '',
     });
     setProductModalOpen(true);
@@ -325,7 +251,7 @@ export default function AdminDashboard() {
         description: productForm.description.trim(),
         prix: parseFloat(productForm.prix),
         quantite: parseInt(productForm.quantite, 10),
-        disponible: productForm.disponible,
+        disponibilite: Boolean(productForm.disponible),
         imageUrl: productForm.imageUrl?.trim() || null,
         images: productForm.imageUrl?.trim() ? [productForm.imageUrl.trim()] : [],
       };
@@ -333,7 +259,12 @@ export default function AdminDashboard() {
       setProduits((prev) =>
         prev.map((item) =>
           item.id === editingProduct.id
-            ? { ...item, ...payload, images: payload.images }
+            ? normalizeProduct({
+                ...item,
+                ...payload,
+                disponible: payload.disponibilite,
+                images: payload.images,
+              })
             : item
         )
       );
@@ -616,10 +547,10 @@ export default function AdminDashboard() {
                     </span>
                   </div>
                   <div className="text-3xl font-extrabold text-secondary font-sans">
-                    {stats?.totalProduits ?? Math.max(14, produits.length)}
+                    {stats?.totalProduits ?? produits.length}
                   </div>
                   <span className="text-[11px] text-secondary font-semibold block mt-1">
-                    {stats?.produitsDisponibles ?? 12} disponibles en ligne
+                    {stats?.produitsDisponibles ?? produits.filter((p) => p.disponible).length} disponibles en ligne
                   </span>
                 </div>
 
@@ -633,10 +564,10 @@ export default function AdminDashboard() {
                     </span>
                   </div>
                   <div className="text-3xl font-extrabold text-amber-700 font-sans">
-                    {Math.max(185, reservations.length * 15)}
+                    {reservations.length}
                   </div>
                   <span className="text-[11px] text-on-surface-variant block mt-1">
-                    ~380 kg de CO₂ évités
+                    réservations enregistrées
                   </span>
                 </div>
               </div>
@@ -825,6 +756,11 @@ export default function AdminDashboard() {
               </div>
 
               <div className="overflow-x-auto">
+                {utilisateurs.length === 0 ? (
+                  <p className="text-xs text-on-surface-variant py-8 text-center">
+                    Aucun utilisateur ne correspond à cette sélection.
+                  </p>
+                ) : (
                 <table className="w-full text-left text-xs">
                   <thead>
                     <tr className="border-b border-[#F0E6DE] text-outline font-bold uppercase tracking-wider text-[11px]">
@@ -911,6 +847,7 @@ export default function AdminDashboard() {
                     ))}
                   </tbody>
                 </table>
+                )}
               </div>
             </div>
           )}
@@ -924,7 +861,13 @@ export default function AdminDashboard() {
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                {produits.map((p) => {
+                {produits.length === 0 ? (
+                  <p className="col-span-full text-xs text-on-surface-variant py-8 text-center">
+                    Aucun panier n'a encore été publié par les commerçants.
+                  </p>
+                ) : (
+                  produits.map((p) => {
+                  const isAvailable = p.disponible ?? p.disponibilite ?? true;
                   const img = (Array.isArray(p.images) && p.images[0]) || p.imageUrl || p.photoUrl;
                   return (
                     <div
@@ -946,10 +889,10 @@ export default function AdminDashboard() {
                         )}
                         <span
                           className={`absolute top-2.5 left-2.5 text-[10px] font-bold px-2.5 py-0.5 rounded-full backdrop-blur-md shadow-xs ${
-                            p.disponible ? 'bg-green-600/90 text-white' : 'bg-black/60 text-white'
+                            isAvailable ? 'bg-green-600/90 text-white' : 'bg-black/60 text-white'
                           }`}
                         >
-                          {p.disponible ? 'En ligne' : 'Épuisé'}
+                          {isAvailable ? 'En ligne' : 'Épuisé'}
                         </span>
 
                         {/* Admin Action Buttons on Card Header */}
@@ -980,8 +923,8 @@ export default function AdminDashboard() {
                         <div>
                           <div className="flex items-center justify-between gap-2 mb-1">
                             <h4 className="font-bold text-sm text-on-surface line-clamp-1">{p.nom}</h4>
-                            <span className="text-[11px] text-primary font-bold shrink-0">
-                              #{p.commercantId || 'Partenaire'}
+                            <span className="text-[11px] text-primary font-bold shrink-0 truncate max-w-[45%]" title={p.commercantNom || undefined}>
+                              {p.commercantNom || (p.commercantId ? `#${p.commercantId}` : 'Partenaire')}
                             </span>
                           </div>
                           <p className="text-xs text-on-surface-variant line-clamp-2 mb-3">{p.description}</p>
@@ -1016,18 +959,19 @@ export default function AdminDashboard() {
                             onClick={() => handleToggleProductDisponibilite(p)}
                             type="button"
                             className={`text-xs font-bold px-3 py-1 rounded-full transition-colors ${
-                              p.disponible
+                              isAvailable
                                 ? 'bg-amber-100 text-amber-800 hover:bg-amber-200'
                                 : 'bg-green-100 text-green-800 hover:bg-green-200'
                             }`}
                           >
-                            {p.disponible ? 'Désactiver' : 'Activer'}
+                            {isAvailable ? 'Désactiver' : 'Activer'}
                           </button>
                         </div>
                       </div>
                     </div>
                   );
-                })}
+                })
+                )}
               </div>
             </div>
           )}
@@ -1041,6 +985,11 @@ export default function AdminDashboard() {
               </p>
 
               <div className="overflow-x-auto">
+                {reservations.length === 0 ? (
+                  <p className="text-xs text-on-surface-variant py-8 text-center">
+                    Aucune réservation enregistrée pour le moment.
+                  </p>
+                ) : (
                 <table className="w-full text-left text-xs">
                   <thead>
                     <tr className="border-b border-[#F0E6DE] text-outline font-bold uppercase tracking-wider text-[11px]">
@@ -1069,17 +1018,17 @@ export default function AdminDashboard() {
                             <span className="font-bold text-on-surface">{r.clientNom || 'Client'}</span>
                           </div>
                         </td>
-                        <td className="py-3 font-semibold text-secondary">{r.commercantNom || 'Fournil'}</td>
+                        <td className="py-3 font-semibold text-secondary">{r.commercantNom || '—'}</td>
                         <td className="py-3">
                           <div className="flex items-center gap-2">
                             {r.produitImageUrl && (
                               <img src={r.produitImageUrl} alt="" className="w-7 h-7 rounded-md object-cover border border-[#F0E6DE] shrink-0" />
                             )}
-                            <span className="font-medium text-on-surface">{r.produitNom || 'Panier'}</span>
+                            <span className="font-medium text-on-surface">{r.produitNom || '—'}</span>
                           </div>
                         </td>
-                        <td className="py-3 font-extrabold text-primary">{formatDT(r.prixTotal || 4.8)}</td>
-                        <td className="py-3 font-mono font-bold text-sm text-on-surface">x{r.quantite || 1}</td>
+                        <td className="py-3 font-extrabold text-primary">{formatDT(r.prixTotal)}</td>
+                        <td className="py-3 font-mono font-bold text-sm text-on-surface">x{r.quantite ?? 0}</td>
                         <td className="py-3">
                           <span
                             className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
@@ -1095,6 +1044,7 @@ export default function AdminDashboard() {
                     ))}
                   </tbody>
                 </table>
+                )}
               </div>
             </div>
           )}

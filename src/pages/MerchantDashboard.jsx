@@ -26,6 +26,11 @@ function formatDT(value) {
   return `${num.toFixed(3).replace(/\.?0+$/, '')} DT`;
 }
 
+function normalizeProduct(product) {
+  const disponible = product?.disponibilite ?? product?.disponible ?? true;
+  return { ...product, disponible, disponibilite: disponible };
+}
+
 export default function MerchantDashboard() {
   const { user, token, logout, reloadSession } = useAuth();
   const navigate = useNavigate();
@@ -61,7 +66,7 @@ export default function MerchantDashboard() {
   const [profileForm, setProfileForm] = useState({
     nom: user?.nom || '',
     telephone: user?.telephone || '',
-    localisation: user?.localisation || 'Lafayette, Tunis',
+    localisation: user?.localisation || '',
     nouveauMotDePasse: '',
   });
   const [savingProfile, setSavingProfile] = useState(false);
@@ -78,59 +83,15 @@ export default function MerchantDashboard() {
       ]);
 
       if (prodRes.status === 'fulfilled' && Array.isArray(prodRes.value)) {
-        setProduits(prodRes.value);
+        setProduits(prodRes.value.map(normalizeProduct));
       } else {
-        // Fallback demo products
-        setProduits([
-          {
-            id: 1,
-            nom: 'Panier Viennoiseries du Matin & Pains Dorés',
-            description: 'Assortiment de 4 croissants au beurre, pains au chocolat et baguettes.',
-            prix: 3.8,
-            quantite: 4,
-            disponible: true,
-            photoUrl:
-              'https://lh3.googleusercontent.com/aida-public/AB6AXuCQZhJ7cmvdUOIQG8DWh1sq8vN6heKWnrQUQQQjrMAkFqQz_CcZ3dpTSPNMbzxCOafYjY9eEIumZvMAhgHrBy4gO1vBuOc5lGchG5vs1XpSKei2ZRPO29TSPPNE1FkP_PX8XCKApcJAEl0SK9J3aFkodxFoNWtVa32DPBr4-bl_p4k8IDcjMSZgjl1I5Hm4u5BECuOW0G8e8wGyat10QpDPqjAUC-afuvVCelZVejLNM9w8k9QaEF1a',
-          },
-          {
-            id: 2,
-            nom: 'Grand Panier Douceurs Tunisiennes',
-            description: 'Baklava aux amandes et makroudh de Kairouan au miel pur.',
-            prix: 13.2,
-            quantite: 2,
-            disponible: true,
-            photoUrl:
-              'https://lh3.googleusercontent.com/aida/ALJJyrB3Na__et1ceYjONqDC5SB4ev7A4jRxHFOL9SAVHW_xEc5XRzkqJg3HUpyUrihqsYkMM2hOFESzpdKtGyOz5zwCxsOqm8WabXUM89u7S-I1dIshFFKNo-o2GvKmxJDjUmnXpHaH0rxxrkn65ieEfuo4g3tSdn9MNn2Psl-tZL6wCK85JaE3QgnhaBByez9Rk3qJOYaSkXP9j0c8fNp4Wvdi2f3IZch5asBcoLRNdX13',
-          },
-        ]);
+        setProduits([]);
       }
 
       if (resRes.status === 'fulfilled' && Array.isArray(resRes.value)) {
         setReservations(resRes.value);
       } else {
-        // Fallback demo reservations
-        setReservations([
-          {
-            id: 201,
-            produitNom: 'Panier Viennoiseries du Matin',
-            clientNom: 'Yassine Ben Salah',
-            clientTelephone: '+216 22 456 789',
-            prixTotal: 3.8,
-            quantite: 1,
-            statut: 'EN_ATTENTE',
-            horaireRetrait: "Aujourd'hui 18:30",
-          },
-          {
-            id: 202,
-            produitNom: 'Grand Panier Douceurs Tunisiennes',
-            clientNom: 'Meriem El Obeidi',
-            clientTelephone: '+216 98 123 456',
-            prixTotal: 13.2,
-            quantite: 1,
-            statut: 'CONFIRMEE',
-            horaireRetrait: "Aujourd'hui 19:15",
-          },
-        ]);
+        setReservations([]);
       }
 
       // Load avis if user id exists
@@ -187,7 +148,7 @@ export default function MerchantDashboard() {
       description: prod.description || '',
       prix: prod.prix || '',
       quantite: prod.quantite ?? 1,
-      disponible: prod.disponible ?? true,
+      disponible: prod.disponibilite ?? prod.disponible ?? true,
     });
     // Pre-populate images from existing product data
     const existing = prod.images?.length
@@ -210,14 +171,18 @@ export default function MerchantDashboard() {
         description: productForm.description.trim(),
         prix: Number(productForm.prix),
         quantite: Number(productForm.quantite),
-        disponible: Boolean(productForm.disponible),
+        disponibilite: Boolean(productForm.disponible),
         images: imageUrls.length > 0 ? imageUrls : undefined,
       };
 
       if (editingProduct) {
         if (token) await updateProduit(editingProduct.id, payload, token);
         setProduits((prev) =>
-          prev.map((p) => (p.id === editingProduct.id ? { ...p, ...payload, images: imageUrls } : p))
+          prev.map((p) =>
+            p.id === editingProduct.id
+              ? normalizeProduct({ ...p, ...payload, images: imageUrls })
+              : p,
+          )
         );
         showFeedback('success', 'Panier mis à jour avec succès !');
       } else {
@@ -225,7 +190,7 @@ export default function MerchantDashboard() {
         if (token) {
           created = await createProduit(payload, token);
         }
-        const newObj = created || { id: Date.now(), ...payload };
+        const newObj = created ? normalizeProduct(created) : { id: Date.now(), ...payload };
         setProduits((prev) => [newObj, ...prev]);
         showFeedback('success', 'Nouveau panier publié dans le catalogue !');
       }
@@ -277,11 +242,16 @@ export default function MerchantDashboard() {
   };
 
   const handleToggleDisponibilite = async (prod) => {
-    const nextVal = !prod.disponible;
+    const current = prod.disponibilite ?? prod.disponible ?? true;
+    const nextVal = !current;
     try {
       if (token) await changeDisponibilite(prod.id, nextVal, token);
       setProduits((prev) =>
-        prev.map((p) => (p.id === prod.id ? { ...p, disponible: nextVal } : p))
+        prev.map((p) =>
+          p.id === prod.id
+            ? { ...p, disponible: nextVal, disponibilite: nextVal }
+            : p,
+        )
       );
       showFeedback('success', `Panier marqué comme ${nextVal ? 'Disponible' : 'Indisponible'}.`);
     } catch (err) {
@@ -406,6 +376,12 @@ export default function MerchantDashboard() {
 
   const pendingReservations = reservations.filter((r) => r.statut === 'EN_ATTENTE');
   const activeCount = produits.filter((p) => p.disponible).length;
+  const averageRating =
+    avisList.length > 0
+      ? (
+          avisList.reduce((sum, a) => sum + (Number(a.note) || 0), 0) / avisList.length
+        ).toFixed(1)
+      : null;
 
   const NAV_ITEMS = [
     { key: 'overview', label: "Vue d'ensemble", icon: 'dashboard' },
@@ -601,7 +577,7 @@ export default function MerchantDashboard() {
                   </div>
                   <div>
                     <span className="text-2xl font-extrabold text-primary font-sans">
-                      {formatDT(Math.max(48.5, totalRevenue))}
+                      {formatDT(totalRevenue)}
                     </span>
                     <span className="block text-[11px] text-secondary font-semibold mt-0.5">
                       100% encaissé en espèces
@@ -658,10 +634,12 @@ export default function MerchantDashboard() {
                   </div>
                   <div>
                     <span className="text-2xl font-extrabold text-on-surface font-sans">
-                      4.9 ★
+                      {averageRating ? `${averageRating} ★` : '—'}
                     </span>
                     <span className="block text-[11px] text-on-surface-variant mt-0.5">
-                      Sur 142 retours vérifiés
+                      {avisList.length > 0
+                        ? `Sur ${avisList.length} avis vérifié${avisList.length > 1 ? 's' : ''}`
+                        : 'Aucun avis pour le moment'}
                     </span>
                   </div>
                 </div>
@@ -708,7 +686,7 @@ export default function MerchantDashboard() {
                             <td className="py-3 font-semibold text-on-surface">
                               <div>{res.clientNom || 'Client Anonyme'}</div>
                               <div className="text-[11px] text-on-surface-variant font-normal">
-                                {res.clientTelephone || '+216 98 ...'}
+                                {res.clientTelephone || '—'}
                               </div>
                             </td>
                             <td className="py-3 font-medium text-on-surface">
@@ -716,14 +694,14 @@ export default function MerchantDashboard() {
                                 {res.produitImageUrl && (
                                   <img src={res.produitImageUrl} alt="" className="w-8 h-8 rounded-lg object-cover border border-[#F0E6DE] shrink-0" />
                                 )}
-                                <span>{res.produitNom || 'Panier surprise'}</span>
+                                <span>{res.produitNom || '—'}</span>
                               </div>
                             </td>
                             <td className="py-3 font-mono font-bold text-primary text-sm">
-                              x{res.quantite || 1}
+                              x{res.quantite ?? 0}
                             </td>
                             <td className="py-3 font-bold text-on-surface">
-                              {formatDT(res.prixTotal || 4.8)}
+                              {formatDT(res.prixTotal)}
                             </td>
                             <td className="py-3">
                               <span
@@ -793,6 +771,19 @@ export default function MerchantDashboard() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                {produits.length === 0 && (
+                  <div className="col-span-full bg-white border border-dashed border-[#E4D5C7] rounded-2xl p-10 text-center">
+                    <span className="material-symbols-outlined text-4xl text-outline mb-2">
+                      inventory_2
+                    </span>
+                    <p className="text-sm font-bold text-on-surface">
+                      Aucun panier dans votre catalogue
+                    </p>
+                    <p className="text-xs text-on-surface-variant mt-1">
+                      Ajoutez votre premier panier pour qu'il apparaisse sur la page d'accueil.
+                    </p>
+                  </div>
+                )}
                 {produits.map((prod) => {
                   const prodImg = (Array.isArray(prod.images) && prod.images[0]) || prod.imageUrl || prod.photoUrl;
                   return (
@@ -936,7 +927,7 @@ export default function MerchantDashboard() {
                         <td className="py-3 font-bold text-on-surface">
                           <div>{res.clientNom || 'Client'}</div>
                           <div className="text-[11px] font-normal text-on-surface-variant">
-                            {res.clientTelephone || '+216 --'}
+                            {res.clientTelephone || '—'}
                           </div>
                         </td>
                         <td className="py-3 text-on-surface font-medium">
@@ -944,14 +935,14 @@ export default function MerchantDashboard() {
                             {res.produitImageUrl && (
                               <img src={res.produitImageUrl} alt="" className="w-8 h-8 rounded-lg object-cover border border-[#F0E6DE] shrink-0" />
                             )}
-                            <span>{res.produitNom || 'Panier'}</span>
+                            <span>{res.produitNom || '—'}</span>
                           </div>
                         </td>
                         <td className="py-3 font-mono font-extrabold text-primary text-sm">
-                          x{res.quantite || 1}
+                          x{res.quantite ?? 0}
                         </td>
                         <td className="py-3 font-extrabold text-primary">
-                          {formatDT(res.prixTotal || 4.8)}
+                          {formatDT(res.prixTotal)}
                         </td>
                         <td className="py-3">
                           <span
@@ -1009,9 +1000,7 @@ export default function MerchantDashboard() {
                   <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-amber-50 border border-amber-200/60 self-start sm:self-auto">
                     <span className="text-amber-500 text-lg">★</span>
                     <span className="text-base font-extrabold text-on-surface">
-                      {avisList.length > 0
-                        ? (avisList.reduce((acc, a) => acc + (a.note || 5), 0) / avisList.length).toFixed(1)
-                        : '5.0'} / 5
+                      {averageRating ? `${averageRating} / 5` : '—'}
                     </span>
                     <span className="text-xs text-on-surface-variant font-medium">
                       ({avisList.length} avis)
@@ -1066,7 +1055,7 @@ export default function MerchantDashboard() {
                           </div>
                           <div className="flex items-center text-amber-500 text-sm">
                             {Array.from({ length: 5 }, (_, i) => (
-                              <span key={i} className={i < (a.note || 5) ? 'text-amber-500' : 'text-gray-300'}>
+                              <span key={i} className={i < (Number(a.note) || 0) ? 'text-amber-500' : 'text-gray-300'}>
                                 ★
                               </span>
                             ))}

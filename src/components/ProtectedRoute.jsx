@@ -1,5 +1,6 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { isProfileComplete } from '../lib/profile';
 import { dashboardPath } from '../lib/roles';
 
 function FullScreenLoader() {
@@ -30,6 +31,13 @@ export default function ProtectedRoute({ role, children }) {
 
   if (role && user?.role !== role) {
     return <Navigate replace to={dashboardPath(user?.role)} />;
+  }
+
+  // Force accounts created through Google (or any account missing mandatory
+  // details) to finish their profile before accessing the dashboard.
+  if (user?.role !== 'ADMIN' && !isProfileComplete(user)) {
+    const next = encodeURIComponent(`${location.pathname}${location.search}`);
+    return <Navigate replace to={`/auth?complete=1&next=${next}`} />;
   }
 
   return children;

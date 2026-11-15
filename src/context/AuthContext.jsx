@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { fetchSessionProfile, loginRequest, logoutRequest } from '../api/auth';
+import { isProfileComplete } from '../lib/profile';
 import { ROLE_BY_KEY } from '../lib/roles';
 
 const STORAGE_KEY = 'omb.session';
@@ -126,6 +127,33 @@ export function AuthProvider({ children }) {
     return nextSession;
   }, []);
 
+  const establishSession = useCallback(async (response) => {
+    if (!response?.token) {
+      throw new Error("Le serveur n'a pas renvoyé de jeton de session.");
+    }
+
+    const fallbackUser = {
+      id: response.id,
+      nom: response.nom,
+      email: response.email,
+      role: response.role,
+      photoUrl: response.photoUrl,
+    };
+
+    let user = fallbackUser;
+    try {
+      const profile = await fetchSessionProfile(response.token);
+      user = mergeProfile(profile, fallbackUser);
+    } catch {
+      // fallbackUser is sufficient
+    }
+
+    const nextSession = { token: response.token, user };
+    setSession(nextSession);
+    setBooting(false);
+    return nextSession;
+  }, []);
+
   const logout = useCallback(async () => {
     const token = session?.token;
     setSession(null);
@@ -162,12 +190,14 @@ export function AuthProvider({ children }) {
       user: session?.user ?? null,
       role: session?.user?.role ?? null,
       isAuthenticated: Boolean(session?.token),
+      profileComplete: isProfileComplete(session?.user ?? null),
       booting,
       login,
+      establishSession,
       logout,
       reloadSession,
     }),
-    [session, booting, login, logout, reloadSession],
+    [session, booting, login, establishSession, logout, reloadSession],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

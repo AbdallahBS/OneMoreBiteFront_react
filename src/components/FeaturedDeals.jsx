@@ -1,17 +1,17 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { fetchProduits, createReservation } from '../api/produits';
+import { fetchProduits } from '../api/produits';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
-import { FALLBACK_DEALS, normalizeBackendDeal } from '../data/fallbackDeals';
+import { normalizeBackendDeal } from '../data/fallbackDeals';
 import DealCard from './DealCard';
 import Toast from './Toast';
 
 export const DEAL_FILTERS = [
-  { key: 'all', label: 'Tous les paniers', term: '' },
-  { key: 'bakery', label: '🥐 Pâtisseries & Boulangeries', term: 'patisserie' },
-  { key: 'meals', label: '🥪 Plats & Street-Food', term: 'kafteji' },
-  { key: 'cafes', label: '☕ Cafés & Salons de thé', term: 'cafe' },
+  { key: 'all', label: 'Tous les paniers' },
+  { key: 'bakery', label: '🥐 Pâtisseries & Boulangeries' },
+  { key: 'meals', label: '🥪 Plats & Street-Food' },
+  { key: 'cafes', label: '☕ Cafés & Salons de thé' },
 ];
 
 function SkeletonCard() {
@@ -29,7 +29,7 @@ function SkeletonCard() {
 }
 
 export default function FeaturedDeals({ selectedCategory = 'all', onSelectCategory }) {
-  const { isAuthenticated, user, token } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const { addItem } = useCart();
   const navigate = useNavigate();
 
@@ -37,13 +37,13 @@ export default function FeaturedDeals({ selectedCategory = 'all', onSelectCatego
   const [deals, setDeals] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [usingFallback, setUsingFallback] = useState(false);
   const [pendingId, setPendingId] = useState(null);
   const [toast, setToast] = useState(null);
+  const [reloadKey, setReloadKey] = useState(0);
 
-  const filterTerm = useMemo(() => {
-    return DEAL_FILTERS.find((f) => f.key === activeCat)?.term || '';
-  }, [activeCat]);
+  useEffect(() => {
+    setActiveCat(selectedCategory || 'all');
+  }, [selectedCategory]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -52,23 +52,21 @@ export default function FeaturedDeals({ selectedCategory = 'all', onSelectCatego
     setLoading(true);
     setError('');
 
-    fetchProduits({ disponible: true, recherche: filterTerm }, { signal: controller.signal })
+    // The catalogue only comes from the database. No demo/static products are
+    // injected when the list is empty or when the API fails.
+    fetchProduits({ disponible: true }, { signal: controller.signal })
       .then((data) => {
         if (!active) return;
         const list = Array.isArray(data) ? data : [];
-        if (list.length > 0) {
-          setDeals(list.map(normalizeBackendDeal));
-          setUsingFallback(false);
-        } else {
-          setDeals([]);
-          setUsingFallback(true);
-        }
+        setDeals(list.map(normalizeBackendDeal));
       })
       .catch((requestError) => {
         if (!active || requestError?.name === 'AbortError') return;
         setDeals([]);
-        setUsingFallback(true);
-        setError(requestError?.message || '');
+        setError(
+          requestError?.message ||
+            'Impossible de charger les paniers depuis la base de données.',
+        );
       })
       .finally(() => {
         if (active) setLoading(false);
@@ -78,12 +76,11 @@ export default function FeaturedDeals({ selectedCategory = 'all', onSelectCatego
       active = false;
       controller.abort();
     };
-  }, [filterTerm]);
+  }, [reloadKey]);
 
   const visibleDeals = useMemo(() => {
-    if (deals.length > 0) return deals;
-    if (activeCat === 'all') return FALLBACK_DEALS;
-    return FALLBACK_DEALS.filter((d) => d.category === activeCat);
+    if (activeCat === 'all') return deals;
+    return deals.filter((deal) => deal.category === activeCat);
   }, [deals, activeCat]);
 
   const dismissToast = useCallback(() => setToast(null), []);
@@ -93,12 +90,13 @@ export default function FeaturedDeals({ selectedCategory = 'all', onSelectCatego
       navigate('/auth?mode=login');
       return;
     }
+    setPendingId(deal.id);
     addItem(deal, 1);
     setToast({
       message: `« ${deal.nom} » a été ajouté à votre panier !`,
       type: 'success',
     });
-    // Navigate to panier after slight delay or let user view toast
+    setPendingId(null);
     setTimeout(() => {
       navigate('/panier');
     }, 400);
@@ -128,8 +126,20 @@ export default function FeaturedDeals({ selectedCategory = 'all', onSelectCatego
         ))}
       </div>
 
-      {/* Grid of Product Cards */}
-      {loading ? (
+      {error && !loading ? (
+        <div className="text-center py-10 bg-white rounded-2xl border border-[#F0E6DE] p-6 mb-12">
+          <span className="material-symbols-outlined text-4xl text-error mb-2">cloud_off</span>
+          <p className="text-[15px] font-bold text-on-surface">Catalogue indisponible</p>
+          <p className="text-[13px] text-on-surface-variant mt-1">{error}</p>
+          <button
+            type="button"
+            onClick={() => setReloadKey((value) => value + 1)}
+            className="mt-4 px-4 py-2 rounded-full bg-primary text-white text-xs font-bold hover:bg-primary-dark transition-colors"
+          >
+            Réessayer
+          </button>
+        </div>
+      ) : loading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
           <SkeletonCard />
           <SkeletonCard />
@@ -151,8 +161,16 @@ export default function FeaturedDeals({ selectedCategory = 'all', onSelectCatego
           <span className="material-symbols-outlined text-4xl text-outline mb-2">
             production_quantity_limits
           </span>
-          <p className="text-[15px] font-bold text-on-surface">Aucun panier disponible dans cette catégorie</p>
-          <p className="text-[13px] text-on-surface-variant mt-1">Revenez un peu plus tard ou choisissez une autre catégorie.</p>
+          <p className="text-[15px] font-bold text-on-surface">
+            {deals.length === 0
+              ? 'Aucun panier disponible pour le moment'
+              : 'Aucun panier dans cette catégorie'}
+          </p>
+          <p className="text-[13px] text-on-surface-variant mt-1">
+            {deals.length === 0
+              ? 'Les paniers publiés par vos commerçants apparaîtront ici automatiquement.'
+              : 'Choisissez une autre catégorie ou revenez un peu plus tard.'}
+          </p>
         </div>
       )}
 
