@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <meta content="web_standard" name="shell-type" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com" rel="preconnect" />
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+  <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300;400;500;600;700&amp;display=swap"
+    rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    rel="stylesheet" />
+  <style>
+    @layer base {
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        overscroll-behavior: none;
+      }
+
+      main>:first-child {
+        margin-top: 0 !important;
+      }
+
+      main>:last-child {
+        margin-bottom: 0 !important;
+      }
+    }
+
+    ::-webkit-scrollbar {
+      display: none;
+    }
+  </style>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script
+    id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "primary": "#5d0e25", "on-primary": "#ffffff", "tertiary-container": "#703041", "surface-tint": "#9c3f53", "on-tertiary-fixed": "#3b0618", "on-secondary": "#ffffff", "surface-bright": "#fcf9f8", "on-secondary-container": "#4d6a43", "inverse-on-surface": "#f3f0ef", "on-background": "#1b1c1c", "tertiary": "#541a2b", "on-surface": "#1b1c1c", "secondary-fixed": "#cbecbc", "secondary": "#496640", "tertiary-fixed": "#ffd9df", "outline": "#877274", "on-secondary-fixed-variant": "#324e2a", "error": "#ba1a1a", "on-error-container": "#93000a", "on-primary-container": "#ff92a5", "on-tertiary-container": "#f09aad", "tertiary-fixed-dim": "#ffb1c1", "on-tertiary-fixed-variant": "#723243", "on-error": "#ffffff", "surface-container-highest": "#e4e2e1", "inverse-surface": "#303030", "primary-fixed": "#ffd9dd", "error-container": "#ffdad6", "on-primary-fixed-variant": "#7e283c", "primary-fixed-dim": "#ffb2bd", "surface-container-low": "#f6f3f2", "surface": "#fcf9f8", "inverse-primary": "#ffb2bd", "background": "#fcf9f8", "surface-container-high": "#eae7e7", "secondary-container": "#c8e9b9", "outline-variant": "#dac0c3", "on-tertiary": "#ffffff", "surface-container": "#f0eded", "surface-container-lowest": "#ffffff", "on-surface-variant": "#554244", "surface-variant": "#e4e2e1", "on-secondary-fixed": "#072104", "primary-container": "#7b263a", "surface-dim": "#dcd9d9", "on-primary-fixed": "#400013", "secondary-fixed-dim": "#afd0a1" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-md": "1rem", "gutter-desktop": "1.5rem", "margin": "1rem", "space-lg": "1.5rem", "space-xs": "0.25rem", "gutter": "1rem", "space-xl": "2.5rem", "margin-desktop": "2.5rem", "space-sm": "0.5rem" }, "fontFamily": { "body-md": ["Readex Pro"], "headline-lg": ["Readex Pro"], "headline-md": ["Readex Pro"], "display": ["Readex Pro"], "body-sm": ["Readex Pro"], "display-mobile": ["Readex Pro"], "body-lg": ["Readex Pro"], "label-md": ["Readex Pro"], "label-sm": ["Readex Pro"], "headline-sm": ["Readex Pro"], "headline-lg-mobile": ["Readex Pro"], "label-lg": ["Readex Pro"] }, "fontSize": { "body-md": ["1rem", { "lineHeight": "1.6rem", "fontWeight": "400" }], "headline-lg": ["2.25rem", { "lineHeight": "2.75rem", "letterSpacing": "-0.01em", "fontWeight": "600" }], "headline-md": ["1.5rem", { "lineHeight": "2rem", "fontWeight": "600" }], "display": ["3.25rem", { "lineHeight": "3.75rem", "letterSpacing": "-0.02em", "fontWeight": "700" }], "body-sm": ["0.875rem", { "lineHeight": "1.4rem", "fontWeight": "400" }], "display-mobile": ["2.25rem", { "lineHeight": "2.75rem", "letterSpacing": "-0.01em", "fontWeight": "700" }], "body-lg": ["1.125rem", { "lineHeight": "1.75rem", "fontWeight": "400" }], "label-md": ["0.8125rem", { "lineHeight": "1.125rem", "fontWeight": "500" }], "label-sm": ["0.6875rem", { "lineHeight": "1rem", "letterSpacing": "0.03em", "fontWeight": "600" }], "headline-sm": ["1.25rem", { "lineHeight": "1.75rem", "fontWeight": "600" }], "headline-lg-mobile": ["1.75rem", { "lineHeight": "2.25rem", "fontWeight": "600" }], "label-lg": ["0.9375rem", { "lineHeight": "1.375rem", "fontWeight": "500" }] } } } };</script>
+</head>
+
+<body class="bg-surface font-body-md text-body-md text-on-surface">
+  <header class="fixed top-0 w-full z-50 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(123,38,58,0.06)]">
+    <div class="h-20 max-w-[1280px] mx-auto px-gutter-desktop flex items-center justify-between gap-space-md">
+      <div class="flex items-center gap-space-md"><a class="flex flex-col text-left group" data-path="accueil"
+          href="#"><span
+            class="font-headline-sm text-headline-sm text-primary-container tracking-tight group-hover:text-primary transition-colors">One
+            More Bite</span><span
+            class="font-label-sm text-label-sm text-on-surface-variant font-medium tracking-normal">بنة بأقلّ
+            سوم...</span></a>
+        <div class="hidden xl:flex items-center relative w-72 lg:w-80 ml-space-sm"><span
+            class="material-symbols-outlined absolute left-3 text-outline text-[20px] pointer-events-none">search</span><input
+            class="w-full pl-10 pr-4 py-2 bg-surface-container-low rounded-full font-body-sm text-body-sm text-on-surface placeholder-outline focus:outline-none focus:bg-surface-container-lowest focus:ring-1 focus:ring-primary shadow-inner"
+            placeholder="Rechercher un panier ou commerce..." type="text" /></div>
+      </div>
+      <nav class="hidden lg:flex items-center gap-space-sm font-label-lg text-label-lg"
+        data-active-classes="bg-primary-container text-on-primary font-medium rounded-full px-4 py-1.5"><a
+          class="px-3 py-1.5 rounded-full text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all"
+          data-path="accueil" href="#">Accueil</a><a aria-current="page"
+          class="transition-all bg-primary-container text-on-primary font-medium rounded-full px-4 py-1.5"
+          data-path="produits" href="#">Produits</a><a
+          class="px-3 py-1.5 rounded-full text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all"
+          data-path="commerçants" href="#">Commerçants</a><a
+          class="px-3 py-1.5 rounded-full text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all"
+          data-path="à-propos" href="#">À propos</a><a
+          class="px-3 py-1.5 rounded-full text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all"
+          data-path="avis" href="#">Avis</a><a
+          class="px-3 py-1.5 rounded-full text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all"
+          data-path="faq" href="#">FAQ</a></nav>
+      <div class="flex items-center gap-space-sm"><a
+          class="flex items-center gap-space-xs px-3.5 py-2 rounded-full bg-secondary-container text-on-secondary-container hover:bg-secondary-fixed hover:text-on-secondary-fixed font-label-md text-label-md transition-all"
+          data-path="panier" href="#"><span class="material-symbols-outlined text-[18px]">shopping_bag</span><span
+            class="hidden sm:inline font-medium">Mon Panier</span><span
+            class="bg-secondary text-on-secondary text-xs rounded-full px-1.5 py-0.2 font-semibold ml-0.5">1</span></a><a
+          class="flex items-center gap-space-xs px-3.5 py-2 rounded-full bg-surface-container text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface font-label-md text-label-md transition-all"
+          data-path="connexion" href="#"><span class="hidden sm:inline">Profil gourmand</span>
+          <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span
+              class="material-symbols-outlined text-on-primary text-[18px]">person</span></div>
+        </a></div>
+    </div>
+  </header>
+  <main class="w-full pt-20 bg-surface min-h-[calc(100vh-20rem)]">
+    <div class="flex flex-col w-full">
+      <!-- Top Breadcrumb & Status Bar -->
+      <section class="w-full bg-surface-container-low py-space-sm">
+        <div
+          class="max-w-[1280px] mx-auto px-gutter-desktop flex flex-wrap items-center justify-between gap-y-2 text-on-surface-variant font-label-md text-label-md">
+          <nav aria-label="Breadcrumb" class="flex items-center gap-space-xs flex-wrap">
+            <a class="hover:text-primary transition-colors" href="#">Accueil</a>
+            <span class="material-symbols-outlined text-[16px] text-outline">chevron_right</span>
+            <a class="hover:text-primary transition-colors" href="#">Produits</a>
+            <span class="material-symbols-outlined text-[16px] text-outline">chevron_right</span>
+            <a class="hover:text-primary transition-colors" href="#">Pâtisseries &amp; Boulangeries</a>
+            <span class="material-symbols-outlined text-[16px] text-outline">chevron_right</span>
+            <span class="text-primary font-medium truncate max-w-[220px] md:max-w-none">Grand Panier Viennoiseries &amp;
+              Pâtisseries</span>
+          </nav>
+          <div class="flex items-center gap-space-sm text-secondary font-medium">
+            <span
+              class="inline-flex items-center gap-1 bg-secondary-container px-2.5 py-0.5 rounded-full text-on-secondary-container text-xs">
+              <span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+              Retrait aujourd'hui disponible
+            </span>
+          </div>
+        </div>
+      </section>
+      <!-- Main Product Showcase Grid -->
+      <section class="w-full py-space-lg lg:py-space-xl">
+        <div class="max-w-[1280px] mx-auto px-gutter-desktop">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-start">
+            <!-- Left: Gallery & Visual Showcase -->
+            <div class="lg:col-span-6 xl:col-span-7 flex flex-col gap-space-md">
+              <!-- Main Hero Image Container -->
+              <div class="relative w-full aspect-[4/3] rounded-xl overflow-hidden bg-surface-container shadow-md group">
+                <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  data-alt="Traditional Tunisian sweet pastries including honey baklava, date-filled makroudh, sugar dusted kaak warka and golden flaky French croissants served on a colorful ceramic plate outdoors under warm golden Mediterranean sunset light"
+                  id="main-product-img"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTDpKWMLknj0mslabK_BOr-5-9kVWyRk65DWlAhUI9UvAXIiNg30RLQ8WpJxa_XBJYE-7u9ss17UJQPqTjwEFh7nY40o2u_2J3LOikuLB4a8luf1p6o-5lxMc67QxwVxN7d3ob4lQ0sS5RVID2lDfr4wcKsheCScocEsD7RBJ2StUdcwPYG1FJQOBTYu9RC5enfhCdIsodXidSFwj_vgb62fj9eHaBQ1bEsOsL2m8" />
+                <!-- Badges Overlay -->
+                <div class="absolute top-4 left-4 flex flex-col items-start gap-2 z-10">
+                  <span
+                    class="px-3.5 py-1.5 rounded-full bg-primary text-on-primary font-label-md text-label-md tracking-wide shadow-sm flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[16px]">savings</span>
+                    -60% Anti-Gaspi
+                  </span>
+                  <span
+                    class="px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm font-medium shadow-sm flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[15px]">eco</span>
+                    Sauvé aujourd'hui
+                  </span>
+                </div>
+                <!-- Stock urgency alert badge -->
+                <div class="absolute top-4 right-4 z-10">
+                  <span
+                    class="px-3.5 py-1.5 rounded-full bg-surface/95 backdrop-blur-md text-primary font-label-md text-label-md shadow-sm flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[18px] text-error animate-bounce">alarm</span>
+                    Plus que 3 disponibles !
+                  </span>
+                </div>
+                <!-- Subtle gradient baseline for depth -->
+                <div
+                  class="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-primary/70 via-primary/20 to-transparent pointer-events-none flex items-end p-space-md">
+                  <p class="text-on-primary font-body-sm text-body-sm opacity-90 drop-shadow flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[18px]">verified</span>
+                    Pâtisserie préparée ce matin • Artisanal Lafayette Tunis
+                  </p>
+                </div>
+              </div>
+              <!-- Thumbnail Strip with Micro-Interaction -->
+              <div class="grid grid-cols-4 gap-space-sm">
+                <button
+                  class="thumb-btn active aspect-square rounded-lg overflow-hidden bg-surface-container relative ring-2 ring-primary transition-all hover:opacity-90"
+                  onclick="selectThumb(this, 0)" type="button">
+                  <img class="w-full h-full object-cover"
+                    data-alt="Close-up of golden honey glazed makroudh with sesame seeds and layered pistachio baklava on authentic hand-painted earthenware Tunisian dish"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTg-_GaVNrj--VArsHwZidBWNWGBF8pBc3cfDeUtU2Q6lMiV_qHq2xIzoNqvYOJXD2xRj8Y9qlGTrGvT61XiwIPvD4LsfxpHmYEWLMPZDpwvaiJlsaFwOe3z4J51M61jpuiyFNlmrPLJGKaziWNOx1peu5AMoD-awBkcx5RZ6ZfkFLJ4BR0lKICUyAfs9NwY5ImfYwLCTlkPOX5Nfg7OQdrmGSHQl-_kFe-TDno3E" />
+                </button>
+                <button
+                  class="thumb-btn aspect-square rounded-lg overflow-hidden bg-surface-container relative ring-0 transition-all hover:opacity-90"
+                  onclick="selectThumb(this, 1)" type="button">
+                  <img class="w-full h-full object-cover"
+                    data-alt="Warm artisan Tunisian bakery counter with glass vitrine display stacked with fresh croissants, traditional pastries, and friendly baker in background"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAcG6RfEJleMsLa88uh2W1kdct__2MeTI7zpxUGCwuAH-Bp70PPCDzryo4xXeHc8BBOCxPA03z8gStPIMEQRBwKumIyqzfxVXbWKI5vQIICMOWzq2fh8KkdV0nSHd9oqLSwDgaLHj3Iy8Mta15rEAtlzbuKv2e-qAOjCBtD7OXTBqB3qlcYx84TjCz-LRoSHVqe4rsFJAKGNTBgYlfbdQHHSqP3nxacdTBQ-7-FJI0" />
+                </button>
+                <button
+                  class="thumb-btn aspect-square rounded-lg overflow-hidden bg-surface-container relative ring-0 transition-all hover:opacity-90"
+                  onclick="selectThumb(this, 2)" type="button">
+                  <img class="w-full h-full object-cover"
+                    data-alt="Rustic basket filled with freshly baked French baguettes, sesame bread, and pain au chocolat in a Tunisian bakery with warm clay stone textures"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBeKbPTwzWKpe8VjVmV6-UtdjY85EJMH59Qln8uuliebJjxOWGTZPcHynHjDWHbGY9iIxg3gtupM-E0D_MJWDF_v6INiblC5EQFb7O7sYxxRrQBTL2oTFVtutvpxaympSolFObludt_zpEHeEvZZOfM2K4MQwtO5nDBaHNsfgO8SD_pi2gi8EGm_AE_40cfsoJmK6HQhwxeuSY4n0VeI0GSt63CZSENMN6CnI1zYk0" />
+                </button>
+                <button
+                  class="thumb-btn aspect-square rounded-lg overflow-hidden bg-surface-container relative ring-0 transition-all hover:opacity-90"
+                  onclick="selectThumb(this, 3)" type="button">
+                  <img class="w-full h-full object-cover"
+                    data-alt="Happy young Tunisian customer receiving a brown eco-friendly kraft paper bag filled with pastries in a lively Tunis bakery, warm afternoon light"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWG6Qy8dm_pYBP9ImBvY-tNZF35OWaENtInicJvPryhl3LvgCZHsjegXIB1fdPA7yOjF1wlFap_1QUaUMFkmFGZ4WRZV8GzHCLJtUWGnI0twGjuGpl9CesYlSHGWkV7vbQNU9Y4XTFICcDM1z_RIjL_xV39z59Dym-XooGLyA5z6nU5PL1NCMLmAlPPiMeCzrbQigoi_MlHHf3tS3Stk-CEfoY-MWDOyVdsXqwA_8" />
+                </button>
+              </div>
+              <!-- Quick Environmental Impact Widget -->
+              <div
+                class="rounded-xl bg-surface-container p-space-md flex items-center justify-between gap-space-md shadow-sm">
+                <div class="flex items-center gap-space-sm">
+                  <div
+                    class="w-12 h-12 rounded-full bg-secondary-container text-secondary flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-[26px]">compost</span>
+                  </div>
+                  <div class="flex flex-col">
+                    <span class="font-headline-sm text-headline-sm text-on-surface">1,8 kg de CO₂e évités</span>
+                    <span class="font-body-sm text-body-sm text-on-surface-variant">En sauvant ce panier, vous préservez
+                      les ressources agricoles et l'énergie du fournil.</span>
+                  </div>
+                </div>
+                <div class="hidden sm:flex flex-col items-end shrink-0">
+                  <span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary">Objectif Ville
+                    Verte</span>
+                  <span class="font-label-lg text-label-lg text-primary font-semibold">Tunis Anti-Gaspi</span>
+                </div>
+              </div>
+            </div>
+            <!-- Right: Commercial Specifications & Instant Reservation -->
+            <div class="lg:col-span-6 xl:col-span-5 flex flex-col gap-space-md">
+              <!-- Merchant Card Snippet -->
+              <div
+                class="rounded-xl bg-surface-container-low p-space-md flex items-center justify-between gap-space-sm shadow-sm hover:bg-surface-container transition-colors">
+                <div class="flex items-center gap-3">
+                  <div
+                    class="w-12 h-12 rounded-full bg-primary-container text-on-primary flex items-center justify-center shrink-0 shadow-inner">
+                    <span class="material-symbols-outlined text-[24px]">bakery_dining</span>
+                  </div>
+                  <div class="flex flex-col">
+                    <div class="flex items-center gap-1.5 flex-wrap">
+                      <span class="font-label-lg text-label-lg text-on-surface font-semibold">Fournil Lafayette</span>
+                      <span class="inline-flex items-center text-secondary text-xs font-semibold gap-0.5"
+                        title="Partenaire Vérifié">
+                        <span class="material-symbols-outlined text-[16px]">verified</span>
+                        Vérifié
+                      </span>
+                    </div>
+                    <span class="font-body-sm text-body-sm text-on-surface-variant">Tunis Centre • 800 m de votre
+                      position</span>
+                  </div>
+                </div>
+                <div class="flex flex-col items-end">
+                  <div class="flex items-center gap-1 text-primary">
+                    <span class="material-symbols-outlined text-[18px]"
+                      style="font-variation-settings: 'FILL' 1;">star</span>
+                    <span class="font-headline-sm text-headline-sm font-semibold">4.9</span>
+                  </div>
+                  <a class="font-label-sm text-label-sm text-on-surface-variant underline hover:text-primary"
+                    href="#avis-section">142 avis</a>
+                </div>
+              </div>
+              <!-- Product Title and Tagline -->
+              <div class="flex flex-col gap-space-xs">
+                <h1 class="font-headline-lg text-headline-lg text-primary leading-tight">
+                  Grand Panier Surprise : Viennoiseries Pur Beurre &amp; Douceurs Tunisiennes
+                </h1>
+                <p class="font-body-md text-body-md text-on-surface-variant">
+                  Sauvez un délicieux panier préparé le jour même, composé selon les surplus du fournil et du chef
+                  pâtissier.
+                </p>
+              </div>
+              <!-- Price & Savings Display -->
+              <div class="rounded-xl bg-surface-container-lowest p-space-md shadow-sm flex flex-col gap-2">
+                <div class="flex items-baseline justify-between flex-wrap gap-2">
+                  <div class="flex items-baseline gap-space-sm">
+                    <span class="font-display text-display text-primary tracking-tight">4.800 <span
+                        class="font-headline-md text-headline-md font-normal">DT</span></span>
+                    <span class="font-headline-sm text-headline-sm text-outline line-through">12.000 DT</span>
+                  </div>
+                  <span
+                    class="px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label-md text-label-md font-semibold">
+                    Vous économisez 7.200 DT (-60%)
+                  </span>
+                </div>
+                <div class="w-full bg-surface-container-high rounded-full h-1.5 overflow-hidden">
+                  <div class="bg-primary h-full rounded-full w-3/4"></div>
+                </div>
+                <div class="flex justify-between items-center text-xs text-on-surface-variant">
+                  <span>Valeur marchande garantie : min. 12 DT</span>
+                  <span class="text-primary font-medium">Forte demande en cours</span>
+                </div>
+              </div>
+              <!-- Pickup Logistics Alert Box (Tons vert doux / amande) -->
+              <div class="rounded-xl bg-secondary-container/40 p-space-md flex flex-col gap-space-sm shadow-sm">
+                <div class="flex items-start gap-3">
+                  <span class="material-symbols-outlined text-secondary text-[24px] shrink-0 mt-0.5">schedule</span>
+                  <div class="flex flex-col">
+                    <span class="font-label-lg text-label-lg font-semibold text-on-surface">Créneau de retrait :
+                      Aujourd'hui</span>
+                    <span class="font-body-sm text-body-sm text-on-surface-variant">Entre <strong
+                        class="text-primary font-semibold">18h30</strong> et <strong
+                        class="text-primary font-semibold">19h45</strong> (horaire strict de fermeture)</span>
+                  </div>
+                </div>
+                <div class="flex items-start gap-3">
+                  <span class="material-symbols-outlined text-secondary text-[24px] shrink-0 mt-0.5">pin_drop</span>
+                  <div class="flex flex-col">
+                    <span class="font-label-lg text-label-lg font-semibold text-on-surface">Point de collecte</span>
+                    <span class="font-body-sm text-body-sm text-on-surface-variant">14 Avenue de la Liberté, Lafayette,
+                      Tunis Centre (face à la station métro)</span>
+                  </div>
+                </div>
+                <div class="flex items-start gap-3">
+                  <span class="material-symbols-outlined text-secondary text-[24px] shrink-0 mt-0.5">payments</span>
+                  <div class="flex flex-col">
+                    <span class="font-label-lg text-label-lg font-semibold text-on-surface">Paiement sur place en
+                      espèces</span>
+                    <span class="font-body-sm text-body-sm text-on-surface-variant">Réglez directement vos 4.800 DT au
+                      comptoir lors de la récupération. Zéro carte bancaire requise en ligne !</span>
+                  </div>
+                </div>
+              </div>
+              <!-- Interactive Action Block: Quantity & CTA -->
+              <div class="rounded-xl bg-surface-container p-space-md flex flex-col gap-space-md shadow-sm">
+                <div class="flex items-center justify-between gap-space-md">
+                  <div class="flex flex-col">
+                    <span class="font-label-md text-label-md font-semibold text-on-surface">Quantité à sauver</span>
+                    <span class="font-body-sm text-body-sm text-on-surface-variant">Max 3 par gourmand</span>
+                  </div>
+                  <!-- Quantity Selector -->
+                  <div class="flex items-center bg-surface-container-lowest rounded-full p-1 shadow-inner">
+                    <button aria-label="Diminuer la quantité"
+                      class="w-9 h-9 rounded-full flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors disabled:opacity-40"
+                      id="qty-minus" onclick="updateQty(-1)" type="button">
+                      <span class="material-symbols-outlined text-[18px]">remove</span>
+                    </button>
+                    <span class="w-10 text-center font-headline-sm text-headline-sm text-on-surface font-semibold"
+                      id="qty-val">1</span>
+                    <button aria-label="Augmenter la quantité"
+                      class="w-9 h-9 rounded-full flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors"
+                      id="qty-plus" onclick="updateQty(1)" type="button">
+                      <span class="material-symbols-outlined text-[18px]">add</span>
+                    </button>
+                  </div>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-space-sm">
+                  <button
+                    class="w-full py-3.5 px-space-md rounded-full bg-primary text-on-primary font-label-lg text-label-lg font-semibold hover:bg-tertiary active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-md"
+                    id="btn-reserve" onclick="handleReserve(false)" type="button">
+                    <span class="material-symbols-outlined text-[20px]">shopping_bag</span>
+                    <span id="cta-label">Ajouter au panier • 4.800 DT</span>
+                  </button>
+                  <button
+                    class="w-full py-3.5 px-space-md rounded-full bg-secondary text-on-secondary font-label-lg text-label-lg font-semibold hover:opacity-95 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-md"
+                    onclick="handleReserve(true)" type="button">
+                    <span class="material-symbols-outlined text-[20px]">bolt</span>
+                    <span>Réserver en 1 clic</span>
+                  </button>
+                </div>
+                <!-- Instant booking notification message toast (hidden initially) -->
+                <div
+                  class="hidden rounded-lg bg-secondary-container text-on-secondary-container p-space-sm text-center font-label-md text-label-md animate-fade-in"
+                  id="booking-toast">
+                  🎉 Votre réservation a été enregistrée ! Présentez votre code au fournil entre 18h30 et 19h45.
+                </div>
+                <!-- Trust Signals Micro Icons -->
+                <div class="grid grid-cols-3 gap-2 pt-space-xs text-center">
+                  <div class="flex flex-col items-center gap-1">
+                    <span class="material-symbols-outlined text-secondary text-[20px]">restore</span>
+                    <span class="font-label-sm text-label-sm text-on-surface-variant leading-tight">Annulation gratuite
+                      (jusqu'à 2h avant)</span>
+                  </div>
+                  <div class="flex flex-col items-center gap-1">
+                    <span class="material-symbols-outlined text-secondary text-[20px]">verified_user</span>
+                    <span class="font-label-sm text-label-sm text-on-surface-variant leading-tight">Garantie fraîcheur
+                      du jour</span>
+                  </div>
+                  <div class="flex flex-col items-center gap-1">
+                    <span class="material-symbols-outlined text-secondary text-[20px]">handshake</span>
+                    <span class="font-label-sm text-label-sm text-on-surface-variant leading-tight">Soutien direct aux
+                      artisans locaux</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Editorial Section: What's inside & Concept Anti-Gaspi -->
+      <section class="w-full py-space-xl bg-surface-container-low">
+        <div class="max-w-[1280px] mx-auto px-gutter-desktop">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-space-xl">
+            <!-- Left: Explanatory Content -->
+            <div class="lg:col-span-8 flex flex-col gap-space-lg">
+              <div class="flex flex-col gap-space-xs">
+                <span class="font-label-md text-label-md uppercase tracking-wider text-secondary font-semibold">Le
+                  concept sauvetage</span>
+                <h2 class="font-headline-lg text-headline-lg text-primary font-bold">
+                  Ce que peut contenir votre Panier Surprise du jour
+                </h2>
+                <p class="font-body-lg text-body-lg text-on-surface-variant">
+                  Chez One More Bite, nous appliquons la devise <em>« بنة بأقلّ سوم »</em> (la nourriture ne se jette
+                  pas). Comme chaque jour de fournée est unique, le contenu exact varie selon les surplus de la vitrine
+                  au moment de la clôture.
+                </p>
+              </div>
+              <!-- Typical Content Bento Grid -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+                <!-- Box 1 -->
+                <div class="rounded-xl bg-surface-container-lowest p-space-md flex flex-col gap-2 shadow-sm">
+                  <div
+                    class="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[22px]">downloading</span>
+                  </div>
+                  <h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Viennoiseries Françaises
+                    Pur Beurre</h3>
+                  <p class="font-body-sm text-body-sm text-on-surface-variant">
+                    Fréquemment inclus : 2 à 3 viennoiseries artisanales (croissants dorés, pains au chocolat
+                    feuilletés, brioches au sucre ou pains aux raisins croustillants).
+                  </p>
+                </div>
+                <!-- Box 2 -->
+                <div class="rounded-xl bg-surface-container-lowest p-space-md flex flex-col gap-2 shadow-sm">
+                  <div
+                    class="w-10 h-10 rounded-full bg-primary-container text-on-primary flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[22px]">cookie</span>
+                  </div>
+                  <h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Douceurs &amp; Pâtisseries
+                    Tunisiennes</h3>
+                  <p class="font-body-sm text-body-sm text-on-surface-variant">
+                    Fréquemment inclus : Délicieux makroudh de Kairouan au miel et dattes, bouchées de baklava aux
+                    amandes ou noisettes, sablés fondants ou kaak el anbar.
+                  </p>
+                </div>
+                <!-- Box 3 -->
+                <div class="rounded-xl bg-surface-container-lowest p-space-md flex flex-col gap-2 shadow-sm">
+                  <div
+                    class="w-10 h-10 rounded-full bg-surface-variant text-on-surface-variant flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[22px]">bakery_dining</span>
+                  </div>
+                  <h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Bonus Pain Spécial du Chef
+                  </h3>
+                  <p class="font-body-sm text-body-sm text-on-surface-variant">
+                    Selon disponibilité : une demi-baguette tradition aux céréales, un petit pain au levain ou un pain
+                    complet campagnard pour votre dîner.
+                  </p>
+                </div>
+                <!-- Box 4 -->
+                <div class="rounded-xl bg-surface-container-lowest p-space-md flex flex-col gap-2 shadow-sm">
+                  <div
+                    class="w-10 h-10 rounded-full bg-secondary-container text-secondary flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[22px]">nature_people</span>
+                  </div>
+                  <h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Plaisir Garanti &amp; Zéro
+                    Déchet</h3>
+                  <p class="font-body-sm text-body-sm text-on-surface-variant">
+                    Tous les produits ont été enfournés le matin même par les maîtres artisans du Fournil Lafayette.
+                    Consommez le jour même ou congelez pour le petit-déjeuner.
+                  </p>
+                </div>
+              </div>
+              <!-- Allergen and Dietary Tags -->
+              <div class="flex flex-col gap-2 pt-space-xs">
+                <span class="font-label-md text-label-md font-semibold text-on-surface">Régimes &amp; Allergènes connus
+                  :</span>
+                <div class="flex flex-wrap gap-2">
+                  <span
+                    class="px-3 py-1 rounded-full bg-surface-container text-on-surface font-label-md text-label-md flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[16px] text-secondary">check_circle</span> Végétarien
+                  </span>
+                  <span
+                    class="px-3 py-1 rounded-full bg-surface-container text-on-surface font-label-md text-label-md flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[16px] text-secondary">check_circle</span> 100% Halal
+                  </span>
+                  <span
+                    class="px-3 py-1 rounded-full bg-surface-container-highest text-on-surface font-label-md text-label-md flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[16px] text-outline">info</span> Contient du Gluten
+                    (Blé)
+                  </span>
+                  <span
+                    class="px-3 py-1 rounded-full bg-surface-container-highest text-on-surface font-label-md text-label-md flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[16px] text-outline">info</span> Produits laitiers &amp;
+                    Œufs
+                  </span>
+                  <span
+                    class="px-3 py-1 rounded-full bg-surface-container-highest text-on-surface font-label-md text-label-md flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[16px] text-outline">info</span> Traces possibles de
+                    fruits à coque (amande, pistache)
+                  </span>
+                </div>
+              </div>
+            </div>
+            <!-- Right: What to Bring & Practical Tips -->
+            <div class="lg:col-span-4 flex flex-col gap-space-md">
+              <div class="rounded-xl bg-surface-container-lowest p-space-lg shadow-sm flex flex-col gap-space-md">
+                <h3 class="font-headline-sm text-headline-sm text-primary font-bold flex items-center gap-2">
+                  <span class="material-symbols-outlined text-[24px]">shopping_bag_speed</span>
+                  Comment récupérer votre panier ?
+                </h3>
+                <ol class="flex flex-col gap-space-md relative">
+                  <li class="flex items-start gap-3">
+                    <span
+                      class="w-7 h-7 rounded-full bg-primary-container text-on-primary font-label-md text-label-md flex items-center justify-center shrink-0 font-bold">1</span>
+                    <div class="flex flex-col">
+                      <span class="font-label-lg text-label-lg font-semibold text-on-surface">Réservez en ligne</span>
+                      <span class="font-body-sm text-body-sm text-on-surface-variant">Confirmez votre panier en 1 clic
+                        sans avance financière obligatoire.</span>
+                    </div>
+                  </li>
+                  <li class="flex items-start gap-3">
+                    <span
+                      class="w-7 h-7 rounded-full bg-primary-container text-on-primary font-label-md text-label-md flex items-center justify-center shrink-0 font-bold">2</span>
+                    <div class="flex flex-col">
+                      <span class="font-label-lg text-label-lg font-semibold text-on-surface">Apportez votre sac</span>
+                      <span class="font-body-sm text-body-sm text-on-surface-variant">Pensez à ramener un tote bag ou
+                        sac réutilisable pour limiter l'emballage plastique.</span>
+                    </div>
+                  </li>
+                  <li class="flex items-start gap-3">
+                    <span
+                      class="w-7 h-7 rounded-full bg-primary-container text-on-primary font-label-md text-label-md flex items-center justify-center shrink-0 font-bold">3</span>
+                    <div class="flex flex-col">
+                      <span class="font-label-lg text-label-lg font-semibold text-on-surface">Présentez-vous à
+                        l'heure</span>
+                      <span class="font-body-sm text-body-sm text-on-surface-variant">Présentez votre écran de
+                        confirmation ou votre nom au vendeur entre 18h30 et 19h45.</span>
+                    </div>
+                  </li>
+                  <li class="flex items-start gap-3">
+                    <span
+                      class="w-7 h-7 rounded-full bg-secondary text-on-secondary font-label-md text-label-md flex items-center justify-center shrink-0 font-bold">4</span>
+                    <div class="flex flex-col">
+                      <span class="font-label-lg text-label-lg font-semibold text-on-surface">Payez 4.800 DT et
+                        régalez-vous</span>
+                      <span class="font-body-sm text-body-sm text-on-surface-variant">Préparez l'appoint si possible
+                        pour faciliter le service de nos artisans !</span>
+                    </div>
+                  </li>
+                </ol>
+                <div
+                  class="p-3 rounded-lg bg-surface-container text-on-surface-variant font-body-sm text-body-sm flex items-center gap-2">
+                  <span class="material-symbols-outlined text-primary text-[20px] shrink-0">help_outline</span>
+                  <span>Un empêchement ? Annulez depuis votre espace jusqu'à 16h30.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Merchant Highlight Section -->
+      <section class="w-full py-space-xl bg-surface">
+        <div class="max-w-[1280px] mx-auto px-gutter-desktop">
+          <div
+            class="rounded-xl bg-surface-container p-space-lg lg:p-space-xl shadow-sm flex flex-col lg:flex-row items-center gap-space-xl">
+            <div class="w-full lg:w-1/2 flex flex-col gap-space-md">
+              <div class="flex items-center gap-space-sm">
+                <span
+                  class="px-3 py-1 rounded-full bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm font-semibold">Artisan
+                  Boulanger Partenaire</span>
+                <span class="text-secondary font-label-md text-label-md flex items-center gap-1 font-semibold">
+                  <span class="material-symbols-outlined text-[16px]">verified</span> Membre actif depuis 2 ans
+                </span>
+              </div>
+              <h2 class="font-headline-lg text-headline-lg text-primary font-bold">
+                Fournil Lafayette &amp; Pâtisserie Artisanale
+              </h2>
+              <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+                Fondée au cœur de Tunis, cette maison perpétue le savoir-faire des boulangers d'antan et l'art raffiné
+                de la pâtisserie tunisienne traditionnelle. Chaque matin, Si Mohamed et son équipe pétrissent des
+                farines sélectionnées avec des levains naturels, tout en dorant les feuilles de brik et le miel pour les
+                douceurs du thé de l'après-midi.
+              </p>
+              <div
+                class="grid grid-cols-1 sm:grid-cols-2 gap-space-sm pt-space-xs text-on-surface font-body-sm text-body-sm">
+                <div class="flex items-center gap-2.5">
+                  <span class="material-symbols-outlined text-primary text-[20px]">location_on</span>
+                  <span>14 Ave de la Liberté, Lafayette, Tunis</span>
+                </div>
+                <div class="flex items-center gap-2.5">
+                  <span class="material-symbols-outlined text-primary text-[20px]">call</span>
+                  <span>+216 71 345 890</span>
+                </div>
+                <div class="flex items-center gap-2.5">
+                  <span class="material-symbols-outlined text-secondary text-[20px]">schedule</span>
+                  <span>Ouvert 7j/7 de 06h30 à 20h00</span>
+                </div>
+                <div class="flex items-center gap-2.5">
+                  <span class="material-symbols-outlined text-secondary text-[20px]">directions_subway</span>
+                  <span>Métro Lafayette (Station République à 200m)</span>
+                </div>
+              </div>
+              <div class="pt-space-xs flex items-center gap-space-md">
+                <a class="px-5 py-2.5 rounded-full bg-surface-container-lowest text-primary font-label-md text-label-md hover:bg-primary hover:text-on-primary transition-all shadow-sm flex items-center gap-2"
+                  href="#">
+                  <span class="material-symbols-outlined text-[18px]">storefront</span>
+                  Voir tous les paniers de ce fournil (3)
+                </a>
+              </div>
+            </div>
+            <!-- Right: Map / Location visual -->
+            <div class="w-full lg:w-1/2 flex flex-col gap-space-sm">
+              <div class="w-full h-80 rounded-xl overflow-hidden bg-cover bg-center shadow-md relative group"
+                data-location="14 Avenue de la Liberté, Lafayette, Tunis, Tunisia"
+                style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDR3-z7tHZaccArDcBoO2CSF22IIt1izTBBHDXOhEhcEEfJybqr0a-Jjrz6fEOPRdsqTtk0Xk8TmDZWoWclX1LMDZ8tcePA2Kh1VnBGorzqlrqn9XF8yUPEIdfX-hIFIjhzoMEl2NrDi0fHUDBpeJDMN33s9aX9vKHeCi7yerjQrsMhVFmrYLGJn7Rk8dyUWcOniotw3A26bdBfIV__rCa2W3uloFcS9dpGKGyU_jY')">
+                <!-- Map overlay tag -->
+                <div
+                  class="absolute bottom-4 left-4 right-4 bg-surface/90 backdrop-blur-md p-space-sm rounded-lg flex items-center justify-between shadow-sm">
+                  <div class="flex items-center gap-2 truncate">
+                    <span class="material-symbols-outlined text-primary text-[22px] shrink-0">pin_drop</span>
+                    <span class="font-label-md text-label-md text-on-surface truncate">Fournil Lafayette, Tunis</span>
+                  </div>
+                  <a class="px-3 py-1 rounded-full bg-primary text-on-primary font-label-sm text-label-sm font-semibold shrink-0 hover:bg-tertiary transition-colors"
+                    href="https://maps.google.com/?q=Lafayette+Tunis" rel="noopener" target="_blank">
+                    Itinéraire
+                  </a>
+                </div>
+              </div>
+              <span class="font-body-sm text-body-sm text-outline text-center">Accès piéton facile depuis l'Avenue Habib
+                Bourguiba et Le Belvédère</span>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Comprehensive Customer Reviews Section -->
+      <section class="w-full py-space-xl bg-surface-container-low" id="avis-section">
+        <div class="max-w-[1280px] mx-auto px-gutter-desktop flex flex-col gap-space-xl">
+          <!-- Section Header -->
+          <div class="flex flex-col md:flex-row md:items-end justify-between gap-space-md">
+            <div class="flex flex-col gap-space-xs">
+              <span class="font-label-md text-label-md uppercase tracking-wider text-secondary font-semibold">Retours
+                d'expérience</span>
+              <h2 class="font-headline-lg text-headline-lg text-primary font-bold">
+                Avis de la Communauté des Gourmets
+              </h2>
+              <p class="font-body-md text-body-md text-on-surface-variant">
+                Découvrez les retours authentiques de ceux qui sauvent le pain et les douceurs du Fournil Lafayette.
+              </p>
+            </div>
+            <a class="px-5 py-2.5 rounded-full bg-primary text-on-primary font-label-md text-label-md hover:bg-tertiary transition-all self-start md:self-auto flex items-center gap-1.5 shadow-sm"
+              href="#avis-form-anchor">
+              <span class="material-symbols-outlined text-[18px]">rate_review</span>
+              Donner mon avis
+            </a>
+          </div>
+          <!-- Rating Overview Bento -->
+          <div
+            class="grid grid-cols-1 md:grid-cols-12 gap-space-md items-center rounded-xl bg-surface-container-lowest p-space-lg shadow-sm">
+            <!-- Big Number -->
+            <div
+              class="md:col-span-4 flex flex-col items-center justify-center p-space-md border-b md:border-b-0 md:border-r border-surface-container">
+              <span class="font-display text-display text-primary font-bold tracking-tight">4.9</span>
+              <div class="flex items-center text-primary gap-1 my-1">
+                <span class="material-symbols-outlined text-[24px]"
+                  style="font-variation-settings: 'FILL' 1;">star</span>
+                <span class="material-symbols-outlined text-[24px]"
+                  style="font-variation-settings: 'FILL' 1;">star</span>
+                <span class="material-symbols-outlined text-[24px]"
+                  style="font-variation-settings: 'FILL' 1;">star</span>
+                <span class="material-symbols-outlined text-[24px]"
+                  style="font-variation-settings: 'FILL' 1;">star</span>
+                <span class="material-symbols-outlined text-[24px]"
+                  style="font-variation-settings: 'FILL' 1;">star</span>
+              </div>
+              <span class="font-body-sm text-body-sm text-on-surface-variant">Basé sur 142 avis vérifiés</span>
+              <span
+                class="mt-2 text-xs font-semibold px-2.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container">98%
+                recommandent ce commerçant</span>
+            </div>
+            <!-- Rating Breakdown Progress Bars -->
+            <div class="md:col-span-8 flex flex-col gap-2.5 px-0 md:px-space-md">
+              <!-- 5 stars -->
+              <div class="flex items-center gap-space-sm text-on-surface font-body-sm text-body-sm">
+                <span class="w-14 shrink-0 font-medium">5 étoiles</span>
+                <div class="flex-1 bg-surface-container-high rounded-full h-2.5 overflow-hidden">
+                  <div class="bg-primary h-full rounded-full w-[88%]"></div>
+                </div>
+                <span class="w-10 text-right font-medium text-on-surface-variant">88%</span>
+              </div>
+              <!-- 4 stars -->
+              <div class="flex items-center gap-space-sm text-on-surface font-body-sm text-body-sm">
+                <span class="w-14 shrink-0 font-medium">4 étoiles</span>
+                <div class="flex-1 bg-surface-container-high rounded-full h-2.5 overflow-hidden">
+                  <div class="bg-primary h-full rounded-full w-[9%]"></div>
+                </div>
+                <span class="w-10 text-right font-medium text-on-surface-variant">9%</span>
+              </div>
+              <!-- 3 stars -->
+              <div class="flex items-center gap-space-sm text-on-surface font-body-sm text-body-sm">
+                <span class="w-14 shrink-0 font-medium">3 étoiles</span>
+                <div class="flex-1 bg-surface-container-high rounded-full h-2.5 overflow-hidden">
+                  <div class="bg-primary h-full rounded-full w-[2%]"></div>
+                </div>
+                <span class="w-10 text-right font-medium text-on-surface-variant">2%</span>
+              </div>
+              <!-- 2 stars -->
+              <div class="flex items-center gap-space-sm text-on-surface font-body-sm text-body-sm">
+                <span class="w-14 shrink-0 font-medium">2 étoiles</span>
+                <div class="flex-1 bg-surface-container-high rounded-full h-2.5 overflow-hidden">
+                  <div class="bg-primary h-full rounded-full w-[1%]"></div>
+                </div>
+                <span class="w-10 text-right font-medium text-on-surface-variant">1%</span>
+              </div>
+              <!-- 1 star -->
+              <div class="flex items-center gap-space-sm text-on-surface font-body-sm text-body-sm">
+                <span class="w-14 shrink-0 font-medium">1 étoile</span>
+                <div class="flex-1 bg-surface-container-high rounded-full h-2.5 overflow-hidden">
+                  <div class="bg-primary h-full rounded-full w-[0%]"></div>
+                </div>
+                <span class="w-10 text-right font-medium text-on-surface-variant">0%</span>
+              </div>
+            </div>
+          </div>
+          <!-- Recent Customer Reviews Grid -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-space-md">
+            <!-- Review 1 -->
+            <div
+              class="rounded-xl bg-surface p-space-md shadow-sm flex flex-col justify-between gap-space-md hover:shadow-md transition-shadow">
+              <div class="flex flex-col gap-space-sm">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2.5">
+                    <div
+                      class="w-10 h-10 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-bold">
+                      KB
+                    </div>
+                    <div class="flex flex-col">
+                      <span class="font-label-md text-label-md font-semibold text-on-surface">Karim B.</span>
+                      <span class="text-xs text-on-surface-variant">Tunis Centre • Hier</span>
+                    </div>
+                  </div>
+                  <span class="inline-flex items-center gap-0.5 text-secondary text-xs font-medium">
+                    <span class="material-symbols-outlined text-[14px]">verified</span> Achat vérifié
+                  </span>
+                </div>
+                <div class="flex items-center text-primary gap-0.5">
+                  <span class="material-symbols-outlined text-[18px]"
+                    style="font-variation-settings: 'FILL' 1;">star</span>
+                  <span class="material-symbols-outlined text-[18px]"
+                    style="font-variation-settings: 'FILL' 1;">star</span>
+                  <span class="material-symbols-outlined text-[18px]"
+                    style="font-variation-settings: 'FILL' 1;">star</span>
+                  <span class="material-symbols-outlined text-[18px]"
+                    style="font-variation-settings: 'FILL' 1;">star</span>
+                  <span class="material-symbols-outlined text-[18px]"
+                    style="font-variation-settings: 'FILL' 1;">star</span>
+                </div>
+                <p class="font-body-sm text-body-sm text-on-surface leading-relaxed">
+                  « Franchement bluffé ! Pour moins de 5 dinars j'ai eu 4 gros croissants encore croustillants et une
+                  boîte de makroudh encore tiède. بنة بأقلّ سوم w sahha lina ! Je recommande les yeux fermés. »
+                </p>
+              </div>
+              <div class="flex items-center justify-between text-xs text-on-surface-variant pt-2">
+                <span>Panier sauvé à 19h10</span>
+                <button class="hover:text-primary flex items-center gap-1" type="button">
+                  <span class="material-symbols-outlined text-[14px]">thumb_up</span> Utile (18)
+                </button>
+              </div>
+            </div>
+            <!-- Review 2 -->
+            <div
+              class="rounded-xl bg-surface p-space-md shadow-sm flex flex-col justify-between gap-space-md hover:shadow-md transition-shadow">
+              <div class="flex flex-col gap-space-sm">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2.5">
+                    <div
+                      class="w-10 h-10 rounded-full bg-secondary text-on-secondary flex items-center justify-center font-bold">
+                      ST
+                    </div>
+                    <div class="flex flex-col">
+                      <span class="font-label-md text-label-md font-semibold text-on-surface">Salma T.</span>
+                      <span class="text-xs text-on-surface-variant">El Menzah • Il y a 3 jours</span>
+                    </div>
+                  </div>
+                  <span class="inline-flex items-center gap-0.5 text-secondary text-xs font-medium">
+                    <span class="material-symbols-outlined text-[14px]">verified</span> Achat vérifié
+                  </span>
+                </div>
+                <div class="flex items-center text-primary gap-0.5">
+                  <span class="material-symbols-outlined text-[18px]"
+                    style="font-variation-settings: 'FILL' 1;">star</span>
+                  <span class="material-symbols-outlined text-[18px]"
+                    style="font-variation-settings: 'FILL' 1;">star</span>
+                  <span class="material-symbols-outlined text-[18px]"
+                    style="font-variation-settings: 'FILL' 1;">star</span>
+                  <span class="material-symbols-outlined text-[18px]"
+                    style="font-variation-settings: 'FILL' 1;">star</span>
+                  <span class="material-symbols-outlined text-[18px]"
+                    style="font-variation-settings: 'FILL' 1;">star</span>
+                </div>
+                <p class="font-body-sm text-body-sm text-on-surface leading-relaxed">
+                  « Accueil chaleureux du boulanger, panier très copieux avec 2 pains suisses au chocolat et des petits
+                  gâteaux aux amandes. C'est officiellement devenu mon rituel du mardi soir ! »
+                </p>
+              </div>
+              <div class="flex items-center justify-between text-xs text-on-surface-variant pt-2">
+                <span>Panier sauvé à 18h45</span>
+                <button class="hover:text-primary flex items-center gap-1" type="button">
+                  <span class="material-symbols-outlined text-[14px]">thumb_up</span> Utile (24)
+                </button>
+              </div>
+            </div>
+            <!-- Review 3 -->
+            <div
+              class="rounded-xl bg-surface p-space-md shadow-sm flex flex-col justify-between gap-space-md hover:shadow-md transition-shadow">
+              <div class="flex flex-col gap-space-sm">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2.5">
+                    <div
+                      class="w-10 h-10 rounded-full bg-surface-container-high text-on-surface flex items-center justify-center font-bold">
+                      MK
+                    </div>
+                    <div class="flex flex-col">
+                      <span class="font-label-md text-label-md font-semibold text-on-surface">Mehdi K.</span>
+                      <span class="text-xs text-on-surface-variant">Lafayette • Il y a 5 jours</span>
+                    </div>
+                  </div>
+                  <span class="inline-flex items-center gap-0.5 text-secondary text-xs font-medium">
+                    <span class="material-symbols-outlined text-[14px]">verified</span> Achat vérifié
+                  </span>
+                </div>
+                <div class="flex items-center text-primary gap-0.5">
+                  <span class="material-symbols-outlined text-[18px]"
+                    style="font-variation-settings: 'FILL' 1;">star</span>
+                  <span class="material-symbols-outlined text-[18px]"
+                    style="font-variation-settings: 'FILL' 1;">star</span>
+                  <span class="material-symbols-outlined text-[18px]"
+                    style="font-variation-settings: 'FILL' 1;">star</span>
+                  <span class="material-symbols-outlined text-[18px]"
+                    style="font-variation-settings: 'FILL' 1;">star</span>
+                  <span class="material-symbols-outlined text-[18px] text-outline">star_half</span>
+                </div>
+                <p class="font-body-sm text-body-sm text-on-surface leading-relaxed">
+                  « Super rapport qualité prix. Parfait pour le petit déjeuner du lendemain en famille. En plus, le
+                  personnel est rapide et souriant malgré l'affluence de fin de journée. »
+                </p>
+              </div>
+              <div class="flex items-center justify-between text-xs text-on-surface-variant pt-2">
+                <span>Panier sauvé à 19h35</span>
+                <button class="hover:text-primary flex items-center gap-1" type="button">
+                  <span class="material-symbols-outlined text-[14px]">thumb_up</span> Utile (9)
+                </button>
+              </div>
+            </div>
+          </div>
+          <!-- Interactive Form: Leave a Review -->
+          <div class="rounded-xl bg-surface p-space-lg lg:p-space-xl shadow-md flex flex-col gap-space-md"
+            id="avis-form-anchor">
+            <div class="flex flex-col gap-1">
+              <h3 class="font-headline-md text-headline-md text-primary font-bold">
+                Laisser un avis sur ce panier
+              </h3>
+              <p class="font-body-sm text-body-sm text-on-surface-variant">
+                Vous avez déjà récupéré ce panier au Fournil Lafayette ? Partagez vos impressions pour guider la
+                communauté.
+              </p>
+            </div>
+            <form class="flex flex-col gap-space-md" id="review-form" onsubmit="submitReview(event)">
+              <!-- Rating Stars Picker -->
+              <div class="flex flex-col gap-2">
+                <label class="font-label-md text-label-md font-semibold text-on-surface">Votre note globale</label>
+                <div class="flex items-center gap-1.5" id="star-picker">
+                  <button class="star-btn text-primary hover:scale-110 transition-transform" onclick="setRating(1)"
+                    type="button"><span class="material-symbols-outlined text-[32px]"
+                      style="font-variation-settings: 'FILL' 1;">star</span></button>
+                  <button class="star-btn text-primary hover:scale-110 transition-transform" onclick="setRating(2)"
+                    type="button"><span class="material-symbols-outlined text-[32px]"
+                      style="font-variation-settings: 'FILL' 1;">star</span></button>
+                  <button class="star-btn text-primary hover:scale-110 transition-transform" onclick="setRating(3)"
+                    type="button"><span class="material-symbols-outlined text-[32px]"
+                      style="font-variation-settings: 'FILL' 1;">star</span></button>
+                  <button class="star-btn text-primary hover:scale-110 transition-transform" onclick="setRating(4)"
+                    type="button"><span class="material-symbols-outlined text-[32px]"
+                      style="font-variation-settings: 'FILL' 1;">star</span></button>
+                  <button class="star-btn text-primary hover:scale-110 transition-transform" onclick="setRating(5)"
+                    type="button"><span class="material-symbols-outlined text-[32px]"
+                      style="font-variation-settings: 'FILL' 1;">star</span></button>
+                  <span class="ml-2 font-label-md text-label-md text-primary font-bold" id="rating-label">5 / 5 -
+                    Excellent !</span>
+                </div>
+              </div>
+              <!-- User Details Inputs -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+                <div class="flex flex-col gap-1.5">
+                  <label class="font-label-md text-label-md font-semibold text-on-surface" for="review-name">Votre nom /
+                    pseudo</label>
+                  <input
+                    class="w-full px-4 py-2.5 rounded-lg bg-surface-container-low font-body-sm text-body-sm text-on-surface placeholder-outline focus:outline-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary shadow-inner"
+                    id="review-name" placeholder="Ex. Yassine G. (Tunis)" required="" type="text" />
+                </div>
+                <div class="flex flex-col gap-1.5">
+                  <label class="font-label-md text-label-md font-semibold text-on-surface" for="review-date">Date de
+                    votre dernier retrait</label>
+                  <select
+                    class="w-full px-4 py-2.5 rounded-lg bg-surface-container-low font-body-sm text-body-sm text-on-surface focus:outline-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary shadow-inner"
+                    id="review-date">
+                    <option value="today">Aujourd'hui</option>
+                    <option value="yesterday">Hier</option>
+                    <option value="this-week">Cette semaine</option>
+                    <option value="earlier">Il y a plus d'une semaine</option>
+                  </select>
+                </div>
+              </div>
+              <!-- Review Textarea -->
+              <div class="flex flex-col gap-1.5">
+                <label class="font-label-md text-label-md font-semibold text-on-surface" for="review-content">Partagez
+                  votre expérience</label>
+                <textarea
+                  class="w-full p-4 rounded-lg bg-surface-container-low font-body-sm text-body-sm text-on-surface placeholder-outline focus:outline-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary shadow-inner resize-y"
+                  id="review-content"
+                  placeholder="Qualité des produits, accueil du commerçant, fraîcheur du makroudh ou des croissants... Ecrivez en Français ou en Derja !"
+                  required="" rows="4"></textarea>
+              </div>
+              <!-- Form Action & Feedback Notice -->
+              <div class="flex flex-col sm:flex-row items-center justify-between gap-space-md pt-space-xs">
+                <span class="text-xs text-on-surface-variant flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-[16px] text-secondary">shield</span>
+                  Avis soumis à notre charte anti-gaspi communautaire.
+                </span>
+                <button
+                  class="w-full sm:w-auto px-6 py-3 rounded-full bg-primary text-on-primary font-label-lg text-label-lg font-semibold hover:bg-tertiary transition-all shadow-md flex items-center justify-center gap-2"
+                  type="submit">
+                  <span class="material-symbols-outlined text-[18px]">send</span>
+                  Publier mon avis
+                </button>
+              </div>
+              <!-- Success Alert Message -->
+              <div
+                class="hidden rounded-lg bg-secondary-container text-on-secondary-container p-space-md text-center font-label-md text-label-md animate-fade-in"
+                id="review-success">
+                ✨ Yaâtek essaha ! Votre avis a été enregistré et enrichit le réseau anti-gaspi tunisien.
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+      <!-- Sticky Mobile Bottom Rescue Bar (Thumb Reach friendly) -->
+      <div class="lg:hidden fixed bottom-0 inset-x-0 bg-surface/95 backdrop-blur-xl p-space-md shadow-2xl z-40">
+        <div class="flex items-center justify-between gap-space-md max-w-[600px] mx-auto">
+          <div class="flex flex-col">
+            <span class="text-xs text-on-surface-variant">Retrait 18h30 - 19h45</span>
+            <div class="flex items-baseline gap-1.5">
+              <span class="font-headline-sm text-headline-sm text-primary font-bold">4.800 DT</span>
+              <span class="text-xs text-outline line-through">12.000 DT</span>
+            </div>
+          </div>
+          <button
+            class="flex-1 py-3 px-space-md rounded-full bg-primary text-on-primary font-label-md text-label-md font-semibold shadow-md active:scale-95 transition-transform flex items-center justify-center gap-1.5"
+            onclick="handleReserve(false)" type="button">
+            <span class="material-symbols-outlined text-[18px]">shopping_bag</span>
+            <span>Sauver ce panier</span>
+          </button>
+        </div>
+      </div>
+      <!-- Client-side Interactive Logic -->
+      <script>
+        let quantity = 1;
+        const maxQty = 3;
+        const unitPrice = 4.800;
+        let selectedRating = 5;
+
+        // Quantity Counter Updates
+        function updateQty(delta) {
+          quantity = Math.max(1, Math.min(maxQty, quantity + delta));
+          document.getElementById('qty-val').innerText = quantity;
+
+          const totalPrice = (quantity * unitPrice).toFixed(3);
+          document.getElementById('cta-label').innerText = `Ajouter au panier • ${totalPrice} DT`;
+
+          document.getElementById('qty-minus').disabled = (quantity === 1);
+          document.getElementById('qty-plus').disabled = (quantity === maxQty);
+        }
+
+        // Interactive Thumbnail Picker
+        function selectThumb(btn, index) {
+          document.querySelectorAll('.thumb-btn').forEach(b => {
+            b.classList.remove('ring-2', 'ring-primary');
+            b.classList.add('ring-0');
+          });
+          btn.classList.add('ring-2', 'ring-primary');
+          btn.classList.remove('ring-0');
+
+          const heroImg = document.getElementById('main-product-img');
+          const clickedImg = btn.querySelector('img');
+          if (clickedImg && heroImg) {
+            heroImg.src = clickedImg.src;
+            heroImg.setAttribute('data-alt', clickedImg.getAttribute('data-alt') || '');
+          }
+        }
+
+        // Reservation Feedback Action
+        function handleReserve(isInstant) {
+          const toast = document.getElementById('booking-toast');
+          const btn = document.getElementById('btn-reserve');
+
+          if (toast) {
+            toast.classList.remove('hidden');
+            toast.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+
+          // Update basket counter in Shell if present
+          const badge = document.querySelector('header span.bg-secondary');
+          if (badge) {
+            badge.innerText = parseInt(badge.innerText || '0') + quantity;
+          }
+
+          btn.classList.add('bg-secondary');
+          btn.innerText = "✓ Panier Réservé !";
+          setTimeout(() => {
+            btn.classList.remove('bg-secondary');
+            const totalPrice = (quantity * unitPrice).toFixed(3);
+            btn.innerText = `Ajouter au panier • ${totalPrice} DT`;
+          }, 4000);
+        }
+
+        // Interactive Star Rating for the Form
+        function setRating(val) {
+          selectedRating = val;
+          const stars = document.querySelectorAll('#star-picker .star-btn span');
+          const labels = [
+            "",
+            "1 / 5 - Décevant",
+            "2 / 5 - Moyen",
+            "3 / 5 - Correct",
+            "4 / 5 - Très bon !",
+            "5 / 5 - Excellent !"
+          ];
+
+          stars.forEach((star, idx) => {
+            if (idx < val) {
+              star.style.fontVariationSettings = "'FILL' 1";
+              star.parentElement.classList.add('text-primary');
+              star.parentElement.classList.remove('text-outline');
+            } else {
+              star.style.fontVariationSettings = "'FILL' 0";
+              star.parentElement.classList.remove('text-primary');
+              star.parentElement.classList.add('text-outline');
+            }
+          });
+
+          const labelEl = document.getElementById('rating-label');
+          if (labelEl) {
+            labelEl.innerText = labels[val] || `${val} / 5`;
+          }
+        }
+
+        // Handle Review Submission
+        function submitReview(event) {
+          event.preventDefault();
+          const form = document.getElementById('review-form');
+          const success = document.getElementById('review-success');
+
+          if (success) {
+            success.classList.remove('hidden');
+            form.reset();
+            setRating(5);
+            setTimeout(() => {
+              success.classList.add('hidden');
+            }, 5000);
+          }
+        }
+      </script>
+    </div>
+  </main>
+  <footer class="w-full bg-surface-container-low text-on-surface py-space-xl">
+    <div class="max-w-[1280px] mx-auto px-gutter-desktop">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-xl mb-space-xl">
+        <div class="space-y-space-md">
+          <div class="flex flex-col"><span
+              class="font-headline-sm text-headline-sm text-primary-container tracking-tight">One More Bite</span><span
+              class="font-label-sm text-label-sm text-on-surface-variant font-medium">بنة بأقلّ سوم...</span></div>
+          <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">Engagé pour la réduction du
+            gaspillage alimentaire en Tunisie. Nous relions les gourmets conscients aux artisans culinaires, boulangers
+            et restaurateurs locaux pour préserver la valeur de chaque bouchée.</p>
+          <div class="flex items-center gap-space-sm pt-space-xs"><span
+              class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm font-medium"><span
+                class="material-symbols-outlined text-[16px]">eco</span>Impact Zéro Déchet</span></div>
+        </div>
+        <div class="space-y-space-sm">
+          <h3 class="font-headline-sm text-headline-sm text-primary font-semibold mb-space-md">Navigation</h3>
+          <ul class="space-y-2 font-body-sm text-body-sm text-on-surface-variant">
+            <li class="flex items-center gap-2"><a class="hover:text-primary transition-colors" data-path="accueil"
+                href="#">Accueil &amp; Paniers du jour</a></li>
+            <li class="flex items-center gap-2"><a class="hover:text-primary transition-colors" data-path="produits"
+                href="#">Tous les Paniers Sauvetage</a></li>
+            <li class="flex items-center gap-2"><a class="hover:text-primary transition-colors" data-path="commerçants"
+                href="#">Boulangeries &amp; Commerçants</a></li>
+            <li class="flex items-center gap-2"><a class="hover:text-primary transition-colors" data-path="à-propos"
+                href="#">Notre Mission &amp; Impact</a></li>
+            <li class="flex items-center gap-2"><a class="hover:text-primary transition-colors" data-path="avis"
+                href="#">Avis de la Communauté</a></li>
+            <li class="flex items-center gap-2"><a class="hover:text-primary transition-colors" data-path="faq"
+                href="#">Foire Aux Questions</a></li>
+          </ul>
+        </div>
+        <div class="space-y-space-sm">
+          <h3 class="font-headline-sm text-headline-sm text-primary font-semibold mb-space-md">Espace Commerçants</h3>
+          <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">Vous êtes boulanger,
+            restaurateur, primeur ou traiteur en Tunisie ? Rejoignez notre réseau d'artisans anti-gaspi et valorisez vos
+            surplus.</p>
+          <div class="pt-space-xs"><a
+              class="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-primary-container text-on-primary font-label-md text-label-md hover:bg-primary transition-colors"
+              data-path="partenaires" href="#"><span
+                class="material-symbols-outlined text-[18px]">storefront</span>Devenir Partenaire</a></div>
+          <ul class="space-y-1.5 font-body-sm text-body-sm text-on-surface-variant pt-space-xs">
+            <li><a class="hover:text-primary transition-colors" data-path="portail-commerçant" href="#">Portail
+                Partenaire Pro</a></li>
+            <li><a class="hover:text-primary transition-colors" data-path="guide-valorisation" href="#">Guide de
+                Valorisation Alimentaire</a></li>
+          </ul>
+        </div>
+        <div class="space-y-space-sm">
+          <h3 class="font-headline-sm text-headline-sm text-primary font-semibold mb-space-md">Contact &amp; Territoire
+          </h3>
+          <div class="space-y-2 font-body-sm text-body-sm text-on-surface-variant">
+            <div class="flex items-start gap-2.5"><span
+                class="material-symbols-outlined text-primary text-[20px] shrink-0 mt-0.5">location_on</span><span>Les
+                Berges du Lac, Tunis 1053, Tunisie</span></div>
+            <div class="flex items-center gap-2.5"><span
+                class="material-symbols-outlined text-primary text-[20px] shrink-0">call</span><span>+216 71 890 123 /
+                +216 29 450 780</span></div>
+            <div class="flex items-center gap-2.5"><span
+                class="material-symbols-outlined text-primary text-[20px] shrink-0">mail</span><span>salem@onemorebite.tn</span>
+            </div>
+            <div class="flex items-center gap-2.5"><span
+                class="material-symbols-outlined text-secondary text-[20px] shrink-0">schedule</span><span>Support
+                Sauvetage : 08h00 - 22h00</span></div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="pt-space-lg flex flex-col sm:flex-row items-center justify-between gap-space-sm text-on-surface-variant font-label-sm text-label-sm">
+        <p>© 2024 One More Bite TN. Tous droits réservés. Fait avec passion en Tunisie.</p>
+        <div class="flex items-center gap-space-md flex-wrap"><a class="hover:text-on-surface transition-colors"
+            data-path="mentions-légales" href="#">Mentions Légales</a><a class="hover:text-on-surface transition-colors"
+            data-path="politique-confidentialité" href="#">Politique de Confidentialité</a><a
+            class="hover:text-on-surface transition-colors" data-path="cgu" href="#">Conditions Générales
+            d'Utilisation</a><a class="hover:text-on-surface transition-colors" data-path="charte-anti-gaspi"
+            href="#">Charte Anti-Gaspi</a></div>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>

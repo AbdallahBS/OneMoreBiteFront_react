@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="fr">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>One More Bite - بنة بأقلّ سوم</title>
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@400;500;600;700&amp;family=Caveat:wght@600;700&amp;display=swap"
+    rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-error-container": "#93000a",
+            "inverse-surface": "#303030",
+            "on-tertiary": "#ffffff",
+            "surface": "#fcf9f8",
+            "surface-container-high": "#eae7e7",
+            "error": "#ba1a1a",
+            "outline-variant": "#dac0c3",
+            "secondary-fixed": "#cbecbc",
+            "on-primary": "#ffffff",
+            "tertiary-container": "#703041",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#f6f3f2",
+            "on-error": "#ffffff",
+            "secondary": "#496640",
+            "outline": "#877274",
+            "surface-variant": "#e4e2e1",
+            "on-primary-fixed": "#400013",
+            "primary": "#5d0e25",
+            "surface-tint": "#9c3f53",
+            "surface-container": "#f0eded",
+            "inverse-on-surface": "#f3f0ef",
+            "primary-container": "#7b263a",
+            "on-tertiary-fixed": "#3b0618",
+            "tertiary-fixed": "#ffd9df",
+            "tertiary": "#541a2b",
+            "error-container": "#ffdad6",
+            "surface-dim": "#dcd9d9",
+            "surface-bright": "#fcf9f8",
+            "on-secondary-fixed": "#072104",
+            "inverse-primary": "#ffb2bd",
+            "on-tertiary-fixed-variant": "#723243",
+            "on-secondary-fixed-variant": "#324e2a",
+            "secondary-fixed-dim": "#afd0a1",
+            "on-secondary": "#ffffff",
+            "surface-container-highest": "#e4e2e1",
+            "on-surface": "#1b1c1c",
+            "secondary-container": "#c8e9b9",
+            "primary-fixed": "#ffd9dd",
+            "on-secondary-container": "#4d6a43",
+            "tertiary-fixed-dim": "#ffb1c1",
+            "on-tertiary-container": "#f09aad",
+            "on-surface-variant": "#554244",
+            "on-primary-fixed-variant": "#7e283c",
+            "background": "#fcf9f8",
+            "on-background": "#1b1c1c",
+            "primary-fixed-dim": "#ffb2bd",
+            "on-primary-container": "#ff92a5"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-lg": "1.5rem",
+            "margin": "1rem",
+            "gutter": "1rem",
+            "space-sm": "0.5rem",
+            "space-md": "1rem",
+            "gutter-desktop": "1.5rem",
+            "margin-desktop": "2.5rem",
+            "space-xl": "2.5rem",
+            "space-xs": "0.25rem"
+          },
+          "fontFamily": {
+            "headline-lg-mobile": ["Readex Pro"],
+            "headline-lg": ["Readex Pro"],
+            "headline-sm": ["Readex Pro"],
+            "headline-md": ["Readex Pro"],
+            "body-lg": ["Readex Pro"],
+            "display-mobile": ["Readex Pro"],
+            "display": ["Readex Pro"],
+            "label-sm": ["Readex Pro"],
+            "label-lg": ["Readex Pro"],
+            "body-sm": ["Readex Pro"],
+            "body-md": ["Readex Pro"],
+            "label-md": ["Readex Pro"],
+            "handwriting": ["Caveat", "cursive"]
+          },
+          "fontSize": {
+            "headline-lg-mobile": ["1.75rem", { "lineHeight": "2.25rem", "fontWeight": "600" }],
+            "headline-lg": ["2.25rem", { "lineHeight": "2.75rem", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "headline-sm": ["1.25rem", { "lineHeight": "1.75rem", "fontWeight": "600" }],
+            "headline-md": ["1.5rem", { "lineHeight": "2rem", "fontWeight": "600" }],
+            "body-lg": ["1.125rem", { "lineHeight": "1.75rem", "fontWeight": "400" }],
+            "display-mobile": ["2.25rem", { "lineHeight": "2.75rem", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "display": ["3.25rem", { "lineHeight": "3.75rem", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "label-sm": ["0.6875rem", { "lineHeight": "1rem", "letterSpacing": "0.03em", "fontWeight": "600" }],
+            "label-lg": ["0.9375rem", { "lineHeight": "1.375rem", "fontWeight": "500" }],
+            "body-sm": ["0.875rem", { "lineHeight": "1.4rem", "fontWeight": "400" }],
+            "body-md": ["1rem", { "lineHeight": "1.6rem", "fontWeight": "400" }],
+            "label-md": ["0.8125rem", { "lineHeight": "1.125rem", "fontWeight": "500" }]
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @layer base {
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #fcf9f8;
+        color: #1b1c1c;
+      }
+    }
+  </style>
+  <meta content="web_standard" name="shell-type">
+</head>
+
+<body class="bg-surface font-body-md text-on-surface antialiased">
+  <header class="w-full bg-surface-bright/95 backdrop-blur-md sticky top-0 z-50 border-b border-surface-container-high">
+    <div
+      class="h-16 max-w-[1280px] mx-auto px-margin md:px-margin-desktop flex items-center justify-between gap-space-sm">
+      <a class="flex items-center gap-space-sm shrink-0 group" data-path="one-more-bite-accueil-avec-nouvelles-sections"
+        href="#">
+        <div
+          class="w-10 h-10 rounded-xl bg-primary-container text-on-primary flex items-center justify-center shadow-sm relative transition-transform group-hover:scale-105">
+          <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+            <path
+              d="M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-3c1.66 0 3 1.34 3 3H9c0-1.66 1.34-3 3-3zm7 17H5V8h14v12z">
+            </path>
+            <path d="M10 13c1.5 0 2.5-1 3.5-3 0 2 1.5 3 2.5 3-1.5 0-2.5 1-3.5 3 0-2-1.5-3-2.5-3z" fill="#cbecbc"></path>
+          </svg>
+          <span
+            class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-secondary rounded-full border-2 border-surface-bright"></span>
+        </div>
+        <div class="flex flex-col">
+          <span class="font-label-lg font-bold text-primary leading-tight flex items-center gap-1">
+            One More Bite <span class="text-label-sm text-secondary">🍃</span>
+          </span>
+          <span class="text-label-sm text-on-surface-variant font-medium">
+            بنة بأقلّ سوم...
+          </span>
+        </div>
+      </a>
+      <nav class="hidden lg:flex items-center gap-1 font-label-md text-on-surface-variant"
+        data-active-classes="bg-primary-container text-on-primary shadow-sm font-semibold">
+        <a class="px-space-md py-1.5 rounded-full hover:text-primary transition-colors"
+          data-path="one-more-bite-accueil-avec-nouvelles-sections" href="#">
+          Accueil
+        </a>
+        <a class="px-space-md py-1.5 rounded-full hover:text-primary transition-colors" data-path="produits"
+          href="#produits">
+          Produits
+        </a>
+        <a class="px-space-md py-1.5 rounded-full hover:text-primary transition-colors" data-path="commercants"
+          href="#commercants">
+          Commerçants
+        </a>
+        <a class="px-space-md py-1.5 rounded-full hover:text-primary transition-colors" data-path="a-propos"
+          href="#a-propos">
+          À propos
+        </a>
+        <a class="px-space-md py-1.5 rounded-full hover:text-primary transition-colors" data-path="avis" href="#avis">
+          Avis
+        </a>
+        <a class="px-space-md py-1.5 rounded-full hover:text-primary transition-colors" data-path="faq" href="#faq">
+          FAQ
+        </a>
+      </nav>
+      <div class="flex items-center gap-space-sm shrink-0" data-active-classes="ring-2 ring-primary ring-offset-2">
+        <div
+          class="hidden md:flex items-center bg-surface-container hover:bg-surface-container-high transition-colors rounded-full px-space-md py-1.5 w-44 lg:w-56 font-body-sm">
+          <input
+            class="bg-transparent border-0 outline-none w-full text-on-surface placeholder:text-outline p-0 font-body-sm focus:ring-0"
+            placeholder="Rechercher un panier..." type="text">
+          <span class="material-symbols-outlined text-[18px] text-outline ml-1">search</span>
+        </div>
+        <a class="font-label-md text-primary border border-outline-variant hover:border-primary hover:bg-primary-fixed/20 px-space-md py-1.5 rounded-full transition-all"
+          data-path="connexion" href="#connexion">
+          Se connecter
+        </a>
+        <a class="font-label-md text-on-primary bg-primary-container hover:bg-primary px-space-md py-1.5 rounded-full shadow-sm hover:shadow transition-all"
+          data-path="inscription" href="#inscription">
+          S'inscrire
+        </a>
+      </div>
+    </div>
+  </header>
+  <main class="w-full pt-16">
+    <div class="flex flex-col w-full">
+      <div class="w-full relative overflow-hidden bg-surface py-space-md md:py-space-xl">
+        <!-- Ambient Mediterranean Warmth Background Accents -->
+        <div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-primary-fixed/25 blur-3xl pointer-events-none">
+        </div>
+        <div
+          class="absolute top-1/2 -right-32 w-[30rem] h-[30rem] rounded-full bg-secondary-container/40 blur-3xl pointer-events-none">
+        </div>
+        <div
+          class="absolute bottom-0 left-1/3 w-80 h-80 rounded-full bg-tertiary-fixed/30 blur-2xl pointer-events-none">
+        </div>
+        <div class="max-w-[1280px] mx-auto px-margin md:px-margin-desktop relative z-10">
+          <!-- Top Micro Notice / Impact Pill -->
+
+          <!-- Main Layout: Split Screen with Asymmetric Tension -->
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-stretch">
+            <!-- Left Column: Inspiring Cultural Editorial & Impact Panel -->
+            <div
+              class="lg:col-span-5 flex flex-col justify-between rounded-xl bg-surface-container-low p-space-md md:p-space-lg shadow-sm relative overflow-hidden">
+              <div
+                class="relative w-full h-[30rem] rounded-xl overflow-hidden shadow-md group flex flex-col justify-between p-space-lg">
+                <img
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuDt7QxdGeV0T6yXjzKoFk9pr3BqoQuDmJSVBuJfFt596z2yo2fKu8WOjPXSIf2ktn_2hpPBN8Wx4xOsdCluZUzsv81xNt5NmVt3Sxq4N8Ms2f4zAoyKnnBIIFjj67ijRx-Zi2_p8utUMp2nSu557iZNZwE9TYDzbdkIyAhbJFGQ8cihAygy5mJ34t8xH_NdQWVdlL-ilbm3lqjTfukybKl7wRLoPF4W62kwwrMD5MjaL2CVfX1XOM7_"
+                  alt="Panier de délices artisanaux tunisiens"
+                  class="absolute inset-0 w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700">
+                <div class="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/30 to-transparent"></div>
+                <div class="relative z-10"><span
+                    class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-bright/95 backdrop-blur-md text-primary font-label-sm shadow-sm font-semibold"><span
+                      class="material-symbols-outlined text-[16px] text-secondary">eco</span><span>Anti-gaspillage en
+                      Tunisie</span></span></div>
+                <div class="relative z-10 text-on-primary"><span
+                    class="font-handwriting text-headline-sm text-secondary-fixed mb-1 block">« الماكلة نعمة، ما تضيعش
+                    »</span>
+                  <h3 class="font-headline-md font-bold leading-snug mb-2">Savourez le meilleur de nos artisans à moitié
+                    prix.</h3>
+                  <p class="font-body-sm text-surface-variant leading-relaxed opacity-90">Rejoignez des milliers de
+                    citoyens qui sauvent chaque jour d'exquis surplus de boulangeries, pâtisseries et traiteurs locaux.
+                  </p>
+                </div>
+              </div>
+              <div
+                class="mt-space-md p-space-md rounded-xl bg-surface-container-lowest shadow-sm border border-surface-container-high">
+                <div class="flex items-center justify-between mb-2">
+                  <div class="flex items-center gap-space-xs">
+                    <div class="flex -space-x-2 overflow-hidden"><span
+                        class="inline-block h-8 w-8 rounded-full bg-primary-container text-on-primary text-center font-bold leading-8 text-label-sm">SR</span><span
+                        class="inline-block h-8 w-8 rounded-full bg-secondary text-on-secondary text-center font-bold leading-8 text-label-sm">YM</span><span
+                        class="inline-block h-8 w-8 rounded-full bg-tertiary-container text-on-tertiary text-center font-bold leading-8 text-label-sm">AB</span>
+                    </div><span class="ml-1 font-label-sm font-semibold text-on-surface">+3 200 avis vérifiés</span>
+                  </div>
+                  <div class="flex items-center text-amber-500"><span class="material-symbols-outlined text-[16px]"
+                      style="font-variation-settings: 'FILL' 1;">star</span><span
+                      class="material-symbols-outlined text-[16px]"
+                      style="font-variation-settings: 'FILL' 1;">star</span><span
+                      class="material-symbols-outlined text-[16px]"
+                      style="font-variation-settings: 'FILL' 1;">star</span><span
+                      class="material-symbols-outlined text-[16px]"
+                      style="font-variation-settings: 'FILL' 1;">star</span><span
+                      class="material-symbols-outlined text-[16px]"
+                      style="font-variation-settings: 'FILL' 1;">star</span><span
+                      class="ml-1 font-label-md font-bold text-on-surface">4.9</span></div>
+                </div>
+                <p class="font-body-sm text-on-surface-variant italic leading-relaxed">« Grâce à One More Bite, je
+                  récupère chaque soir de succulents paniers chez ma boulangerie pour 6 DT au lieu de 22 DT. Un geste
+                  simple, délicieux et responsable. »</p><span
+                  class="font-label-sm font-semibold text-primary block mt-1.5">— Meriem B., La Marsa</span>
+              </div>
+            </div>
+            <!-- Right Column: Interactive Registration Desk -->
+            <div
+              class="lg:col-span-7 flex flex-col justify-center bg-surface-container-lowest p-space-md md:p-space-xl rounded-xl shadow-md">
+              <!-- Role Switcher Segmented Control -->
+              <div class="mb-space-md">
+                <span class="font-label-sm uppercase tracking-wider text-outline font-semibold block mb-2">Choisissez
+                  votre profil</span>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 p-1.5 rounded-xl bg-surface-container"
+                  id="roleToggleContainer">
+                  <button
+                    class="flex items-center justify-center gap-2 py-2.5 px-space-md rounded-lg font-label-md transition-all shadow-sm bg-primary-container text-on-primary font-semibold text-left"
+                    id="clientRoleBtn" onclick="setRole('client')" type="button">
+                    <span class="material-symbols-outlined text-[20px]">shopping_basket</span>
+                    <div class="flex flex-col leading-tight">
+                      <span>Je suis un Gourmand</span>
+                    </div>
+                  </button>
+                  <button
+                    class="flex items-center justify-center gap-2 py-2.5 px-space-md rounded-lg font-label-md transition-all text-on-surface-variant hover:text-primary text-left"
+                    id="merchantRoleBtn" onclick="setRole('merchant')" type="button">
+                    <span class="material-symbols-outlined text-[20px]">storefront</span>
+                    <div class="flex flex-col leading-tight">
+                      <span>Je suis un Commerçant</span>
+                      <span class="text-label-sm font-normal opacity-75 font-handwriting">عندي مخبزة أو مطعم</span>
+                    </div>
+                  </button>
+                </div>
+              </div>
+              <!-- Dynamic Role Sub-Banner -->
+
+
+              <!-- Fast Social Signup -->
+              <div class="mb-space-md"><button
+                  class="w-full flex items-center justify-center gap-space-sm py-2.5 px-space-md rounded-xl bg-surface-container-low hover:bg-surface-container transition-colors font-label-md text-on-surface shadow-sm border border-outline-variant/40"
+                  type="button"><svg class="w-5 h-5" viewBox="0 0 24 24">
+                    <path
+                      d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                      fill="#4285F4"></path>
+                    <path
+                      d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                      fill="#34A853"></path>
+                    <path
+                      d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"
+                      fill="#FBBC05"></path>
+                    <path
+                      d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
+                      fill="#EA4335"></path>
+                  </svg><span>Continuer avec Google</span></button></div>
+              <!-- Divider -->
+              <div class="relative flex items-center justify-center mb-space-md">
+                <div class="w-full h-px bg-surface-container-high"></div>
+                <span
+                  class="absolute bg-surface-container-lowest px-space-sm font-label-sm text-outline uppercase tracking-wider">ou
+                  avec votre adresse e-mail</span>
+              </div>
+              <!-- Form Element -->
+              <form class="space-y-space-sm" id="signupForm" onsubmit="handleRegistration(event)">
+                <!-- Full Name / Business Name -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-space-sm">
+                  <div>
+                    <label class="block font-label-md text-on-surface font-semibold mb-1" for="firstName"
+                      id="lblFirstName">Prénom</label>
+                    <div class="relative">
+                      <input
+                        class="w-full bg-surface-container-low focus:bg-surface-container-lowest rounded-xl py-2.5 px-space-md text-on-surface font-body-md border-0 outline-none focus:ring-2 focus:ring-primary transition-all placeholder:text-outline"
+                        id="firstName" placeholder="ex. Amira" required="" type="text">
+                      <span
+                        class="material-symbols-outlined absolute right-3 top-2.5 text-outline text-[20px]">person</span>
+                    </div>
+                  </div>
+                  <div>
+                    <label class="block font-label-md text-on-surface font-semibold mb-1" for="lastName"
+                      id="lblLastName">Nom</label>
+                    <div class="relative">
+                      <input
+                        class="w-full bg-surface-container-low focus:bg-surface-container-lowest rounded-xl py-2.5 px-space-md text-on-surface font-body-md border-0 outline-none focus:ring-2 focus:ring-primary transition-all placeholder:text-outline"
+                        id="lastName" placeholder="ex. Trabelsi" required="" type="text">
+                      <span
+                        class="material-symbols-outlined absolute right-3 top-2.5 text-outline text-[20px]">badge</span>
+                    </div>
+                  </div>
+                </div>
+                <!-- Merchant Business Name Dynamic Field (Initially Hidden) -->
+                <div class="hidden" id="merchantFieldBusiness">
+                  <label class="block font-label-md text-on-surface font-semibold mb-1" for="businessName">Nom de votre
+                    établissement</label>
+                  <div class="relative">
+                    <input
+                      class="w-full bg-surface-container-low focus:bg-surface-container-lowest rounded-xl py-2.5 px-space-md text-on-surface font-body-md border-0 outline-none focus:ring-2 focus:ring-primary transition-all placeholder:text-outline"
+                      id="businessName" placeholder="ex. Boulangerie Pâtisserie La Rose de Carthage" type="text">
+                    <span
+                      class="material-symbols-outlined absolute right-3 top-2.5 text-outline text-[20px]">store</span>
+                  </div>
+                </div>
+                <!-- Email Address -->
+                <div>
+                  <label class="block font-label-md text-on-surface font-semibold mb-1" for="email">Adresse
+                    e-mail</label>
+                  <div class="relative">
+                    <input
+                      class="w-full bg-surface-container-low focus:bg-surface-container-lowest rounded-xl py-2.5 px-space-md text-on-surface font-body-md border-0 outline-none focus:ring-2 focus:ring-primary transition-all placeholder:text-outline"
+                      id="email" placeholder="votre.email@exemple.tn" required="" type="email">
+                    <span
+                      class="material-symbols-outlined absolute right-3 top-2.5 text-outline text-[20px]">mail</span>
+                  </div>
+                </div>
+                <!-- Phone Number & Governorate Split -->
+                <div class="grid grid-cols-1 sm:grid-cols-12 gap-space-sm">
+                  <div class="sm:col-span-7">
+                    <label class="block font-label-md text-on-surface font-semibold mb-1" for="phone">Téléphone mobile
+                      (SMS)</label>
+                    <div
+                      class="flex rounded-xl bg-surface-container-low overflow-hidden focus-within:ring-2 focus-within:ring-primary transition-all">
+                      <span
+                        class="inline-flex items-center px-3 bg-surface-container text-on-surface-variant font-label-md font-semibold select-none">
+                        🇹🇳 +216
+                      </span>
+                      <input
+                        class="w-full bg-transparent py-2.5 px-space-md text-on-surface font-body-md border-0 outline-none placeholder:text-outline"
+                        id="phone" maxlength="8" pattern="[0-9]{8}" placeholder="98 123 456" required="" type="tel">
+                    </div>
+                    <span class="text-label-sm text-outline mt-0.5 block">Nécessaire pour le code de retrait</span>
+                  </div>
+                  <div class="sm:col-span-5">
+                    <label class="block font-label-md text-on-surface font-semibold mb-1" for="governorate">Ville /
+                      Région</label>
+                    <div class="relative">
+                      <select
+                        class="w-full bg-surface-container-low focus:bg-surface-container-lowest rounded-xl py-2.5 px-space-md text-on-surface font-body-md border-0 outline-none focus:ring-2 focus:ring-primary transition-all appearance-none cursor-pointer pr-9"
+                        id="governorate" required="">
+                        <option disabled="" selected="" value="">Sélectionner...</option>
+                        <option value="tunis">Tunis - Centre / Lafayette</option>
+                        <option value="marsa">La Marsa / Gammarth / Sidi Bou Said</option>
+                        <option value="ariana">Ariana / Ennasr / Menzah</option>
+                        <option value="ben_arous">Ben Arous / Mégrine / Rades</option>
+                        <option value="manouba">La Manouba / Denden</option>
+                        <option value="sousse">Sousse / Kantaoui</option>
+                        <option value="monastir">Monastir</option>
+                        <option value="sfax">Sfax</option>
+                        <option value="nabeul">Nabeul / Hammamet</option>
+                        <option value="bizerte">Bizerte</option>
+                      </select>
+                      <span
+                        class="material-symbols-outlined absolute right-3 top-2.5 text-outline text-[20px] pointer-events-none">expand_more</span>
+                    </div>
+                  </div>
+                </div>
+                <!-- Password & Gauge -->
+                <div>
+                  <div class="flex items-center justify-between mb-1">
+                    <label class="font-label-md text-on-surface font-semibold" for="password">Mot de passe</label>
+                    <button class="text-label-sm text-primary hover:underline font-medium flex items-center gap-1"
+                      onclick="togglePasswordVisibility()" type="button">
+                      <span class="material-symbols-outlined text-[16px]" id="eyeIcon">visibility</span>
+                      <span id="eyeText">Afficher</span>
+                    </button>
+                  </div>
+                  <div class="relative">
+                    <input
+                      class="w-full bg-surface-container-low focus:bg-surface-container-lowest rounded-xl py-2.5 px-space-md text-on-surface font-body-md border-0 outline-none focus:ring-2 focus:ring-primary transition-all placeholder:text-outline"
+                      id="password" oninput="updatePasswordStrength(this.value)" placeholder="Minimum 8 caractères"
+                      required="" type="password">
+                  </div>
+                  <!-- Password Strength Meter -->
+                  <div class="mt-2">
+                    <div class="grid grid-cols-4 gap-1.5 h-1.5 w-full">
+                      <div class="rounded-full bg-surface-container-high transition-colors duration-300" id="bar1">
+                      </div>
+                      <div class="rounded-full bg-surface-container-high transition-colors duration-300" id="bar2">
+                      </div>
+                      <div class="rounded-full bg-surface-container-high transition-colors duration-300" id="bar3">
+                      </div>
+                      <div class="rounded-full bg-surface-container-high transition-colors duration-300" id="bar4">
+                      </div>
+                    </div>
+                    <div class="flex items-center justify-between mt-1 text-label-sm">
+                      <span class="text-on-surface-variant" id="strengthLabel">Force du mot de passe</span>
+                      <span class="text-outline">Chiffres, minuscules, majuscules</span>
+                    </div>
+                  </div>
+                </div>
+                <!-- Consents and Checkboxes -->
+                <div class="pt-space-xs space-y-2">
+                  <label class="flex items-start gap-space-sm cursor-pointer select-none">
+                    <input
+                      class="mt-1 w-4 h-4 rounded text-primary focus:ring-primary border-outline-variant transition-colors"
+                      required="" type="checkbox">
+                    <span class="font-body-sm text-on-surface-variant leading-snug">
+                      J'accepte les <a class="text-primary font-semibold hover:underline" href="#">Conditions Générales
+                        d'Utilisation</a> et la <a class="text-primary font-semibold hover:underline" href="#">Politique
+                        de Confidentialité</a> de One More Bite.
+                    </span>
+                  </label>
+                  <label class="flex items-start gap-space-sm cursor-pointer select-none">
+                    <input checked=""
+                      class="mt-1 w-4 h-4 rounded text-secondary focus:ring-secondary border-outline-variant transition-colors"
+                      type="checkbox">
+                    <span class="font-body-sm text-on-surface-variant leading-snug">
+                      M'alerter par SMS / notification des paniers surprises à -50% dans mon quartier (recommandé).
+                    </span>
+                  </label>
+                </div>
+                <!-- Submit CTA Button -->
+                <div class="pt-space-sm">
+                  <button
+                    class="w-full py-3.5 px-space-lg rounded-xl bg-primary-container text-on-primary hover:bg-primary active:scale-[0.99] font-label-lg font-bold shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 group"
+                    id="submitBtn" type="submit">
+                    <span id="submitBtnText">Créer mon compte gourmand</span>
+                    <span
+                      class="material-symbols-outlined text-[20px] transition-transform group-hover:translate-x-1">arrow_forward</span>
+                  </button>
+                </div>
+                <!-- Reassurance Trust Badges -->
+                <div
+                  class="flex flex-wrap items-center justify-center gap-space-md pt-2 text-label-sm text-on-surface-variant">
+                  <span class="inline-flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[16px] text-secondary">lock</span> Données chiffrées
+                    &amp; protégées
+                  </span>
+                  <span class="inline-flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[16px] text-primary">cancel</span> Désinscription en 1
+                    clic
+                  </span>
+                </div>
+                <!-- Switch to Login Navigation -->
+                <div class="text-center pt-space-sm border-t border-surface-container-high mt-space-md">
+                  <p class="font-body-sm text-on-surface-variant">
+                    Vous avez déjà un compte ?
+                    <a class="font-label-md font-bold text-primary hover:underline ml-1" data-path="connexion"
+                      href="#connexion">
+                      Se connecter
+                    </a>
+                  </p>
+                </div>
+              </form>
+            </div>
+          </div>
+          <!-- Bottom Interactive Merchant Trust Bar -->
+
+        </div>
+      </div>
+    </div>
+    <script>
+      let currentRole = 'client';
+
+      function setRole(role) {
+        currentRole = role;
+        const clientBtn = document.getElementById('clientRoleBtn');
+        const merchantBtn = document.getElementById('merchantRoleBtn');
+        const roleBannerClient = document.getElementById('roleBannerClient');
+        const roleBannerMerchant = document.getElementById('roleBannerMerchant');
+        const merchantField = document.getElementById('merchantFieldBusiness');
+        const submitBtnText = document.getElementById('submitBtnText');
+        const firstNameLabel = document.getElementById('lblFirstName');
+        const lastNameLabel = document.getElementById('lblLastName');
+
+        if (role === 'client') {
+          clientBtn.className = 'flex items-center justify-center gap-2 py-2.5 px-space-md rounded-lg font-label-md transition-all shadow-sm bg-primary-container text-on-primary font-semibold text-left';
+          merchantBtn.className = 'flex items-center justify-center gap-2 py-2.5 px-space-md rounded-lg font-label-md transition-all text-on-surface-variant hover:text-primary text-left';
+
+          roleBannerClient.classList.remove('hidden');
+          roleBannerMerchant.classList.add('hidden');
+          merchantField.classList.add('hidden');
+
+          submitBtnText.innerText = "Créer mon compte gourmand";
+          firstNameLabel.innerText = "Prénom";
+          lastNameLabel.innerText = "Nom";
+        } else {
+          merchantBtn.className = 'flex items-center justify-center gap-2 py-2.5 px-space-md rounded-lg font-label-md transition-all shadow-sm bg-secondary text-on-secondary font-semibold text-left';
+          clientBtn.className = 'flex items-center justify-center gap-2 py-2.5 px-space-md rounded-lg font-label-md transition-all text-on-surface-variant hover:text-primary text-left';
+
+          roleBannerMerchant.classList.remove('hidden');
+          roleBannerClient.classList.add('hidden');
+          merchantField.classList.remove('hidden');
+
+          submitBtnText.innerText = "Inscrire mon commerce partenaire";
+          firstNameLabel.innerText = "Prénom du responsable";
+          lastNameLabel.innerText = "Nom du responsable";
+        }
+      }
+
+      function togglePasswordVisibility() {
+        const pwdInput = document.getElementById('password');
+        const eyeIcon = document.getElementById('eyeIcon');
+        const eyeText = document.getElementById('eyeText');
+
+        if (pwdInput.type === 'password') {
+          pwdInput.type = 'text';
+          eyeIcon.innerText = 'visibility_off';
+          eyeText.innerText = 'Masquer';
+        } else {
+          pwdInput.type = 'password';
+          eyeIcon.innerText = 'visibility';
+          eyeText.innerText = 'Afficher';
+        }
+      }
+
+      function updatePasswordStrength(val) {
+        const b1 = document.getElementById('bar1');
+        const b2 = document.getElementById('bar2');
+        const b3 = document.getElementById('bar3');
+        const b4 = document.getElementById('bar4');
+        const label = document.getElementById('strengthLabel');
+
+        // Reset bars
+        [b1, b2, b3, b4].forEach(b => {
+          b.className = 'rounded-full bg-surface-container-high transition-colors duration-300';
+        });
+
+        if (!val) {
+          label.innerText = 'Force du mot de passe';
+          label.className = 'text-on-surface-variant';
+          return;
+        }
+
+        let score = 0;
+        if (val.length >= 8) score++;
+        if (/[A-Z]/.test(val)) score++;
+        if (/[0-9]/.test(val)) score++;
+        if (/[^A-Za-z0-9]/.test(val)) score++;
+
+        if (score === 1) {
+          b1.className = 'rounded-full bg-error transition-colors duration-300';
+          label.innerText = 'Faible';
+          label.className = 'text-error font-medium';
+        } else if (score === 2) {
+          b1.className = 'rounded-full bg-amber-500 transition-colors duration-300';
+          b2.className = 'rounded-full bg-amber-500 transition-colors duration-300';
+          label.innerText = 'Moyen';
+          label.className = 'text-amber-600 font-medium';
+        } else if (score === 3) {
+          b1.className = 'rounded-full bg-secondary-fixed-dim transition-colors duration-300';
+          b2.className = 'rounded-full bg-secondary-fixed-dim transition-colors duration-300';
+          b3.className = 'rounded-full bg-secondary-fixed-dim transition-colors duration-300';
+          label.innerText = 'Bon';
+          label.className = 'text-secondary font-medium';
+        } else if (score >= 4) {
+          b1.className = 'rounded-full bg-secondary transition-colors duration-300';
+          b2.className = 'rounded-full bg-secondary transition-colors duration-300';
+          b3.className = 'rounded-full bg-secondary transition-colors duration-300';
+          b4.className = 'rounded-full bg-secondary transition-colors duration-300';
+          label.innerText = 'Excellent & Sécurisé';
+          label.className = 'text-secondary font-bold';
+        }
+      }
+
+      function handleRegistration(e) {
+        e.preventDefault();
+        const btn = document.getElementById('submitBtn');
+        const originalText = document.getElementById('submitBtnText').innerText;
+
+        // Quick interactive simulated submit feedback
+        btn.disabled = true;
+        btn.innerHTML = `<span class="inline-block animate-spin material-symbols-outlined text-[20px]">autorenew</span> Inscription en cours...`;
+
+        setTimeout(() => {
+          btn.innerHTML = `<span class="material-symbols-outlined text-[20px]">check_circle</span> Bienvenue chez One More Bite !`;
+          btn.className = "w-full py-3.5 px-space-lg rounded-xl bg-secondary text-on-secondary font-label-lg font-bold shadow-md flex items-center justify-center gap-2";
+          setTimeout(() => {
+            alert("Félicitations ! Votre compte est créé. Un code de validation SMS a été envoyé à votre numéro.");
+            btn.disabled = false;
+            btn.className = "w-full py-3.5 px-space-lg rounded-xl bg-primary-container text-on-primary hover:bg-primary active:scale-[0.99] font-label-lg font-bold shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 group";
+            btn.innerHTML = `<span id="submitBtnText">${originalText}</span><span class="material-symbols-outlined text-[20px] transition-transform group-hover:translate-x-1">arrow_forward</span>`;
+          }, 1200);
+        }, 1000);
+      }
+    </script>
+  </main>
+  <footer class="w-full bg-surface-container-low border-t border-surface-container-high pt-space-xl pb-space-lg">
+    <div class="max-w-[1280px] mx-auto px-margin md:px-margin-desktop">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-space-lg mb-space-xl">
+        <div class="md:col-span-1 flex flex-col">
+          <div class="flex items-center gap-space-xs mb-space-sm">
+            <div class="w-8 h-8 rounded-lg bg-primary-container text-on-primary flex items-center justify-center">
+              <span class="material-symbols-outlined text-[18px]">shopping_bag</span>
+            </div>
+            <span class="font-headline-sm font-bold text-primary">One More Bite</span>
+          </div>
+          <p class="font-body-sm text-on-surface-variant mb-space-md leading-relaxed">
+            Plateforme engagée pour la réduction du gaspillage alimentaire en Tunisie. Sauvez de délicieux repas tout en
+            économisant votre budget !
+          </p>
+          <span class="font-handwriting text-primary text-headline-sm">بنة بأقلّ سوم... ❤️</span>
+        </div>
+        <div>
+          <h5 class="font-label-lg font-bold text-on-surface mb-space-sm">Navigation</h5>
+          <ul class="space-y-space-xs font-body-sm text-on-surface-variant">
+            <li><a class="hover:text-primary transition-colors"
+                data-path="one-more-bite-accueil-avec-nouvelles-sections" href="#">Accueil</a></li>
+            <li><a class="hover:text-primary transition-colors" data-path="produits" href="#produits">Paniers
+                disponibles</a></li>
+            <li><a class="hover:text-primary transition-colors" data-path="commercants" href="#commercants">Commerçants
+                partenaires</a></li>
+            <li><a class="hover:text-primary transition-colors" data-path="a-propos" href="#a-propos">À propos</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5 class="font-label-lg font-bold text-on-surface mb-space-sm">Espace Compte</h5>
+          <ul class="space-y-space-xs font-body-sm text-on-surface-variant">
+            <li><a class="hover:text-primary transition-colors" data-path="connexion" href="#connexion">Se connecter
+                (Connexion)</a></li>
+            <li><a class="hover:text-primary transition-colors" data-path="inscription" href="#inscription">S'inscrire
+                (Inscription)</a></li>
+            <li><a class="hover:text-primary transition-colors" data-path="commercants" href="#commercants">Espace
+                commerçant partenaire</a></li>
+            <li><a class="hover:text-primary transition-colors" data-path="faq" href="#faq">FAQ &amp; Aide</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5 class="font-label-lg font-bold text-on-surface mb-space-sm">Contact &amp; Support</h5>
+          <ul class="space-y-space-xs font-body-sm text-on-surface-variant">
+            <li class="flex items-center gap-space-xs">
+              <span class="material-symbols-outlined text-[16px] text-primary">location_on</span>
+              <span>Tunis, Tunisie</span>
+            </li>
+            <li class="flex items-center gap-space-xs">
+              <span class="material-symbols-outlined text-[16px] text-primary">mail</span>
+              <span>contact@onemorebite.tn</span>
+            </li>
+            <li class="flex items-center gap-space-xs">
+              <span class="material-symbols-outlined text-[16px] text-primary">phone</span>
+              <span>+216 71 000 000</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div
+        class="pt-space-md border-t border-surface-container-high flex flex-col sm:flex-row items-center justify-between gap-space-sm font-label-sm text-on-surface-variant">
+        <p>© 2025 One More Bite. Tous droits réservés.</p>
+        <div class="flex items-center gap-space-md">
+          <a class="hover:text-primary transition-colors" href="#">Mentions légales</a>
+          <a class="hover:text-primary transition-colors" href="#">Politique de confidentialité</a>
+          <a class="hover:text-primary transition-colors" href="#">Conditions générales</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+</body>
+
+</html>

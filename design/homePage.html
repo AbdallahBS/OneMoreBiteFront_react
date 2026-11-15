@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+
+<html dir="ltr" lang="fr">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>One More Bite - بنة بأقلّ سوم</title>
+  <link href="https://fonts.googleapis.com" rel="preconnect" />
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Caveat:wght@600;700&amp;family=Readex+Pro:wght@400;500;600;700&amp;display=swap"
+    rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#7B263A",
+            "primary-dark": "#5D0E25",
+            "primary-soft": "#FDF2F4",
+            secondary: "#496640",
+            "secondary-container": "#c8e9b9",
+            surface: "#FCF9F8",
+            "surface-warm": "#FFF9F1",
+            "surface-container": "#F5EFEB",
+            "surface-card": "#FFFFFF",
+            "on-surface": "#231F20",
+            "on-surface-variant": "#62595B"
+          },
+          fontFamily: {
+            sans: ["Plus Jakarta Sans", "Readex Pro", "sans-serif"],
+            handwriting: ["Caveat", "cursive"]
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @layer base {
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #FFF9F1;
+      }
+    }
+
+    .wavy-underline {
+      background-repeat: repeat-x;
+      background-position: bottom;
+      background-size: 16px 6px;
+      padding-bottom: 6px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 6'%3E%3Cpath d='M0 3 Q 5 0, 10 3 T 20 3' fill='none' stroke='%237B263A' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+    }
+  </style>
+</head>
+
+<body class="bg-[#FFF9F1] font-sans text-on-surface antialiased selection:bg-primary-soft selection:text-primary">
+  <!-- 1. TOP NAVIGATION (Exact Match to Reference Image 2) -->
+  <header
+    class="w-full bg-[#FFF9F1] py-3.5 px-4 lg:px-8 border-b border-[#F0E6DE]/60 sticky top-0 z-50 backdrop-blur-md bg-opacity-95">
+    <div class="max-w-[1400px] mx-auto flex items-center justify-between gap-3">
+      <!-- Brand Logo -->
+      <a class="flex items-center gap-2.5 shrink-0 group" href="#">
+        <!-- Brand Icon / Tote Bag with Leaves -->
+        <div
+          class="w-10 h-10 rounded-xl bg-primary text-white flex items-center justify-center shadow-sm relative group-hover:scale-105 transition-transform">
+          <svg class="w-6 h-6 fill-current" viewbox="0 0 24 24">
+            <path
+              d="M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-3c1.66 0 3 1.34 3 3H9c0-1.66 1.34-3 3-3zm7 17H5V8h14v12z">
+            </path>
+            <path d="M10 13c1.5 0 2.5-1 3.5-3 0 2 1.5 3 2.5 3-1.5 0-2.5 1-3.5 3 0-2-1.5-3-2.5-3z" fill="#74BF70"></path>
+          </svg>
+          <span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-white"></span>
+        </div>
+        <div class="flex flex-col">
+          <span class="text-[20px] font-extrabold text-primary leading-tight tracking-tight flex items-center gap-1">
+            One More Bite <span class="text-xs text-green-600">🍃</span>
+          </span>
+          <span class="text-[10px] text-on-surface-variant font-medium tracking-wide">
+            بنة بأقلّ سوم...
+          </span>
+        </div>
+      </a>
+      <!-- Center Nav Links -->
+      <nav class="hidden lg:flex items-center gap-1 text-[13.5px] font-semibold text-[#4A4547]">
+        <a class="bg-primary text-white px-4 py-1.5 rounded-full shadow-sm transition-colors" href="#">
+          Accueil
+        </a>
+        <a class="px-3.5 py-1.5 rounded-full hover:text-primary transition-colors" href="#produits">
+          Produits
+        </a>
+        <a class="px-3.5 py-1.5 rounded-full hover:text-primary transition-colors" href="#commercants">
+          Commerçants
+        </a>
+        <a class="px-3.5 py-1.5 rounded-full hover:text-primary transition-colors" href="#a-propos">
+          À propos
+        </a>
+        <a class="px-3.5 py-1.5 rounded-full hover:text-primary transition-colors" href="#avis">
+          Avis
+        </a>
+        <a class="px-3.5 py-1.5 rounded-full hover:text-primary transition-colors" href="#faq">
+          FAQ
+        </a>
+      </nav>
+      <!-- Right Search & Action Buttons -->
+      <div class="flex items-center gap-2.5 sm:gap-3 shrink-0">
+        <!-- Search bar input -->
+        <div
+          class="hidden md:flex items-center bg-[#EFE9E4] hover:bg-[#E9E2DC] transition-colors rounded-full px-3.5 py-1.5 w-44 lg:w-56 text-[13px] border border-transparent focus-within:border-primary/40 focus-within:bg-white">
+          <input
+            class="bg-transparent border-0 outline-none w-full text-on-surface placeholder:text-gray-400 p-0 text-[12.5px] focus:ring-0"
+            placeholder="Rechercher un produit..." type="text" />
+          <span class="material-symbols-outlined text-[17px] text-gray-500 ml-1">search</span>
+        </div>
+        <!-- Se connecter (Outline) -->
+        <a class="text-[13px] font-bold text-primary border border-primary/80 hover:bg-primary/5 px-4 py-1.5 rounded-full transition-all"
+          href="#login">
+          Se connecter
+        </a>
+        <!-- S'inscrire (Filled) -->
+        <a class="text-[13px] font-bold text-white bg-primary hover:bg-primary-dark px-4 py-1.5 rounded-full shadow-sm hover:shadow transition-all"
+          href="#register">
+          S'inscrire
+        </a>
+      </div>
+    </div>
+  </header>
+  <!-- 2. HERO BANNER SECTION (Exact Composition of Reference Image 2) -->
+  <main class="w-full">
+    <section class="relative w-full max-w-[1400px] mx-auto px-4 lg:px-8 pt-4 pb-2">
+      <!-- Panoramic Container -->
+      <div
+        class="relative w-full min-h-[460px] lg:min-h-[500px] rounded-3xl overflow-hidden bg-[#FAF4ED] shadow-sm flex items-center">
+        <!-- Hero Background Image (Tunisian Bakery Basket with Flag & Warm Lights) -->
+        <div class="absolute inset-0 z-0">
+          <img alt="Corbeille de viennoiseries et pains tunisiens à l'heure dorée"
+            class="w-full h-full object-cover object-right md:object-center transform scale-100"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQZhJ7cmvdUOIQG8DWh1sq8vN6heKWnrQUQQQjrMAkFqQz_CcZ3dpTSPNMbzxCOafYjY9eEIumZvMAhgHrBy4gO1vBuOc5lGchG5vs1XpSKei2ZRPO29TSPPNE1FkP_PX8XCKApcJAEl0SK9J3aFkodxFoNWtVa32DPBr4-bl_p4k8IDcjMSZgjl1I5Hm4u5BECuOW0G8e8wGyat10QpDPqjAUC-afuvVCelZVejLNM9w8k9QaEF1a" />
+          <!-- Gentle Left Cream/Golden Gradient Mask for Crisp Typography Contrast -->
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-[#FFF8EE] via-[#FFF8EE]/90 md:via-[#FFF8EE]/75 to-transparent w-full md:w-[68%]">
+          </div>
+        </div>
+        <!-- Hero Content (Left Column) -->
+        <div class="relative z-10 w-full max-w-2xl px-6 sm:px-10 lg:px-14 py-8 flex flex-col items-start">
+          <!-- Top Pill Badge -->
+          <div
+            class="inline-flex items-center gap-1.5 bg-[#EAF5E9] border border-[#CDE5CB] text-[#346330] text-[12px] font-semibold px-3 py-1 rounded-full mb-4 shadow-2xs">
+            <span>🌱</span>
+            <span>Ensemble contre le gaspillage alimentaire</span>
+            <span class="text-red-500">❤️</span>
+          </div>
+          <!-- Main Headlines -->
+          <div class="flex flex-col mb-4">
+            <h1
+              class="text-[40px] sm:text-[48px] lg:text-[56px] font-extrabold text-primary tracking-tight leading-none mb-1">
+              One More Bite
+            </h1>
+            <div class="inline-block relative">
+              <h2
+                class="text-[32px] sm:text-[40px] lg:text-[46px] font-extrabold text-[#231F20] tracking-tight leading-tight">
+                بنة بأقلّ سوم...
+              </h2>
+              <div class="w-48 sm:w-60 h-2 wavy-underline mt-0.5"></div>
+            </div>
+          </div>
+          <!-- Subtitle with Hand-drawn heart doodle -->
+          <div class="relative max-w-lg mb-7">
+            <p class="text-[14.5px] sm:text-[15.5px] text-[#4A4345] leading-relaxed font-normal">
+              Découvrez des produits gourmands à prix réduits chez vos commerçants tunisiens, et donnez une seconde vie
+              à la nourriture !
+            </p>
+            <!-- Hand-drawn heart doodle positioned like mockup -->
+            <div class="absolute -right-7 sm:-right-9 top-0 text-red-500 select-none">
+              <svg class="w-6 h-6 transform rotate-12" fill="none" stroke="currentColor" stroke-linecap="round"
+                stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24">
+                <path
+                  d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                </path>
+              </svg>
+              <div class="absolute -top-1 -right-2 text-[10px] text-red-400 font-handwriting">✨</div>
+            </div>
+          </div>
+          <!-- CTAs -->
+          <div class="flex flex-wrap items-center gap-3">
+            <!-- Primary Action -->
+            <a class="inline-flex items-center gap-2 bg-primary hover:bg-primary-dark text-white font-bold text-[14px] px-6 py-2.5 rounded-full shadow-md hover:shadow-lg transition-all transform active:scale-95"
+              href="#produits">
+              <span class="material-symbols-outlined text-[18px]">search</span>
+              <span>Explorer les produits →</span>
+            </a>
+            <!-- Secondary Action -->
+            <a class="inline-flex items-center gap-2 bg-white hover:bg-white/90 text-primary border border-primary/50 font-bold text-[14px] px-5 py-2.5 rounded-full shadow-sm hover:shadow transition-all"
+              href="#comment-ca-marche">
+              <span class="text-primary text-[12px]">▶</span>
+              <span>Comment ça marche ?</span>
+            </a>
+          </div>
+        </div>
+        <!-- Right Slate / Chalkboard Signboard ("بنة بأقلّ سوم❤️") -->
+        <div
+          class="hidden lg:flex absolute bottom-8 right-64 z-20 transform -rotate-1 hover:rotate-0 transition-transform duration-300">
+          <div
+            class="bg-[#2D2A28] border-4 border-[#8B5A2B] rounded-xl px-5 py-3 shadow-2xl text-center max-w-[210px] relative">
+            <!-- Mini pin / easel detail -->
+            <div class="text-white font-handwriting text-[17px] leading-tight tracking-wide font-bold">
+              بنة بأقلّ سوم<span class="text-red-400">♥</span>
+            </div>
+            <!-- Chalk dust subtle accent -->
+            <div class="absolute inset-0 bg-white/5 rounded pointer-events-none"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- 3. FEATURE HIGHLIGHTS BAR (Matching Reference Image 2) -->
+    <section class="max-w-[1400px] mx-auto px-4 lg:px-8 py-3">
+      <div class="bg-[#FAF3EA] rounded-2xl p-4 lg:p-6 shadow-xs border border-[#F2E5D6]">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-6">
+          <!-- Highlight 1: Leaf -->
+          <div class="flex items-center gap-3.5">
+            <div class="w-12 h-12 rounded-full bg-[#E5F2E2] text-[#3D7736] flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-[26px]">eco</span>
+            </div>
+            <div class="flex flex-col text-left">
+              <span class="text-[13px] lg:text-[14px] font-bold text-[#2E282A] leading-snug">
+                Réduisons le gaspillage alimentaire
+              </span>
+            </div>
+          </div>
+          <!-- Highlight 2: Piggy Bank -->
+          <div class="flex items-center gap-3.5">
+            <div class="w-12 h-12 rounded-full bg-[#FFEAD6] text-[#C96B26] flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-[26px]">savings</span>
+            </div>
+            <div class="flex flex-col text-left">
+              <span class="text-[13px] lg:text-[14px] font-bold text-[#2E282A] leading-snug">
+                Économisez sur vos achats
+              </span>
+            </div>
+          </div>
+          <!-- Highlight 3: Storefront -->
+          <div class="flex items-center gap-3.5">
+            <div class="w-12 h-12 rounded-full bg-[#FCE8E8] text-[#9A3434] flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-[26px]">storefront</span>
+            </div>
+            <div class="flex flex-col text-left">
+              <span class="text-[13px] lg:text-[14px] font-bold text-[#2E282A] leading-snug">
+                Soutenez les commerçants locaux
+              </span>
+            </div>
+          </div>
+          <!-- Highlight 4: Heart / Flower -->
+          <div class="flex items-center gap-3.5">
+            <div class="w-12 h-12 rounded-full bg-[#FDF0E6] text-[#A63A4D] flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-[26px]">volunteer_activism</span>
+            </div>
+            <div class="flex flex-col text-left">
+              <span class="text-[13px] lg:text-[14px] font-bold text-[#2E282A] leading-snug">
+                Agissons ensemble pour un avenir durable
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- 4. SECTION TITLE: "— Produits populaires —" (Exact styling in reference) -->
+    <section class="max-w-[1400px] mx-auto px-4 lg:px-8 pt-8 pb-4" id="produits">
+      <div class="flex items-center justify-center gap-3 text-center mb-6">
+        <span class="h-[1.5px] w-12 sm:w-20 bg-primary/40 rounded-full"></span>
+        <h2 class="text-[26px] sm:text-[30px] font-extrabold text-primary tracking-tight">
+          Produits populaires
+        </h2>
+        <span class="h-[1.5px] w-12 sm:w-20 bg-primary/40 rounded-full"></span>
+      </div>
+      <!-- Categories Filter Tabs -->
+      <div class="flex items-center justify-center gap-2 overflow-x-auto pb-4 mb-6">
+        <button class="bg-primary text-white text-[13px] font-bold px-4 py-1.5 rounded-full shadow-xs">
+          Tous les paniers (124)
+        </button>
+        <button
+          class="bg-[#FAF3EA] hover:bg-[#F2E5D6] text-on-surface text-[13px] font-semibold px-4 py-1.5 rounded-full transition-colors">
+          🥐 Pâtisseries &amp; Boulangeries
+        </button>
+        <button
+          class="bg-[#FAF3EA] hover:bg-[#F2E5D6] text-on-surface text-[13px] font-semibold px-4 py-1.5 rounded-full transition-colors">
+          🥪 Plats &amp; Street-Food
+        </button>
+        <button
+          class="bg-[#FAF3EA] hover:bg-[#F2E5D6] text-on-surface text-[13px] font-semibold px-4 py-1.5 rounded-full transition-colors">
+          ☕ Cafés &amp; Salons de thé
+        </button>
+      </div>
+      <!-- Surplus Deal Showcase Cards Using Image 5 and Image 6 -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+        <!-- Product Card 1: Traditional Sweets (Image 5) -->
+        <div
+          class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all border border-[#F0E6DE] flex flex-col group">
+          <div class="relative w-full h-56 overflow-hidden bg-gray-100">
+            <img alt="Assortiment de pâtisseries tunisiennes, baklava et makroudh"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              src="https://lh3.googleusercontent.com/aida/ALJJyrB3Na__et1ceYjONqDC5SB4ev7A4jRxHFOL9SAVHW_xEc5XRzkqJg3HUpyUrihqsYkMM2hOFESzpdKtGyOz5zwCxsOqm8WabXUM89u7S-I1dIshFFKNo-o2GvKmxJDjUmnXpHaH0rxxrkn65ieEfuo4g3tSdn9MNn2Psl-tZL6wCK85JaE3QgnhaBByez9Rk3qJOYaSkXP9j0c8fNp4Wvdi2f3IZch5asBcoLRNdX13" />
+            <span
+              class="absolute top-3 left-3 bg-primary text-white text-[12px] font-bold px-2.5 py-1 rounded-full shadow-sm">
+              -45%
+            </span>
+            <div
+              class="absolute bottom-3 right-3 bg-black/60 backdrop-blur-sm text-white text-[11px] font-medium px-2.5 py-1 rounded-full flex items-center gap-1">
+              <span class="material-symbols-outlined text-[14px] text-green-400">schedule</span>
+              <span>Retrait: 18h30 - 20h00</span>
+            </div>
+          </div>
+          <div class="p-5 flex flex-col flex-1">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-[12px] font-bold text-secondary flex items-center gap-1">
+                <span class="material-symbols-outlined text-[14px]">store</span>
+                Pâtisserie La Médina • Menzah 6
+              </span>
+              <span class="text-[11px] font-semibold bg-green-50 text-green-700 px-2 py-0.5 rounded-full">
+                Reste 3 paniers
+              </span>
+            </div>
+            <h3 class="text-[17px] font-bold text-[#231F20] mb-2 group-hover:text-primary transition-colors">
+              Panier Douceurs Tunisiennes (Baklava &amp; Makroudh)
+            </h3>
+            <p class="text-[13px] text-on-surface-variant line-clamp-2 mb-4 leading-relaxed">
+              Sélection artisanale de gâteaux traditionnels du jour au miel, dattes et amandes croquantes.
+            </p>
+            <div class="mt-auto pt-3 border-t border-[#F5EBE1] flex items-center justify-between">
+              <div class="flex flex-col">
+                <span class="text-[12px] text-gray-400 line-through">24.000 DT</span>
+                <span class="text-[19px] font-extrabold text-primary">13.200 DT</span>
+              </div>
+              <button
+                class="bg-primary hover:bg-primary-dark text-white text-[13px] font-bold px-4 py-2 rounded-full shadow-xs hover:shadow transition-all active:scale-95">
+                Réserver
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- Product Card 2: Savory Fricassé & Kafteji (Image 6) -->
+        <div
+          class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all border border-[#F0E6DE] flex flex-col group">
+          <div class="relative w-full h-56 overflow-hidden bg-gray-100">
+            <img alt="Fricassé tunisien et baguette kafteji artisanale"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              src="https://lh3.googleusercontent.com/aida/ALJJyrB3ls7tHhfQaAhZaH3Ys729W2rK7kW-_V0B5jNP07Yu-yK8mSMW2f5tRewfe4Gt-f58f631ABVoobcM521ZiHUSwGnLsCB61AObSAXX20MxxTDB5Q-zafDdLIJTIFtBLEaSgD83YRVB_uzLDIm1lA2DKumvZNtnVuO6cQaR2aPLQfeZJOvQLzoPumqB2m61EWNcPM-U6iQz0YfNURvmYHAwNFsixZp366VcOslYEyUr" />
+            <span
+              class="absolute top-3 left-3 bg-primary text-white text-[12px] font-bold px-2.5 py-1 rounded-full shadow-sm">
+              -50%
+            </span>
+            <div
+              class="absolute bottom-3 right-3 bg-black/60 backdrop-blur-sm text-white text-[11px] font-medium px-2.5 py-1 rounded-full flex items-center gap-1">
+              <span class="material-symbols-outlined text-[14px] text-green-400">schedule</span>
+              <span>Retrait: 19h00 - 21h00</span>
+            </div>
+          </div>
+          <div class="p-5 flex flex-col flex-1">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-[12px] font-bold text-secondary flex items-center gap-1">
+                <span class="material-symbols-outlined text-[14px]">restaurant</span>
+                Fast-Food Authentique • La Marsa
+              </span>
+              <span class="text-[11px] font-semibold bg-red-50 text-red-600 px-2 py-0.5 rounded-full">
+                Plus que 2 paniers !
+              </span>
+            </div>
+            <h3 class="text-[17px] font-bold text-[#231F20] mb-2 group-hover:text-primary transition-colors">
+              Duo Casse-croûte Kafteji &amp; Fricassé Fait Maison
+            </h3>
+            <p class="text-[13px] text-on-surface-variant line-clamp-2 mb-4 leading-relaxed">
+              Pain baguette croustillant garni au kafteji, œuf, olives et harissa du terroir, préparés avec passion.
+            </p>
+            <div class="mt-auto pt-3 border-t border-[#F5EBE1] flex items-center justify-between">
+              <div class="flex flex-col">
+                <span class="text-[12px] text-gray-400 line-through">12.000 DT</span>
+                <span class="text-[19px] font-extrabold text-primary">6.000 DT</span>
+              </div>
+              <button
+                class="bg-primary hover:bg-primary-dark text-white text-[13px] font-bold px-4 py-2 rounded-full shadow-xs hover:shadow transition-all active:scale-95">
+                Réserver
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- Product Card 3: Fresh Viennoiseries (Image 7 detail) -->
+        <div
+          class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all border border-[#F0E6DE] flex flex-col group">
+          <div class="relative w-full h-56 overflow-hidden bg-gray-100">
+            <img alt="Croissants au beurre et pains dorés"
+              class="w-full h-full object-cover object-right group-hover:scale-105 transition-transform duration-500"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQZhJ7cmvdUOIQG8DWh1sq8vN6heKWnrQUQQQjrMAkFqQz_CcZ3dpTSPNMbzxCOafYjY9eEIumZvMAhgHrBy4gO1vBuOc5lGchG5vs1XpSKei2ZRPO29TSPPNE1FkP_PX8XCKApcJAEl0SK9J3aFkodxFoNWtVa32DPBr4-bl_p4k8IDcjMSZgjl1I5Hm4u5BECuOW0G8e8wGyat10QpDPqjAUC-afuvVCelZVejLNM9w8k9QaEF1a" />
+            <span
+              class="absolute top-3 left-3 bg-primary text-white text-[12px] font-bold px-2.5 py-1 rounded-full shadow-sm">
+              -60%
+            </span>
+            <div
+              class="absolute bottom-3 right-3 bg-black/60 backdrop-blur-sm text-white text-[11px] font-medium px-2.5 py-1 rounded-full flex items-center gap-1">
+              <span class="material-symbols-outlined text-[14px] text-green-400">schedule</span>
+              <span>Retrait: 18h00 - 19h30</span>
+            </div>
+          </div>
+          <div class="p-5 flex flex-col flex-1">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-[12px] font-bold text-secondary flex items-center gap-1">
+                <span class="material-symbols-outlined text-[14px]">bakery_dining</span>
+                Fournil Lafayette • Tunis Centre
+              </span>
+              <span class="text-[11px] font-semibold bg-green-50 text-green-700 px-2 py-0.5 rounded-full">
+                Reste 4 paniers
+              </span>
+            </div>
+            <h3 class="text-[17px] font-bold text-[#231F20] mb-2 group-hover:text-primary transition-colors">
+              Panier Viennoiseries du Matin &amp; Pain Artisanal
+            </h3>
+            <p class="text-[13px] text-on-surface-variant line-clamp-2 mb-4 leading-relaxed">
+              Croissants pur beurre dorés, pains briochés et baguettes traditionnelles cuites au feu de bois.
+            </p>
+            <div class="mt-auto pt-3 border-t border-[#F5EBE1] flex items-center justify-between">
+              <div class="flex flex-col">
+                <span class="text-[12px] text-gray-400 line-through">9.500 DT</span>
+                <span class="text-[19px] font-extrabold text-primary">3.800 DT</span>
+              </div>
+              <button
+                class="bg-primary hover:bg-primary-dark text-white text-[13px] font-bold px-4 py-2 rounded-full shadow-xs hover:shadow transition-all active:scale-95">
+                Réserver
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Trust Indicator Card (Cash on pickup) -->
+      <div
+        class="max-w-3xl mx-auto bg-[#FBF5ED] border border-[#EEDBCA] rounded-2xl p-4 sm:p-5 flex items-center gap-4 mb-10">
+        <div class="w-12 h-12 rounded-full bg-[#E6F3E4] text-[#346330] flex items-center justify-center shrink-0">
+          <span class="material-symbols-outlined text-[26px]">payments</span>
+        </div>
+        <div class="flex flex-col text-left">
+          <h4 class="text-[14.5px] font-bold text-on-surface">Paiement 100% sur place, zéro carte bancaire requise</h4>
+          <p class="text-[13px] text-on-surface-variant leading-relaxed">
+            Réservez gratuitement votre panier en ligne en un clic, et réglez directement en espèces auprès de votre
+            commerçant lors du retrait.
+          </p>
+        </div>
+      </div><!-- SECTION: HOW TO RESERVE (كيفاش تحجز ماكلتك؟) -->
+      <section class="mt-14 mb-16 bg-[#FAF4ED] border border-[#EEDBCA] rounded-3xl p-6 sm:p-10 shadow-xs text-right"
+        dir="rtl">
+        <div class="text-center max-w-2xl mx-auto mb-10">
+          <div
+            class="inline-flex items-center gap-1.5 bg-[#FDF2F4] border border-primary/20 text-primary text-[12px] font-semibold px-3 py-1 rounded-full mb-3 shadow-2xs">
+            <span>⚡</span><span>حجز سريع وسهل</span>
+          </div>
+          <h2 class="text-[28px] sm:text-[34px] font-extrabold text-primary tracking-tight leading-tight mb-2">تحب تحجز
+            ماكلتك؟ أسهل ممّا تتصوّر!</h2>
+          <p class="text-[15px] text-on-surface-variant font-medium">3 خطوات بسيطة وتكون وجبتك تستنّاك.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
+          <div
+            class="bg-white rounded-2xl p-6 border border-[#F0E6DE] text-center flex flex-col items-center shadow-xs hover:shadow-md transition-all group relative">
+            <div
+              class="w-14 h-14 rounded-2xl bg-primary text-white flex items-center justify-center font-extrabold text-xl shadow-md mb-4 group-hover:scale-105 transition-transform relative">
+              <span class="material-symbols-outlined text-[28px]">search_spark</span><span
+                class="absolute -top-2 -right-2 w-6 h-6 bg-[#C96B26] text-white text-[12px] font-bold rounded-full flex items-center justify-center border-2 border-white">1</span>
+            </div>
+            <h3 class="text-[18px] font-bold text-[#231F20] mb-2">الخطوة 1: "قلّب واكتشف"</h3>
+            <p class="text-[13.5px] text-on-surface-variant leading-relaxed">تصفّح العروض القريبة ليك، واختار الماكلة
+              اللي تشهّيك بالسوم اللي يناسبك.</p>
+          </div>
+          <div
+            class="bg-white rounded-2xl p-6 border border-[#F0E6DE] text-center flex flex-col items-center shadow-xs hover:shadow-md transition-all group relative">
+            <div
+              class="w-14 h-14 rounded-2xl bg-primary text-white flex items-center justify-center font-extrabold text-xl shadow-md mb-4 group-hover:scale-105 transition-transform relative">
+              <span class="material-symbols-outlined text-[28px]">shopping_bag</span><span
+                class="absolute -top-2 -right-2 w-6 h-6 bg-[#C96B26] text-white text-[12px] font-bold rounded-full flex items-center justify-center border-2 border-white">2</span>
+            </div>
+            <h3 class="text-[18px] font-bold text-[#231F20] mb-2">الخطوة 2: "احجز بلا تعقيد"</h3>
+            <p class="text-[13.5px] text-on-surface-variant leading-relaxed">اختار المنتوج والكمية اللي تحب عليها، وأكّد
+              الحجز متاعك في ثواني.</p>
+          </div>
+          <div
+            class="bg-white rounded-2xl p-6 border border-[#F0E6DE] text-center flex flex-col items-center shadow-xs hover:shadow-md transition-all group relative">
+            <div
+              class="w-14 h-14 rounded-2xl bg-primary text-white flex items-center justify-center font-extrabold text-xl shadow-md mb-4 group-hover:scale-105 transition-transform relative">
+              <span class="material-symbols-outlined text-[28px]">storefront</span><span
+                class="absolute -top-2 -right-2 w-6 h-6 bg-[#C96B26] text-white text-[12px] font-bold rounded-full flex items-center justify-center border-2 border-white">3</span>
+            </div>
+            <h3 class="text-[18px] font-bold text-[#231F20] mb-2">الخطوة 3: "امشي واستلم"</h3>
+            <p class="text-[13.5px] text-on-surface-variant leading-relaxed">امشي للمحل في الوقت المناسب، استلم طلبيتك
+              وخلّص مباشرة عند التاجر.</p>
+          </div>
+        </div>
+        <div class="mt-8 text-center">
+          <div
+            class="inline-flex items-center gap-2 bg-[#EAF5E9] border border-[#CDE5CB] text-[#346330] text-[13px] font-semibold px-4 py-2 rounded-full shadow-2xs">
+            <span>✨</span><span>الحجز مجاني بالكامل والدفع ديراكت عند التاجر كاش كي تستلم ماكلتك</span>
+          </div>
+        </div>
+      </section><!-- SECTION: FEATURED MERCHANTS (أحسن التجّار) -->
+      <section class="mb-16" dir="rtl" id="commercants">
+        <div class="flex items-center justify-center gap-3 text-center mb-2"><span
+            class="h-[1.5px] w-12 sm:w-20 bg-primary/40 rounded-full"></span>
+          <h2 class="text-[26px] sm:text-[32px] font-extrabold text-primary tracking-tight">أحسن التجّار قريب ليك</h2>
+          <span class="h-[1.5px] w-12 sm:w-20 bg-primary/40 rounded-full"></span>
+        </div>
+        <p class="text-center text-[14.5px] text-on-surface-variant mb-8">اكتشف المحلات اللي يقدّموا عروض بنينة وتجارب
+          مميّزة.</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"><!-- Merchant 1 -->
+          <div
+            class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all border border-[#F0E6DE] flex flex-col group">
+            <div class="relative w-full h-48 overflow-hidden bg-gray-100"><img alt="مخبزة وحلويات الياسمين"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCO6ViaxEF0Oo_KNR8A_HiBjN0T2-tXFfb11Zt6NuGZwC3TzSKkxx3MoBXw1GYhvCe9JyTLT3ZJdpjh7X-NAT_FiWUtMRfQl5-vrUylDC4d-yTevMD1xcqdkIhf1kYISLRrC9fQniO0sGyK93gDstGqoowirKjqA8_5IgAoNtGisMLjT6owX4ursZbhckpVOshcjJUeGQbh8t3Ey6Rkp_TEUCz7VVBw0J77HAIhQf4" /><span
+                class="absolute top-3 right-3 bg-secondary text-white text-[12px] font-bold px-2.5 py-1 rounded-full shadow-sm">اختيار
+                الحرفاء</span><span
+                class="absolute bottom-3 right-3 bg-black/60 backdrop-blur-sm text-white text-[11px] font-medium px-2.5 py-1 rounded-full">مخبزة
+                &amp; pâtisserie</span></div>
+            <div class="p-5 flex flex-col flex-1 text-right">
+              <div class="flex items-center justify-between mb-2">
+                <h3 class="text-[18px] font-bold text-[#231F20] group-hover:text-primary transition-colors">مخبزة
+                  وحلويات الياسمين</h3><span
+                  class="text-[12px] font-bold text-[#C96B26] bg-[#FFEAD6] px-2 py-0.5 rounded-full">★ 4.9 (142
+                  تقييم)</span>
+              </div>
+              <p class="text-[13px] text-on-surface-variant mb-4 flex items-center gap-1.5 leading-relaxed">
+                <span>📍</span><span>لافايات، تونس العاصمة (يبعد 800 م)</span>
+              </p>
+              <div class="mt-auto pt-3 border-t border-[#F5EBE1] flex items-center justify-between"><a
+                  class="w-full text-center bg-primary hover:bg-primary-dark text-white text-[13px] font-bold py-2 rounded-full shadow-xs hover:shadow transition-all active:scale-95"
+                  href="#produits">شوف العروض</a></div>
+            </div>
+          </div><!-- Merchant 2 -->
+          <div
+            class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all border border-[#F0E6DE] flex flex-col group">
+            <div class="relative w-full h-48 overflow-hidden bg-gray-100"><img alt="باتيسري المدينة العتيقة"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRmJfAuVeIyl3WmS6-vvupz8mt3dAnWNyk2gJ68sQAdAcu5bwOvEVLaiS_ETQecGviOkRgt21xdKpWb72zVbutv_8XsHqhlAYFJA0GfjcU0DvdAcqrjL-VXb9nzzmNR83Sm7IfDNjLPxP13DPiia_dtEJ-JCqq62LtGKDmVUaT0GGuK-KWYUrjgJBnI8KEqC4E6iiinsY3R9ASpikt0WHOtGxIajL8FBua_YUiz7s" /><span
+                class="absolute top-3 right-3 bg-primary text-white text-[12px] font-bold px-2.5 py-1 rounded-full shadow-sm">الأكثر
+                تقييماً</span><span
+                class="absolute bottom-3 right-3 bg-black/60 backdrop-blur-sm text-white text-[11px] font-medium px-2.5 py-1 rounded-full">حلويات
+                تقليدية</span></div>
+            <div class="p-5 flex flex-col flex-1 text-right">
+              <div class="flex items-center justify-between mb-2">
+                <h3 class="text-[18px] font-bold text-[#231F20] group-hover:text-primary transition-colors">باتيسري
+                  المدينة العتيقة</h3><span
+                  class="text-[12px] font-bold text-[#C96B26] bg-[#FFEAD6] px-2 py-0.5 rounded-full">★ 4.8 (98
+                  تقييم)</span>
+              </div>
+              <p class="text-[13px] text-on-surface-variant mb-4 flex items-center gap-1.5 leading-relaxed">
+                <span>📍</span><span>المنزه 6، تونس (يبعد 2.5 كم)</span>
+              </p>
+              <div class="mt-auto pt-3 border-t border-[#F5EBE1] flex items-center justify-between"><a
+                  class="w-full text-center bg-primary hover:bg-primary-dark text-white text-[13px] font-bold py-2 rounded-full shadow-xs hover:shadow transition-all active:scale-95"
+                  href="#produits">شوف العروض</a></div>
+            </div>
+          </div><!-- Merchant 3 -->
+          <div
+            class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all border border-[#F0E6DE] flex flex-col group">
+            <div class="relative w-full h-48 overflow-hidden bg-gray-100"><img alt="كافيتي وماكولات الطيبين"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDvciAWPIwJtLvOOD-WuzJuAa-d1i4fxzDtXGwRShv2QpZY9DBry3LqxVLk3N4l3h1ErLb82OwDemrXCIYwtIulK8VRvNr--Bp3BFBmRdqPRta-Js3VN_0t12CucH5h56d_YgrY4IIfPKeJhsCg77_KU_T6MbKLOTForjU-za-NAQbxhJ3mjEgIESUdsRyHQcApdlDqsj4hPHdyCRc4XI10fqNNfUFpWVK5b-TlrQ" /><span
+                class="absolute top-3 right-3 bg-primary text-white text-[12px] font-bold px-2.5 py-1 rounded-full shadow-sm">الأكثر
+                طلباً</span><span
+                class="absolute bottom-3 right-3 bg-black/60 backdrop-blur-sm text-white text-[11px] font-medium px-2.5 py-1 rounded-full">أكلات
+                سريعة وساندويتش</span></div>
+            <div class="p-5 flex flex-col flex-1 text-right">
+              <div class="flex items-center justify-between mb-2">
+                <h3 class="text-[18px] font-bold text-[#231F20] group-hover:text-primary transition-colors">كافيتي
+                  وماكولات الطيبين</h3><span
+                  class="text-[12px] font-bold text-[#C96B26] bg-[#FFEAD6] px-2 py-0.5 rounded-full">★ 4.9 (210
+                  تقييم)</span>
+              </div>
+              <p class="text-[13px] text-on-surface-variant mb-4 flex items-center gap-1.5 leading-relaxed">
+                <span>📍</span><span>المرسى، تونس (يبعد 1.2 كم)</span>
+              </p>
+              <div class="mt-auto pt-3 border-t border-[#F5EBE1] flex items-center justify-between"><a
+                  class="w-full text-center bg-primary hover:bg-primary-dark text-white text-[13px] font-bold py-2 rounded-full shadow-xs hover:shadow transition-all active:scale-95"
+                  href="#produits">شوف العروض</a></div>
+            </div>
+          </div>
+        </div>
+      </section><!-- SECTION: CUSTOMER REVIEWS (آراء الحرفاء) -->
+      <section class="mb-16" dir="rtl" id="avis">
+        <div class="flex items-center justify-center gap-3 text-center mb-2"><span
+            class="h-[1.5px] w-12 sm:w-20 bg-primary/40 rounded-full"></span>
+          <h2 class="text-[26px] sm:text-[32px] font-extrabold text-primary tracking-tight">شنوّة قالوا علينا؟</h2><span
+            class="h-[1.5px] w-12 sm:w-20 bg-primary/40 rounded-full"></span>
+        </div>
+        <p class="text-center text-[14.5px] text-on-surface-variant mb-8">تجارب حقيقية من ناس جرّبوا One More Bite.</p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6"><!-- Testimonial 1 -->
+          <div
+            class="bg-white rounded-2xl p-6 border border-[#F0E6DE] shadow-xs hover:shadow-md transition-all flex flex-col text-right">
+            <div class="flex items-center justify-between mb-3">
+              <div class="text-[#C96B26] text-[15px] font-bold tracking-widest">★★★★★</div><span
+                class="text-primary/30 text-2xl font-serif font-extrabold leading-none">”</span>
+            </div>
+            <p class="text-[14px] text-on-surface leading-relaxed mb-6 font-normal">"تجربة بنينة برشا! خذيت ماكلة باهية
+              وبسوم أقل، وأكيد نعاود التجربة."</p>
+            <div class="mt-auto pt-4 border-t border-[#F5EBE1] flex items-center gap-3">
+              <div
+                class="w-10 h-10 rounded-full bg-primary-soft text-primary font-bold flex items-center justify-center border border-primary/20 shrink-0 text-sm">
+                م.ع</div>
+              <div class="flex flex-col"><span class="text-[14px] font-bold text-[#231F20]">مريم العبيدي</span><span
+                  class="text-[11.5px] text-on-surface-variant">حجزت من: باتيسري المدينة</span></div>
+            </div>
+          </div><!-- Testimonial 2 -->
+          <div
+            class="bg-white rounded-2xl p-6 border border-[#F0E6DE] shadow-xs hover:shadow-md transition-all flex flex-col text-right">
+            <div class="flex items-center justify-between mb-3">
+              <div class="text-[#C96B26] text-[15px] font-bold tracking-widest">★★★★★</div><span
+                class="text-primary/30 text-2xl font-serif font-extrabold leading-none">”</span>
+            </div>
+            <p class="text-[14px] text-on-surface leading-relaxed mb-6 font-normal">"فكرة ممتازة، وفّرت في فلوسي وفي نفس
+              الوقت عاونت باش الماكلة ما تضيعش."</p>
+            <div class="mt-auto pt-4 border-t border-[#F5EBE1] flex items-center gap-3">
+              <div
+                class="w-10 h-10 rounded-full bg-[#E5F2E2] text-[#346330] font-bold flex items-center justify-center border border-[#CDE5CB] shrink-0 text-sm">
+                ي.ص</div>
+              <div class="flex flex-col"><span class="text-[14px] font-bold text-[#231F20]">ياسين بن صالح</span><span
+                  class="text-[11.5px] text-on-surface-variant">حجز من: مخبزة الياسمين</span></div>
+            </div>
+          </div><!-- Testimonial 3 -->
+          <div
+            class="bg-white rounded-2xl p-6 border border-[#F0E6DE] shadow-xs hover:shadow-md transition-all flex flex-col text-right">
+            <div class="flex items-center justify-between mb-3">
+              <div class="text-[#C96B26] text-[15px] font-bold tracking-widest">★★★★★</div><span
+                class="text-primary/30 text-2xl font-serif font-extrabold leading-none">”</span>
+            </div>
+            <p class="text-[14px] text-on-surface leading-relaxed mb-6 font-normal">"الحجز كان ساهل والتاجر كان متعاون
+              برشا. ننصحكم تجرّبو!"</p>
+            <div class="mt-auto pt-4 border-t border-[#F5EBE1] flex items-center gap-3">
+              <div
+                class="w-10 h-10 rounded-full bg-[#FFEAD6] text-[#C96B26] font-bold flex items-center justify-center border border-[#EEDBCA] shrink-0 text-sm">
+                س.م</div>
+              <div class="flex flex-col"><span class="text-[14px] font-bold text-[#231F20]">سارة الماجري</span><span
+                  class="text-[11.5px] text-on-surface-variant">حجزت من: ماكولات الطيبين</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+  </main>
+  <!-- FOOTER -->
+  <footer class="w-full bg-[#FAF3EA] border-t border-[#EFE4D7] pt-12 pb-8">
+    <div class="max-w-[1400px] mx-auto px-4 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
+        <div class="md:col-span-1 flex flex-col">
+          <div class="flex items-center gap-2 mb-3">
+            <div class="w-8 h-8 rounded-lg bg-primary text-white flex items-center justify-center">
+              <span class="material-symbols-outlined text-[18px]">shopping_bag</span>
+            </div>
+            <span class="text-[18px] font-extrabold text-primary">One More Bite</span>
+          </div>
+          <p class="text-[13px] text-on-surface-variant leading-relaxed mb-4">
+            Plateforme engagée pour la réduction du gaspillage alimentaire en Tunisie. Sauvez de délicieux repas tout en
+            économisant votre budget !
+          </p>
+          <span class="text-[12px] font-handwriting text-primary text-[15px]">بنة بأقلّ سوم... ❤️</span>
+        </div>
+        <div>
+          <h5 class="text-[14px] font-bold text-[#231F20] mb-3">Navigation</h5>
+          <ul class="space-y-2 text-[13px] text-on-surface-variant">
+            <li><a class="hover:text-primary transition-colors" href="#">Accueil</a></li>
+            <li><a class="hover:text-primary transition-colors" href="#produits">Paniers disponibles</a></li>
+            <li><a class="hover:text-primary transition-colors" href="#">Commerçants partenaires</a></li>
+            <li><a class="hover:text-primary transition-colors" href="#">À propos</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5 class="text-[14px] font-bold text-[#231F20] mb-3">Pour les commerçants</h5>
+          <ul class="space-y-2 text-[13px] text-on-surface-variant">
+            <li><a class="hover:text-primary transition-colors" href="#">Inscrire mon commerce</a></li>
+            <li><a class="hover:text-primary transition-colors" href="#">Espace partenaire</a></li>
+            <li><a class="hover:text-primary transition-colors" href="#">Avantages zéro-gaspi</a></li>
+            <li><a class="hover:text-primary transition-colors" href="#">FAQ Commerçants</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5 class="text-[14px] font-bold text-[#231F20] mb-3">Contact &amp; Support</h5>
+          <ul class="space-y-2 text-[13px] text-on-surface-variant">
+            <li class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-[16px] text-primary">location_on</span>
+              <span>Tunis, Tunisie</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-[16px] text-primary">mail</span>
+              <span>contact@onemorebite.tn</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-[16px] text-primary">phone</span>
+              <span>+216 71 000 000</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div
+        class="pt-6 border-t border-[#E8DDCE] flex flex-col sm:flex-row items-center justify-between gap-4 text-[12px] text-on-surface-variant">
+        <p>© 2025 One More Bite. Tous droits réservés.</p>
+        <div class="flex items-center gap-4">
+          <a class="hover:text-primary transition-colors" href="#">Mentions légales</a>
+          <a class="hover:text-primary transition-colors" href="#">Politique de confidentialité</a>
+          <a class="hover:text-primary transition-colors" href="#">Conditions générales</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>
