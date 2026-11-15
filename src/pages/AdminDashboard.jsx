@@ -12,6 +12,8 @@ import {
   rejeterCommercant,
   fetchAdminReservations,
   fetchAdminProduits,
+  fetchPublicAvis,
+  deleteAvis,
   updateAdminProduit,
   deleteAdminProduit,
   changeAdminProduitDisponibilite,
@@ -46,6 +48,8 @@ export default function AdminDashboard() {
   const [commercants, setCommercants] = useState([]);
   const [reservations, setReservations] = useState([]);
   const [produits, setProduits] = useState([]);
+  const [avisList, setAvisList] = useState([]);
+  const [avisSearch, setAvisSearch] = useState('');
   const [loading, setLoading] = useState(true);
   const [feedback, setFeedback] = useState({ type: '', message: '' });
 
@@ -107,12 +111,13 @@ export default function AdminDashboard() {
     setLoading(true);
 
     try {
-      const [statsRes, comRes, usersRes, resRes, prodRes] = await Promise.allSettled([
+      const [statsRes, comRes, usersRes, resRes, prodRes, avisRes] = await Promise.allSettled([
         fetchProduitStatistiques(token),
         fetchAdminCommercants(token, commercantStatutFilter),
         fetchAdminUtilisateurs(token, { role: userRoleFilter || undefined }),
         fetchAdminReservations(token),
         fetchAdminProduits(token),
+        fetchPublicAvis(),
       ]);
 
       if (statsRes.status === 'fulfilled') setStats(statsRes.value);
@@ -127,6 +132,9 @@ export default function AdminDashboard() {
       }
       if (prodRes.status === 'fulfilled' && Array.isArray(prodRes.value)) {
         setProduits(prodRes.value.map(normalizeProduct));
+      }
+      if (avisRes.status === 'fulfilled' && Array.isArray(avisRes.value)) {
+        setAvisList(avisRes.value);
       }
     } finally {
       setLoading(false);
@@ -322,6 +330,31 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleDeleteAvis = async (avis) => {
+    const auteur = avis.clientNom || 'ce client';
+    const cible = avis.commercantNom || 'ce commerçant';
+    if (!window.confirm(`Supprimer définitivement l'avis de « ${auteur} » sur « ${cible} » ?`)) return;
+    try {
+      if (token) await deleteAvis(avis.id, token);
+      setAvisList((prev) => prev.filter((a) => a.id !== avis.id));
+      showFeedback('success', 'Avis supprimé de la plateforme.');
+    } catch (err) {
+      showFeedback('error', err?.message || "Erreur lors de la suppression de l'avis.");
+    }
+  };
+
+  const filteredAvis = avisList.filter((a) => {
+    const q = avisSearch.trim().toLowerCase();
+    if (!q) return true;
+    return [a.clientNom, a.commercantNom, a.commentaire]
+      .filter(Boolean)
+      .some((v) => String(v).toLowerCase().includes(q));
+  });
+
+  const averageNote = avisList.length
+    ? avisList.reduce((sum, a) => sum + (Number(a.note) || 0), 0) / avisList.length
+    : 0;
+
   const pendingCommercantsCount = commercants.filter((c) => c.statut === 'EN_ATTENTE').length;
 
   const NAV_ITEMS = [
@@ -330,6 +363,7 @@ export default function AdminDashboard() {
     { key: 'utilisateurs', label: 'Comptes Utilisateurs', icon: 'group', badge: utilisateurs.length },
     { key: 'produits', label: 'Supervision Paniers', icon: 'inventory_2' },
     { key: 'reservations', label: 'Flux Réservations', icon: 'receipt_long' },
+    { key: 'avis', label: 'Modération des Avis', icon: 'reviews', badge: avisList.length },
     { key: 'profil', label: 'Sécurité & Admin', icon: 'admin_panel_settings' },
   ];
 
@@ -456,6 +490,7 @@ export default function AdminDashboard() {
               {activeSection === 'utilisateurs' && "Gestion Globale des Utilisateurs"}
               {activeSection === 'produits' && "Supervision du Catalogue & Paniers"}
               {activeSection === 'reservations' && "Historique des Réservations"}
+              {activeSection === 'avis' && "Modération des Avis Clients"}
               {activeSection === 'profil' && "Paramètres de Sécurité Administrateur"}
             </h1>
             <p className="text-xs text-on-surface-variant">
@@ -1048,6 +1083,127 @@ export default function AdminDashboard() {
                     ))}
                   </tbody>
                 </table>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* ─── 5 bis. MODÉRATION DES AVIS CLIENTS ─── */}
+          {activeSection === 'avis' && (
+            <div className="bg-white border border-[#F0E6DE] rounded-2xl p-6 shadow-2xs space-y-4">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <h3 className="text-base font-bold text-on-surface">Avis clients publiés</h3>
+                  <p className="text-xs text-on-surface-variant">
+                    {avisList.length} avis • note moyenne{' '}
+                    <span className="font-bold text-primary">
+                      {avisList.length > 0 ? `${averageNote.toFixed(2)} / 5` : '—'}
+                    </span>
+                    {' '}— l'administrateur peut retirer tout avis inapproprié.
+                  </p>
+                </div>
+                <div className="relative">
+                  <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[16px] text-outline">
+                    search
+                  </span>
+                  <input
+                    type="text"
+                    value={avisSearch}
+                    onChange={(e) => setAvisSearch(e.target.value)}
+                    placeholder="Rechercher (client, commerçant, texte)..."
+                    className="pl-9 pr-3 py-2 w-64 rounded-full bg-surface-container-low border-0 text-xs focus:ring-2 focus:ring-primary"
+                  />
+                </div>
+              </div>
+
+              <div className="overflow-x-auto">
+                {loading ? (
+                  <p className="text-xs text-on-surface-variant py-8 text-center">
+                    Chargement des avis depuis le serveur...
+                  </p>
+                ) : filteredAvis.length === 0 ? (
+                  <p className="text-xs text-on-surface-variant py-8 text-center">
+                    {avisList.length === 0
+                      ? 'Aucun avis publié pour le moment.'
+                      : 'Aucun avis ne correspond à cette recherche.'}
+                  </p>
+                ) : (
+                  <table className="w-full text-left text-xs">
+                    <thead>
+                      <tr className="border-b border-[#F0E6DE] text-outline font-bold uppercase tracking-wider text-[11px]">
+                        <th className="py-2.5">ID</th>
+                        <th className="py-2.5">Client</th>
+                        <th className="py-2.5">Commerçant</th>
+                        <th className="py-2.5">Note</th>
+                        <th className="py-2.5">Commentaire</th>
+                        <th className="py-2.5">Date</th>
+                        <th className="py-2.5 text-right">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-[#F5EBE1]">
+                      {filteredAvis.map((a) => {
+                        const note = Number(a.note) || 0;
+                        return (
+                          <tr key={a.id} className="hover:bg-surface-container-low transition-colors align-top">
+                            <td className="py-3 font-mono text-outline">#{a.id}</td>
+                            <td className="py-3">
+                              <div className="flex items-center gap-2">
+                                {a.clientPhotoUrl ? (
+                                  <img
+                                    src={a.clientPhotoUrl}
+                                    alt={a.clientNom}
+                                    className="w-7 h-7 rounded-full object-cover shrink-0 border border-[#F0E6DE]"
+                                  />
+                                ) : (
+                                  <div className="w-7 h-7 rounded-full bg-primary/10 text-primary text-[11px] font-bold flex items-center justify-center shrink-0">
+                                    {a.clientNom ? a.clientNom.charAt(0).toUpperCase() : 'C'}
+                                  </div>
+                                )}
+                                <span className="font-bold text-on-surface">{a.clientNom || 'Client'}</span>
+                              </div>
+                            </td>
+                            <td className="py-3 font-semibold text-secondary">{a.commercantNom || '—'}</td>
+                            <td className="py-3">
+                              <span className="inline-flex items-center gap-0.5 whitespace-nowrap">
+                                {[1, 2, 3, 4, 5].map((n) => (
+                                  <span
+                                    key={n}
+                                    className={`material-symbols-outlined text-[15px] ${n <= note ? 'text-primary' : 'text-outline'}`}
+                                  >
+                                    {n <= note ? 'star' : 'star_border'}
+                                  </span>
+                                ))}
+                                <span className="ml-1 font-bold text-on-surface">{note}/5</span>
+                              </span>
+                            </td>
+                            <td className="py-3 max-w-xs">
+                              <p className="text-on-surface leading-relaxed line-clamp-3">{a.commentaire}</p>
+                            </td>
+                            <td className="py-3 text-on-surface-variant whitespace-nowrap">
+                              {a.dateAvis
+                                ? new Date(a.dateAvis).toLocaleDateString('fr-FR', {
+                                  day: 'numeric',
+                                  month: 'short',
+                                  year: 'numeric',
+                                })
+                                : '—'}
+                            </td>
+                            <td className="py-3 text-right">
+                              <button
+                                type="button"
+                                onClick={() => handleDeleteAvis(a)}
+                                className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-error-container text-on-error-container text-xs font-bold hover:brightness-95"
+                                title="Supprimer cet avis"
+                              >
+                                <span className="material-symbols-outlined text-[15px]">delete</span>
+                                Supprimer
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
                 )}
               </div>
             </div>

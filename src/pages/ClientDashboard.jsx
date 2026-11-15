@@ -4,7 +4,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { useAuth } from '../context/AuthContext';
 import { compressImage } from '../lib/imageUtils';
-import { fetchMesReservations, annulerReservation, updateProfile, uploadProfilePhoto, deleteAccount } from '../api/produits';
+import { fetchMesReservations, annulerReservation, updateProfile, uploadProfilePhoto, deleteAccount, fetchMesAvis, updateAvis, deleteAvis } from '../api/produits';
 
 function formatDT(value) {
   const num = Number(value);
@@ -21,6 +21,14 @@ export default function ClientDashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [toast, setToast] = useState('');
+
+  // Avis du client : liste, édition en ligne et suppression
+  const [avisList, setAvisList] = useState([]);
+  const [avisLoading, setAvisLoading] = useState(true);
+  const [avisError, setAvisError] = useState('');
+  const [editingAvisId, setEditingAvisId] = useState(null);
+  const [avisDraft, setAvisDraft] = useState({ note: 5, commentaire: '' });
+  const [avisSaving, setAvisSaving] = useState(false);
 
   // Edit profile modal state
   const [editOpen, setEditOpen] = useState(false);
@@ -85,6 +93,84 @@ export default function ClientDashboard() {
       })
       .finally(() => setLoading(false));
   }, [token]);
+
+  // Avis rédigés par ce client (API /avis/mes-avis)
+  useEffect(() => {
+    if (!token) {
+      setAvisList([]);
+      setAvisLoading(false);
+      return;
+    }
+    let active = true;
+    setAvisLoading(true);
+    setAvisError('');
+    fetchMesAvis(token)
+      .then((data) => {
+        if (active) setAvisList(Array.isArray(data) ? data : []);
+      })
+      .catch((err) => {
+        if (!active) return;
+        setAvisList([]);
+        setAvisError(err?.message || 'Erreur lors du chargement de vos avis.');
+      })
+      .finally(() => {
+        if (active) setAvisLoading(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, [token]);
+
+  const startEditAvis = (avis) => {
+    setEditingAvisId(avis.id);
+    setAvisDraft({ note: Number(avis.note) || 5, commentaire: avis.commentaire || '' });
+    setAvisError('');
+  };
+
+  const cancelEditAvis = () => {
+    setEditingAvisId(null);
+    setAvisDraft({ note: 5, commentaire: '' });
+  };
+
+  const handleSaveAvis = async (id) => {
+    if (!avisDraft.commentaire.trim()) {
+      setAvisError('Le commentaire ne peut pas être vide.');
+      return;
+    }
+    setAvisSaving(true);
+    setAvisError('');
+    try {
+      const updated = await updateAvis(
+        id,
+        { note: avisDraft.note, commentaire: avisDraft.commentaire.trim() },
+        token,
+      );
+      setAvisList((prev) =>
+        prev.map((a) => (a.id === id ? { ...a, ...(updated || {}), ...avisDraft } : a)),
+      );
+      setEditingAvisId(null);
+      setToast('Votre avis a été mis à jour.');
+      setTimeout(() => setToast(''), 4000);
+    } catch (err) {
+      setAvisError(err?.message || "Impossible de modifier l'avis.");
+    } finally {
+      setAvisSaving(false);
+    }
+  };
+
+  const handleDeleteAvis = async (id) => {
+    if (!window.confirm('Voulez-vous vraiment supprimer cet avis ? Cette action est définitive.')) return;
+    setAvisError('');
+    try {
+      await deleteAvis(id, token);
+      setAvisList((prev) => prev.filter((a) => a.id !== id));
+      if (editingAvisId === id) cancelEditAvis();
+      setToast('Votre avis a été supprimé.');
+      setTimeout(() => setToast(''), 4000);
+    } catch (err) {
+      setAvisError(err?.message || "Impossible de supprimer l'avis.");
+    }
+  };
 
   const handleCancelBooking = async (resId) => {
     if (!window.confirm('Voulez-vous vraiment annuler cette réservation ?')) return;
@@ -388,6 +474,17 @@ export default function ClientDashboard() {
               <span>Mes Commerçants</span>
               <span className="text-[11px] opacity-75">({visitedMerchants.length})</span>
             </button>
+            <button
+              onClick={() => setActiveTab('avis')}
+              className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all whitespace-nowrap ${activeTab === 'avis'
+                  ? 'bg-primary text-white shadow-xs'
+                  : 'bg-white hover:bg-surface-container text-on-surface border border-[#F0E6DE]'
+                }`}
+            >
+              <span className="material-symbols-outlined text-[16px]">reviews</span>
+              <span>Mes avis</span>
+              <span className="text-[11px] opacity-75">({avisList.length})</span>
+            </button>
           </div>
 
           {/* TAB 1: Réservations Actives en direct */}
@@ -661,6 +758,167 @@ export default function ClientDashboard() {
                       </Link>
                     </div>
                   ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* TAB 4: Avis publiés par le client (modification / suppression) */}
+          {activeTab === 'avis' && (
+            <div className="space-y-4">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <h2 className="text-lg font-bold text-on-surface flex items-center gap-2">
+                  <span className="material-symbols-outlined text-[20px] text-primary">reviews</span>
+                  Mes avis publiés ({avisList.length})
+                </h2>
+                <span className="text-xs text-secondary bg-secondary-container px-3 py-1 rounded-full font-bold">
+                  Modifiables et supprimables à tout moment
+                </span>
+              </div>
+
+              {avisError && (
+                <div className="p-3 rounded-xl bg-error-container text-on-error-container text-xs font-bold text-center">
+                  {avisError}
+                </div>
+              )}
+
+              {avisLoading ? (
+                <div className="bg-white border border-[#F0E6DE] rounded-2xl p-8 text-center text-xs text-on-surface-variant flex items-center justify-center gap-2">
+                  <span className="material-symbols-outlined animate-spin text-[18px]">progress_activity</span>
+                  <span>Chargement de vos avis depuis le serveur...</span>
+                </div>
+              ) : avisList.length === 0 ? (
+                <div className="bg-white border border-[#F0E6DE] rounded-2xl p-8 text-center">
+                  <span className="material-symbols-outlined text-4xl text-outline mb-2">rate_review</span>
+                  <p className="text-sm font-bold text-on-surface">Vous n'avez publié aucun avis</p>
+                  <p className="text-xs text-on-surface-variant mt-1 mb-4">
+                    Après un retrait, partagez votre expérience depuis la page d'un panier pour aider les autres gourmands.
+                  </p>
+                  <Link
+                    to="/#produits"
+                    className="inline-flex items-center gap-1 px-5 py-2 rounded-full bg-primary text-white text-xs font-bold"
+                  >
+                    Découvrir les paniers
+                  </Link>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {avisList.map((avis) => {
+                    const isEditing = editingAvisId === avis.id;
+                    const note = Number(avis.note) || 0;
+                    return (
+                      <div
+                        key={avis.id}
+                        className="bg-white border border-[#F0E6DE] rounded-2xl p-5 shadow-xs flex flex-col justify-between gap-3"
+                      >
+                        <div className="space-y-2">
+                          <div className="flex items-start justify-between gap-2">
+                            <div className="min-w-0">
+                              <div className="flex items-center gap-1.5 text-xs font-bold text-secondary">
+                                <span className="material-symbols-outlined text-[16px]">store</span>
+                                <span className="truncate">{avis.commercantNom || `Commerçant #${avis.commercantId}`}</span>
+                              </div>
+                              <div className="text-[11px] text-outline mt-0.5">
+                                {avis.dateAvis
+                                  ? new Date(avis.dateAvis).toLocaleDateString('fr-TN', {
+                                    day: 'numeric',
+                                    month: 'long',
+                                    year: 'numeric',
+                                  })
+                                  : 'Date inconnue'}
+                              </div>
+                            </div>
+                            {isEditing ? (
+                              <div className="flex items-center gap-0.5 shrink-0">
+                                {[1, 2, 3, 4, 5].map((n) => (
+                                  <button
+                                    key={n}
+                                    type="button"
+                                    onClick={() => setAvisDraft((d) => ({ ...d, note: n }))}
+                                    className="leading-none"
+                                    title={`${n} / 5`}
+                                  >
+                                    <span
+                                      className={`material-symbols-outlined text-[20px] ${n <= avisDraft.note ? 'text-primary' : 'text-outline'}`}
+                                    >
+                                      {n <= avisDraft.note ? 'star' : 'star_border'}
+                                    </span>
+                                  </button>
+                                ))}
+                              </div>
+                            ) : (
+                              <span className="inline-flex items-center gap-0.5 shrink-0">
+                                {[1, 2, 3, 4, 5].map((n) => (
+                                  <span
+                                    key={n}
+                                    className={`material-symbols-outlined text-[16px] ${n <= note ? 'text-primary' : 'text-outline'}`}
+                                  >
+                                    {n <= note ? 'star' : 'star_border'}
+                                  </span>
+                                ))}
+                              </span>
+                            )}
+                          </div>
+
+                          {isEditing ? (
+                            <textarea
+                              rows={3}
+                              value={avisDraft.commentaire}
+                              onChange={(e) => setAvisDraft((d) => ({ ...d, commentaire: e.target.value }))}
+                              className="w-full p-2.5 rounded-xl bg-surface-container-low border-0 text-sm focus:ring-2 focus:ring-primary"
+                              placeholder="Votre commentaire..."
+                            />
+                          ) : (
+                            <p className="text-sm text-on-surface leading-relaxed">
+                              « {avis.commentaire} »
+                            </p>
+                          )}
+                        </div>
+
+                        <div className="flex items-center justify-end gap-2 pt-1 border-t border-[#F5EBE1]">
+                          {isEditing ? (
+                            <>
+                              <button
+                                type="button"
+                                onClick={cancelEditAvis}
+                                disabled={avisSaving}
+                                className="px-3 py-1.5 rounded-full bg-surface-container text-on-surface-variant text-xs font-bold hover:bg-surface-container-high disabled:opacity-60"
+                              >
+                                Annuler
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => handleSaveAvis(avis.id)}
+                                disabled={avisSaving}
+                                className="px-3 py-1.5 rounded-full bg-primary text-white text-xs font-bold hover:bg-primary-dark disabled:opacity-60"
+                              >
+                                {avisSaving ? 'Enregistrement...' : 'Enregistrer'}
+                              </button>
+                            </>
+                          ) : (
+                            <>
+                              <button
+                                type="button"
+                                onClick={() => startEditAvis(avis)}
+                                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-secondary-container text-on-secondary-container text-xs font-bold hover:brightness-95"
+                              >
+                                <span className="material-symbols-outlined text-[15px]">edit</span>
+                                Modifier
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => handleDeleteAvis(avis.id)}
+                                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-error-container text-on-error-container text-xs font-bold hover:brightness-95"
+                              >
+                                <span className="material-symbols-outlined text-[15px]">delete</span>
+                                Supprimer
+                              </button>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               )}
             </div>

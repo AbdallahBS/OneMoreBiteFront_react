@@ -44,6 +44,28 @@ export function createAvis(payload, token) {
   });
 }
 
+/** Avis rédigés par le client connecté (les siens uniquement). */
+export function fetchMesAvis(token) {
+  return apiRequest('/avis/mes-avis', { token });
+}
+
+/** Modification d'un avis par son auteur (client propriétaire). */
+export function updateAvis(id, payload, token) {
+  return apiRequest(`/avis/${id}`, {
+    method: 'PUT',
+    token,
+    body: payload,
+  });
+}
+
+/** Suppression d'un avis (client propriétaire ou administrateur). */
+export function deleteAvis(id, token) {
+  return apiRequest(`/avis/${id}`, {
+    method: 'DELETE',
+    token,
+  });
+}
+
 // ─── COMMERÇANT PRODUITS ───
 export function fetchMesProduits(token) {
   return apiRequest('/produits/mes-produits', { token });
