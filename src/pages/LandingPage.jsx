@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useMemo, useState } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import FeaturedDeals from '../components/FeaturedDeals';
@@ -24,35 +23,94 @@ const FAQ_ITEMS = [
   },
 ];
 
+const MAX_FEATURED_AVIS = 3;
+const MAX_FEATURED_COMMERCANTS = 3;
+
+/** Mélange de Fisher-Yates (nouveau tableau, l'original n'est pas modifié). */
+function shuffle(items) {
+  const copy = [...items];
+  for (let i = copy.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
+
+/**
+ * Sélectionne les avis les mieux notés puis en tire 3 au hasard.
+ * Seuls les avis contenant un commentaire sont éligibles (un avis sans texte
+ * n'a rien à raconter sur la page d'accueil).
+ */
+function selectTopRatedAvis(avis, max = MAX_FEATURED_AVIS) {
+  const withComment = avis.filter(
+    (a) => a && typeof a.commentaire === 'string' && a.commentaire.trim().length > 0,
+  );
+  if (withComment.length === 0) return [];
+
+  const sorted = [...withComment].sort((a, b) => (Number(b.note) || 0) - (Number(a.note) || 0));
+  // On garde la moitié la mieux notée (au moins `max`) pour conserver de la variété.
+  const poolSize = Math.max(max, Math.ceil(sorted.length / 2));
+
+  return shuffle(sorted.slice(0, poolSize)).slice(0, max);
+}
+
+/** Agrège les avis par commerçant pour obtenir une note moyenne réelle. */
+function buildMerchantRatings(avis) {
+  const ratings = new Map();
+  avis.forEach((a) => {
+    if (!a || a.commercantId === undefined || a.commercantId === null) return;
+    const note = Number(a.note);
+    if (!Number.isFinite(note)) return;
+    const entry = ratings.get(a.commercantId) || { total: 0, count: 0 };
+    entry.total += note;
+    entry.count += 1;
+    ratings.set(a.commercantId, entry);
+  });
+  return ratings;
+}
+
 export default function LandingPage() {
   const [openFaq, setOpenFaq] = useState(null);
   const [commercants, setCommercants] = useState([]);
   const [avisList, setAvisList] = useState([]);
+  const [loadingCommercants, setLoadingCommercants] = useState(true);
+  const [loadingAvis, setLoadingAvis] = useState(true);
 
   useEffect(() => {
     let active = true;
+
     fetchPublicCommercants()
       .then((data) => {
         if (!active) return;
-        if (Array.isArray(data) && data.length > 0) {
-          setCommercants(data);
-        }
+        setCommercants(Array.isArray(data) ? data : []);
       })
-      .catch(() => { });
+      .catch(() => {
+        if (active) setCommercants([]);
+      })
+      .finally(() => {
+        if (active) setLoadingCommercants(false);
+      });
 
     fetchPublicAvis()
       .then((data) => {
         if (!active) return;
-        if (Array.isArray(data) && data.length > 0) {
-          setAvisList(data);
-        }
+        setAvisList(Array.isArray(data) ? data : []);
       })
-      .catch(() => { });
+      .catch(() => {
+        if (active) setAvisList([]);
+      })
+      .finally(() => {
+        if (active) setLoadingAvis(false);
+      });
 
     return () => {
       active = false;
     };
   }, []);
+
+  const merchantRatings = useMemo(() => buildMerchantRatings(avisList), [avisList]);
+  const featuredAvis = useMemo(() => selectTopRatedAvis(avisList), [avisList]);
+  const featuredCommercants = commercants.slice(0, MAX_FEATURED_COMMERCANTS);
 
   const toggleFaq = (idx) => {
     setOpenFaq(openFaq === idx ? null : idx);
@@ -299,174 +357,98 @@ export default function LandingPage() {
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {commercants.length > 0 ? (
-              commercants.slice(0, 3).map((comm, idx) => (
+            {loadingCommercants ? (
+              Array.from({ length: MAX_FEATURED_COMMERCANTS }).map((_, idx) => (
                 <div
-                  key={comm.id || idx}
-                  className="bg-white rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-all border border-[#F0E6DE] flex flex-col group"
+                  key={`merchant-skeleton-${idx}`}
+                  className="bg-white rounded-2xl overflow-hidden border border-[#F0E6DE] flex flex-col animate-pulse"
                 >
-                  <div className="relative w-full h-48 overflow-hidden bg-gray-100">
-                    <img
-                      alt={comm.nom}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      src={
-                        idx === 0
-                          ? 'https://lh3.googleusercontent.com/aida-public/AB6AXuCO6ViaxEF0Oo_KNR8A_HiBjN0T2-tXFfb11Zt6NuGZwC3TzSKkxx3MoBXw1GYhvCe9JyTLT3ZJdpjh7X-NAT_FiWUtMRfQl5-vrUylDC4d-yTevMD1xcqdkIhf1kYISLRrC9fQniO0sGyK93gDstGqoowirKjqA8_5IgAoNtGisMLjT6owX4ursZbhckpVOshcjJUeGQbh8t3Ey6Rkp_TEUCz7VVBw0J77HAIhQf4'
-                          : idx === 1
-                            ? 'https://lh3.googleusercontent.com/aida-public/AB6AXuCRmJfAuVeIyl3WmS6-vvupz8mt3dAnWNyk2gJ68sQAdAcu5bwOvEVLaiS_ETQecGviOkRgt21xdKpWb72zVbutv_8XsHqhlAYFJA0GfjcU0DvdAcqrjL-VXb9nzzmNR83Sm7IfDNjLPxP13DPiia_dtEJ-JCqq62LtGKDmVUaT0GGuK-KWYUrjgJBnI8KEqC4E6iiinsY3R9ASpikt0WHOtGxIajL8FBua_YUiz7s'
-                            : 'https://lh3.googleusercontent.com/aida-public/AB6AXuBDvciAWPIwJtLvOOD-WuzJuAa-d1i4fxzDtXGwRShv2QpZY9DBry3LqxVLk3N4l3h1ErLb82OwDemrXCIYwtIulK8VRvNr--Bp3BFBmRdqPRta-Js3VN_0t12CucH5h56d_YgrY4IIfPKeJhsCg77_KU_T6MbKLOTForjU-za-NAQbxhJ3mjEgIESUdsRyHQcApdlDqsj4hPHdyCRc4XI10fqNNfUFpWVK5b-TlrQ'
-                      }
-                    />
-                    <span className="absolute top-3 right-3 bg-secondary text-white text-[12px] font-bold px-2.5 py-1 rounded-full shadow-sm">
-                      Commerçant certifié
-                    </span>
-                    <span className="absolute bottom-3 left-3 bg-black/60 backdrop-blur-sm text-white text-[11px] font-medium px-2.5 py-1 rounded-full">
-                      {comm.localisation ? comm.localisation.split(',')[0] : 'Tunis'}
-                    </span>
-                  </div>
-                  <div className="p-5 flex flex-col flex-1">
-                    <div className="flex items-center justify-between mb-2">
-                      <h3 className="text-[18px] font-bold text-[#231F20] group-hover:text-primary transition-colors">
-                        {comm.nom}
-                      </h3>
-                      <span className="text-[12px] font-bold text-[#C96B26] bg-[#FFEAD6] px-2 py-0.5 rounded-full">
-                        ★ 4.9
-                      </span>
-                    </div>
-                    <p className="text-[13px] text-on-surface-variant mb-4 flex items-center gap-1.5 leading-relaxed">
-                      <span>📍</span>
-                      <span>{comm.localisation || 'Grand Tunis'}</span>
-                    </p>
-                    <div className="mt-auto pt-3 border-t border-[#F5EBE1] flex items-center justify-between">
-                      <a
-                        className="w-full text-center bg-primary hover:bg-primary-dark text-white text-[13px] font-bold py-2 rounded-full shadow-xs hover:shadow transition-all active:scale-95"
-                        href="#produits"
-                      >
-                        Voir les offres
-                      </a>
-                    </div>
+                  <div className="w-full h-48 bg-[#F3E9DF]" />
+                  <div className="p-5 flex flex-col gap-3">
+                    <div className="h-4 w-2/3 bg-[#F3E9DF] rounded-full" />
+                    <div className="h-3 w-1/2 bg-[#F8F1EA] rounded-full" />
+                    <div className="h-9 w-full bg-[#F8F1EA] rounded-full mt-3" />
                   </div>
                 </div>
               ))
+            ) : featuredCommercants.length > 0 ? (
+              featuredCommercants.map((comm) => {
+                const rating = merchantRatings.get(comm.id);
+                const average = rating && rating.count > 0 ? rating.total / rating.count : null;
+
+                return (
+                  <div
+                    key={comm.id}
+                    className="bg-white rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-all border border-[#F0E6DE] flex flex-col group"
+                  >
+                    <div className="relative w-full h-48 overflow-hidden bg-[#FBF3EA]">
+                      {comm.photoUrl ? (
+                        <img
+                          alt={comm.nom}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          src={comm.photoUrl}
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#FDF0E6] to-[#F3E2D3] text-primary/60 group-hover:scale-105 transition-transform duration-500">
+                          <span className="material-symbols-outlined text-[64px]">storefront</span>
+                        </div>
+                      )}
+                      <span className="absolute top-3 right-3 bg-secondary text-white text-[12px] font-bold px-2.5 py-1 rounded-full shadow-sm">
+                        Commerçant certifié
+                      </span>
+                      {comm.localisation && (
+                        <span className="absolute bottom-3 left-3 bg-black/60 backdrop-blur-sm text-white text-[11px] font-medium px-2.5 py-1 rounded-full">
+                          {comm.localisation}
+                        </span>
+                      )}
+                    </div>
+                    <div className="p-5 flex flex-col flex-1">
+                      <div className="flex items-center justify-between gap-2 mb-2">
+                        <h3 className="text-[18px] font-bold text-[#231F20] group-hover:text-primary transition-colors">
+                          {comm.nom}
+                        </h3>
+                        {average !== null ? (
+                          <span className="text-[12px] font-bold text-[#C96B26] bg-[#FFEAD6] px-2 py-0.5 rounded-full whitespace-nowrap">
+                            ★ {average.toFixed(1)} ({rating.count})
+                          </span>
+                        ) : (
+                          <span className="text-[12px] font-bold text-[#346330] bg-[#EAF5E9] px-2 py-0.5 rounded-full whitespace-nowrap">
+                            Nouveau
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-[13px] text-on-surface-variant mb-4 flex items-center gap-1.5 leading-relaxed">
+                        <span>📍</span>
+                        <span>{comm.localisation || 'Localisation non renseignée'}</span>
+                      </p>
+                      {comm.telephone && (
+                        <p className="text-[13px] text-on-surface-variant mb-4 flex items-center gap-1.5 leading-relaxed">
+                          <span>📞</span>
+                          <span>{comm.telephone}</span>
+                        </p>
+                      )}
+                      <div className="mt-auto pt-3 border-t border-[#F5EBE1] flex items-center justify-between">
+                        <a
+                          className="w-full text-center bg-primary hover:bg-primary-dark text-white text-[13px] font-bold py-2 rounded-full shadow-xs hover:shadow transition-all active:scale-95"
+                          href="#produits"
+                        >
+                          Voir les offres
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })
             ) : (
-              <>
-                {/* Fallback Merchant 1 */}
-                <div className="bg-white rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-all border border-[#F0E6DE] flex flex-col group">
-                  <div className="relative w-full h-48 overflow-hidden bg-gray-100">
-                    <img
-                      alt="Boulangerie & Pâtisserie Le Jasmin"
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuCO6ViaxEF0Oo_KNR8A_HiBjN0T2-tXFfb11Zt6NuGZwC3TzSKkxx3MoBXw1GYhvCe9JyTLT3ZJdpjh7X-NAT_FiWUtMRfQl5-vrUylDC4d-yTevMD1xcqdkIhf1kYISLRrC9fQniO0sGyK93gDstGqoowirKjqA8_5IgAoNtGisMLjT6owX4ursZbhckpVOshcjJUeGQbh8t3Ey6Rkp_TEUCz7VVBw0J77HAIhQf4"
-                    />
-                    <span className="absolute top-3 right-3 bg-secondary text-white text-[12px] font-bold px-2.5 py-1 rounded-full shadow-sm">
-                      Coup de cœur
-                    </span>
-                    <span className="absolute bottom-3 left-3 bg-black/60 backdrop-blur-sm text-white text-[11px] font-medium px-2.5 py-1 rounded-full">
-                      Boulangerie & Pâtisserie
-                    </span>
-                  </div>
-                  <div className="p-5 flex flex-col flex-1">
-                    <div className="flex items-center justify-between mb-2">
-                      <h3 className="text-[18px] font-bold text-[#231F20] group-hover:text-primary transition-colors">
-                        Boulangerie & Pâtisserie Le Jasmin
-                      </h3>
-                      <span className="text-[12px] font-bold text-[#C96B26] bg-[#FFEAD6] px-2 py-0.5 rounded-full">
-                        ★ 4.9 (142 avis)
-                      </span>
-                    </div>
-                    <p className="text-[13px] text-on-surface-variant mb-4 flex items-center gap-1.5 leading-relaxed">
-                      <span>📍</span>
-                      <span>Lafayette, Tunis (à 800 m)</span>
-                    </p>
-                    <div className="mt-auto pt-3 border-t border-[#F5EBE1] flex items-center justify-between">
-                      <a
-                        className="w-full text-center bg-primary hover:bg-primary-dark text-white text-[13px] font-bold py-2 rounded-full shadow-xs hover:shadow transition-all active:scale-95"
-                        href="#produits"
-                      >
-                        Voir les offres
-                      </a>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Fallback Merchant 2 */}
-                <div className="bg-white rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-all border border-[#F0E6DE] flex flex-col group">
-                  <div className="relative w-full h-48 overflow-hidden bg-gray-100">
-                    <img
-                      alt="Pâtisserie La Médina"
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRmJfAuVeIyl3WmS6-vvupz8mt3dAnWNyk2gJ68sQAdAcu5bwOvEVLaiS_ETQecGviOkRgt21xdKpWb72zVbutv_8XsHqhlAYFJA0GfjcU0DvdAcqrjL-VXb9nzzmNR83Sm7IfDNjLPxP13DPiia_dtEJ-JCqq62LtGKDmVUaT0GGuK-KWYUrjgJBnI8KEqC4E6iiinsY3R9ASpikt0WHOtGxIajL8FBua_YUiz7s"
-                    />
-                    <span className="absolute top-3 right-3 bg-primary text-white text-[12px] font-bold px-2.5 py-1 rounded-full shadow-sm">
-                      Mieux noté
-                    </span>
-                    <span className="absolute bottom-3 left-3 bg-black/60 backdrop-blur-sm text-white text-[11px] font-medium px-2.5 py-1 rounded-full">
-                      Douceurs & Gâteaux
-                    </span>
-                  </div>
-                  <div className="p-5 flex flex-col flex-1">
-                    <div className="flex items-center justify-between mb-2">
-                      <h3 className="text-[18px] font-bold text-[#231F20] group-hover:text-primary transition-colors">
-                        Pâtisserie La Médina
-                      </h3>
-                      <span className="text-[12px] font-bold text-[#C96B26] bg-[#FFEAD6] px-2 py-0.5 rounded-full">
-                        ★ 4.8 (98 avis)
-                      </span>
-                    </div>
-                    <p className="text-[13px] text-on-surface-variant mb-4 flex items-center gap-1.5 leading-relaxed">
-                      <span>📍</span>
-                      <span>Menzah 6, Tunis (à 2.5 km)</span>
-                    </p>
-                    <div className="mt-auto pt-3 border-t border-[#F5EBE1] flex items-center justify-between">
-                      <a
-                        className="w-full text-center bg-primary hover:bg-primary-dark text-white text-[13px] font-bold py-2 rounded-full shadow-xs hover:shadow transition-all active:scale-95"
-                        href="#produits"
-                      >
-                        Voir les offres
-                      </a>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Fallback Merchant 3 */}
-                <div className="bg-white rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-all border border-[#F0E6DE] flex flex-col group">
-                  <div className="relative w-full h-48 overflow-hidden bg-gray-100">
-                    <img
-                      alt="Café & Délices Saveurs d'Antan"
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDvciAWPIwJtLvOOD-WuzJuAa-d1i4fxzDtXGwRShv2QpZY9DBry3LqxVLk3N4l3h1ErLb82OwDemrXCIYwtIulK8VRvNr--Bp3BFBmRdqPRta-Js3VN_0t12CucH5h56d_YgrY4IIfPKeJhsCg77_KU_T6MbKLOTForjU-za-NAQbxhJ3mjEgIESUdsRyHQcApdlDqsj4hPHdyCRc4XI10fqNNfUFpWVK5b-TlrQ"
-                    />
-                    <span className="absolute top-3 right-3 bg-primary text-white text-[12px] font-bold px-2.5 py-1 rounded-full shadow-sm">
-                      Plus populaire
-                    </span>
-                    <span className="absolute bottom-3 left-3 bg-black/60 backdrop-blur-sm text-white text-[11px] font-medium px-2.5 py-1 rounded-full">
-                      Restauration gourmande
-                    </span>
-                  </div>
-                  <div className="p-5 flex flex-col flex-1">
-                    <div className="flex items-center justify-between mb-2">
-                      <h3 className="text-[18px] font-bold text-[#231F20] group-hover:text-primary transition-colors">
-                        Café & Délices Saveurs d'Antan
-                      </h3>
-                      <span className="text-[12px] font-bold text-[#C96B26] bg-[#FFEAD6] px-2 py-0.5 rounded-full">
-                        ★ 4.9 (210 avis)
-                      </span>
-                    </div>
-                    <p className="text-[13px] text-on-surface-variant mb-4 flex items-center gap-1.5 leading-relaxed">
-                      <span>📍</span>
-                      <span>La Marsa, Tunis (à 1.2 km)</span>
-                    </p>
-                    <div className="mt-auto pt-3 border-t border-[#F5EBE1] flex items-center justify-between">
-                      <a
-                        className="w-full text-center bg-primary hover:bg-primary-dark text-white text-[13px] font-bold py-2 rounded-full shadow-xs hover:shadow transition-all active:scale-95"
-                        href="#produits"
-                      >
-                        Voir les offres
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </>
+              <div className="col-span-full bg-white rounded-2xl border border-dashed border-[#E6D6C8] p-8 text-center flex flex-col items-center gap-2">
+                <span className="material-symbols-outlined text-[40px] text-primary/50">storefront</span>
+                <p className="text-[15px] font-bold text-[#231F20]">
+                  Aucun commerçant partenaire pour le moment
+                </p>
+                <p className="text-[13.5px] text-on-surface-variant max-w-md">
+                  De nouveaux artisans nous rejoignent régulièrement. Revenez bientôt pour découvrir leurs paniers anti-gaspillage.
+                </p>
+              </div>
             )}
           </div>
         </section>
@@ -485,98 +467,77 @@ export default function LandingPage() {
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {avisList.length > 0 ? (
-              avisList.slice(0, 3).map((a, idx) => (
+            {loadingAvis ? (
+              Array.from({ length: MAX_FEATURED_AVIS }).map((_, idx) => (
                 <div
-                  key={a.id || idx}
-                  className="bg-white rounded-2xl p-6 border border-[#F0E6DE] shadow-xs hover:shadow-md transition-all flex flex-col"
+                  key={`avis-skeleton-${idx}`}
+                  className="bg-white rounded-2xl p-6 border border-[#F0E6DE] shadow-xs flex flex-col gap-3 animate-pulse"
                 >
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="text-[#C96B26] text-[15px] font-bold tracking-widest">
-                      {'★'.repeat(Math.max(1, Math.min(5, a.note || 5)))}
-                    </div>
-                    <span className="text-primary/30 text-2xl font-serif font-extrabold leading-none">”</span>
-                  </div>
-                  <p className="text-[14px] text-on-surface leading-relaxed mb-6 font-normal">
-                    « {a.commentaire} »
-                  </p>
-                  <div className="mt-auto pt-4 border-t border-[#F5EBE1] flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-primary-soft text-primary font-bold flex items-center justify-center border border-primary/20 shrink-0 text-sm">
-                      {(a.clientNom || 'Client').slice(0, 2).toUpperCase()}
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="text-[14px] font-bold text-[#231F20]">
-                        {a.clientNom || 'Client vérifié'}
-                      </span>
-                      <span className="text-[11.5px] text-on-surface-variant">
-                        {a.commercantNom ? `Panier sauvé chez : ${a.commercantNom}` : 'Client à Tunis'}
-                      </span>
+                  <div className="h-4 w-24 bg-[#F3E9DF] rounded-full" />
+                  <div className="h-3 w-full bg-[#F8F1EA] rounded-full" />
+                  <div className="h-3 w-5/6 bg-[#F8F1EA] rounded-full" />
+                  <div className="h-3 w-2/3 bg-[#F8F1EA] rounded-full" />
+                  <div className="mt-4 pt-4 border-t border-[#F5EBE1] flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-[#F3E9DF]" />
+                    <div className="flex flex-col gap-2 flex-1">
+                      <div className="h-3 w-1/2 bg-[#F3E9DF] rounded-full" />
+                      <div className="h-2.5 w-3/4 bg-[#F8F1EA] rounded-full" />
                     </div>
                   </div>
                 </div>
               ))
+            ) : featuredAvis.length > 0 ? (
+              featuredAvis.map((a) => {
+                const note = Math.max(1, Math.min(5, Number(a.note) || 5));
+
+                return (
+                  <div
+                    key={a.id}
+                    className="bg-white rounded-2xl p-6 border border-[#F0E6DE] shadow-xs hover:shadow-md transition-all flex flex-col"
+                  >
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="text-[#C96B26] text-[15px] font-bold tracking-widest">
+                        {'★'.repeat(note)}
+                      </div>
+                      <span className="text-primary/30 text-2xl font-serif font-extrabold leading-none">”</span>
+                    </div>
+                    <p className="text-[14px] text-on-surface leading-relaxed mb-6 font-normal">
+                      « {a.commentaire} »
+                    </p>
+                    <div className="mt-auto pt-4 border-t border-[#F5EBE1] flex items-center gap-3">
+                      {a.clientPhotoUrl ? (
+                        <img
+                          alt={a.clientNom || 'Client'}
+                          className="w-10 h-10 rounded-full object-cover border border-primary/20 shrink-0"
+                          src={a.clientPhotoUrl}
+                        />
+                      ) : (
+                        <div className="w-10 h-10 rounded-full bg-primary-soft text-primary font-bold flex items-center justify-center border border-primary/20 shrink-0 text-sm">
+                          {(a.clientNom || 'Client').slice(0, 2).toUpperCase()}
+                        </div>
+                      )}
+                      <div className="flex flex-col">
+                        <span className="text-[14px] font-bold text-[#231F20]">
+                          {a.clientNom || 'Client vérifié'}
+                        </span>
+                        <span className="text-[11.5px] text-on-surface-variant">
+                          {a.commercantNom ? `Panier sauvé chez : ${a.commercantNom}` : 'Client One More Bite'}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })
             ) : (
-              <>
-                {/* Fallback Testimonial 1 */}
-                <div className="bg-white rounded-2xl p-6 border border-[#F0E6DE] shadow-xs hover:shadow-md transition-all flex flex-col">
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="text-[#C96B26] text-[15px] font-bold tracking-widest">★★★★★</div>
-                    <span className="text-primary/30 text-2xl font-serif font-extrabold leading-none">”</span>
-                  </div>
-                  <p className="text-[14px] text-on-surface leading-relaxed mb-6 font-normal">
-                    « Une expérience culinaire incroyable ! Des viennoiseries et gâteaux frais à moitié prix, tout en aidant nos artisans locaux. Je recommande à 100%. »
-                  </p>
-                  <div className="mt-auto pt-4 border-t border-[#F5EBE1] flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-primary-soft text-primary font-bold flex items-center justify-center border border-primary/20 shrink-0 text-sm">
-                      M.O
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="text-[14px] font-bold text-[#231F20]">Meriem El Obeidi</span>
-                      <span className="text-[11.5px] text-on-surface-variant">Panier sauvé chez : Pâtisserie La Médina</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Fallback Testimonial 2 */}
-                <div className="bg-white rounded-2xl p-6 border border-[#F0E6DE] shadow-xs hover:shadow-md transition-all flex flex-col">
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="text-[#C96B26] text-[15px] font-bold tracking-widest">★★★★★</div>
-                    <span className="text-primary/30 text-2xl font-serif font-extrabold leading-none">”</span>
-                  </div>
-                  <p className="text-[14px] text-on-surface leading-relaxed mb-6 font-normal">
-                    « Excellente initiative anti-gaspillage. J'économise sur mon budget tout en profitant de super repas après le travail. C'est rapide et efficace. »
-                  </p>
-                  <div className="mt-auto pt-4 border-t border-[#F5EBE1] flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-[#E5F2E2] text-[#346330] font-bold flex items-center justify-center border border-[#CDE5CB] shrink-0 text-sm">
-                      Y.S
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="text-[14px] font-bold text-[#231F20]">Yassine Ben Salah</span>
-                      <span className="text-[11.5px] text-on-surface-variant">Panier sauvé chez : Boulangerie Le Jasmin</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Fallback Testimonial 3 */}
-                <div className="bg-white rounded-2xl p-6 border border-[#F0E6DE] shadow-xs hover:shadow-md transition-all flex flex-col">
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="text-[#C96B26] text-[15px] font-bold tracking-widest">★★★★★</div>
-                    <span className="text-primary/30 text-2xl font-serif font-extrabold leading-none">”</span>
-                  </div>
-                  <p className="text-[14px] text-on-surface leading-relaxed mb-6 font-normal">
-                    « Réservation instantanée sans carte bancaire, accueil très chaleureux du commerçant et panier copieux. Une superbe découverte à Tunis ! »
-                  </p>
-                  <div className="mt-auto pt-4 border-t border-[#F5EBE1] flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-[#FFEAD6] text-[#C96B26] font-bold flex items-center justify-center border border-[#EEDBCA] shrink-0 text-sm">
-                      S.M
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="text-[14px] font-bold text-[#231F20]">Sarra Mejri</span>
-                      <span className="text-[11.5px] text-on-surface-variant">Panier sauvé chez : Saveurs d'Antan</span>
-                    </div>
-                  </div>
-                </div>
-              </>
+              <div className="col-span-full bg-white rounded-2xl border border-dashed border-[#E6D6C8] p-8 text-center flex flex-col items-center gap-2">
+                <span className="material-symbols-outlined text-[40px] text-primary/50">reviews</span>
+                <p className="text-[15px] font-bold text-[#231F20]">
+                  Aucun avis client pour le moment
+                </p>
+                <p className="text-[13.5px] text-on-surface-variant max-w-md">
+                  Les avis publiés par nos gourmets apparaîtront ici. Sauvez votre premier panier et partagez votre expérience !
+                </p>
+              </div>
             )}
           </div>
         </section>
